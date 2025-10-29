@@ -1,0 +1,21 @@
+# Visual Studio
+.vscode/
+bin/
+obj/
+
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+
+
+# Node
+node_modules/
+dist/
+
+
+# Others
+.DS_Store
+.vscode
