@@ -10,5 +10,13 @@ def predict(sample: int = 1):
     scores = MODEL.predict([sample])
     return {"sample": sample, "scores": scores}
 
+
+def model_files_check():
+    pass
+
+
+def multi_cloud_service_connection():
+    pass
+
 # Çalıştırmak için:
 # uvicorn app:app --reload --host 0.0.0.0 --port 8000
