@@ -18,5 +18,13 @@ def model_files_check():
 def multi_cloud_service_connection():
     pass
 
+async def multi_model_async_functions():
+    pass
+
+async def mri_and_real_time_diagnosis():
+    pass
+
+
+
 # Çalıştırmak için:
 # uvicorn app:app --reload --host 0.0.0.0 --port 8000
