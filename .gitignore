@@ -9,6 +9,8 @@ __pycache__/
 *.pyc
 .env
 .venv/
+yolov10n.pt
+my_model.onnx
 
 
 # Node
