@@ -14,4 +14,4 @@ docker compose up --build
 
 Torch to Onnx
 
-python torch_to_onnx.py --model MODEL_PATH<model_name>.pt --output OUTPUT_PATH<model_name>.onnx
+python torch_to_onnx.py --model MODEL_PATH\<model_name>.pt --output OUTPUT_PATH\<model_name>.onnx
