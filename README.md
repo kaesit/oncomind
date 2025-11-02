@@ -35,5 +35,3 @@ Run with:
 ```bash
 python torch_to_onnx.py --model MODEL_PATH\<model_name>.pt --output OUTPUT_PATH\<model_name>.onnx
 ```
-
-````
