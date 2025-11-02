@@ -10,7 +10,13 @@ docker compose up --build
 
 
 
-# Converters
+## Test
+
+### Test Files
+#### early_diagnosis_test_from_image.py
+to run it -> python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --test-image PATH_OR_URL
+
+## Converters
 
 Torch to Onnx
 
