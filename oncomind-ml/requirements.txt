@@ -4,3 +4,5 @@ numpy
 scikit-learn
 pydantic
 pytest
+opencv-python
+tensorflow
