@@ -12,6 +12,18 @@ docker compose up --build
 
 ---
 
+
+## ⬇️ Requirements
+
+How to install packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+
+---
+
 ## 🧪 Test
 
 ### Test Files
@@ -31,9 +43,8 @@ Run with:
 python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --video-source VIDEO_PATH
 ```
 
-
-
 ---
+
 
 ## 🔄 Converters
 
