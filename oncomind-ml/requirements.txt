@@ -6,3 +6,4 @@ pydantic
 pytest
 opencv-python
 tensorflow
+kaggle
