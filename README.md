@@ -14,12 +14,9 @@ docker compose up --build
 
 
 ## ⬇️ Requirements
-
-How to install packages:
-
+#### Packages
 
 ```bash
-####packages
 fastapi
 uvicorn[standard]
 numpy
@@ -31,7 +28,7 @@ tensorflow
 kaggle
 ```
 
-
+#### How to install packages:
 ```bash
 pip install -r requirements.txt
 ```
