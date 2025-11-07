@@ -1,0 +1,59 @@
+/* Genel sayfa ayarları */
+.sign-page {
+  background: linear-gradient(180deg, #0d1a2f 0%, #0b1525 50%, #06162d 100%);
+  color: #d7dedf;
+  align-items: center;
+  height: 130vh;
+  font-family: "VVDS Fifties Exp SBold";
+
+}
+
+/* Başlık */
+.sign-page-header {
+  position: relative;
+  text-align: center;
+  top: 16vh;
+}
+
+.sign-page-title {
+  font-size: 2.9rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 0 15px rgba(175, 210, 255, 0.45);
+}
+
+/* Spotlight kartlar */
+.sign-form {
+  display: flex;
+  width: 100%;
+  margin-top: 8rem;
+  gap: 1rem;
+  justify-content: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.sign-content {
+  display: flex;
+  height: 450px;
+  width: 300px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 12rem;
+  font-size: 0.55rem;
+  float: bottom;
+  color: #aaa;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
