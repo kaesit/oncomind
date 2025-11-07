@@ -1,0 +1,61 @@
+/* Genel sayfa ayarları */
+.about-page {
+  background:linear-gradient(180deg, #18191c 0%, #161b22 50%, #161a20 100%);
+  color: #d7dedf;
+  align-items: center;
+  font-family: "VVDS Fifties Exp SBold Italic";
+
+}
+
+/* Başlık */
+.about-header {
+  position: relative;
+  text-align: center;
+  top: 13vh;
+  text-shadow: 0 0 15px rgba(175, 210, 255, 0.25); /* Spotlight ile uyumlu daha belirgin bir ışık */
+
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  color: #d2cbcb;
+  margin-top: 0.5rem;
+}
+
+/* Spotlight kartlar */
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width: 100%;
+  margin-top: 8rem;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0 4rem;
+  box-sizing: border-box;
+}
+
+.custom-spotlight-card {
+  border-radius: 12px;
+  /*background-color: #58f0b5;*/
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+}
