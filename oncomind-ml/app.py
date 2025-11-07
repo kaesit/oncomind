@@ -2,7 +2,12 @@
 from fastapi import FastAPI
 from model_stub import MODEL
 
+from scripts_py.diagnostic_tool import YOLODiagnosticTool
 app = FastAPI(title='OncoMind ML Service')
+
+
+MODEL_PATH = "MODEL_PATH" # Örnek model adı
+DIAGNOSTIC_TOOL = YOLODiagnosticTool(model_path=MODEL_PATH)
 
 @app.get('/predict')
 def predict(sample: int = 1):
@@ -21,9 +26,17 @@ def multi_cloud_service_connection():
 async def multi_model_async_functions():
     pass
 
-async def mri_and_real_time_diagnosis():
-    pass
+# ... diğer fonksiyonlarınız ...
 
+async def mri_and_real_time_diagnosis(image_path: str = "default_mri_image.jpg"):
+    """
+    Bu fonksiyon artık yeni sınıfı kullanıyor.
+    """
+    # run_inference metodunu doğrudan çağırabilirsiniz.
+    results = DIAGNOSTIC_TOOL.run_inference(image_source=image_path, show_result=False)
+    
+    # Sonuçları burada işleyebilir veya geri döndürebilirsiniz.
+    print(f"Diagnosis results: {results}")
 
 
 # Çalıştırmak için:

@@ -31,7 +31,5 @@ def main():
           results[0].show()
           print("✅ Inference completed successfully!")
 
-if __name__ == "__main__":
-     main()
 
 
