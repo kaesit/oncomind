@@ -11,7 +11,7 @@ __pycache__/
 .venv/
 yolov10n.pt
 my_model.onnx
-
+simple-exploration-notebook-personalized-medicine.ipynb
 
 # Node
 node_modules/
