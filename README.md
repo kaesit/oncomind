@@ -17,6 +17,21 @@ docker compose up --build
 
 How to install packages:
 
+
+```bash
+####packages
+fastapi
+uvicorn[standard]
+numpy
+scikit-learn
+pydantic
+pytest
+opencv-python
+tensorflow
+kaggle
+```
+
+
 ```bash
 pip install -r requirements.txt
 ```
