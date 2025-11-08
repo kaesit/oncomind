@@ -1,13 +1,30 @@
-/* Theme 1 — Professional / Academic */
+/* Theme 1 — OncoMind Dark Pastel (keeps layout & containers) */
 :root{
-  --teal-900: #0b5563;
-  --slate-900: #0f1724;
-  --accent: #16a7b0;
-  --muted: #94a3b8;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --glass: rgba(255,255,255,0.6);
+  /* background & surfaces */
+  --bg: #0f1116;           /* deep charcoal */
+  --surface: #14161b;      /* slightly lighter for sections */
+  --card-bg: #161821;      /* card background */
+  --glass: rgba(255,255,255,0.04);
   --max-width: 1100px;
+
+  /* cancer ribbon inspired pastels */
+  --ribbon-lavender: #e8c8ff; /* soft lavender */
+  --ribbon-pink: #f5c6df;     /* soft pink */
+  --ribbon-mint: #9feadf;     /* pastel mint/teal */
+
+  /* accents & text */
+  --accent: var(--ribbon-mint);
+  --primary: var(--ribbon-lavender);
+  --highlight: var(--ribbon-pink);
+
+  --text: #edf0f5;           /* main text on dark bg */
+  --muted: #98a0ad;          /* muted text */
+  --muted-light: rgba(255,255,255,0.65);
+  --header-text: #ffffff;
+
+  /* utility */
+  --radius-lg: 10px;
+  --shadow: 0 8px 24px rgba(2,6,23,0.6);
 }
 
 body {
@@ -15,9 +32,10 @@ body {
   margin: 0;
   padding: 0;
   background: var(--bg);
-  color: var(--slate-900);
+  color: var(--text);
 }
 
+/* keep shell & header layout intact */
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -25,11 +43,14 @@ body {
 }
 
 .header {
-  background: linear-gradient(90deg, var(--teal-900), #084a51);
-  color: white;
+  /* darker header with subtle gradient using ribbon tones */
+  background: linear-gradient(90deg, rgba(22,18,32,0.95) 0%, rgba(20,22,30,0.95) 45%, rgba(16,18,26,0.95) 100%);
+  color: var(--header-text);
   padding: 18px 24px;
-  box-shadow: 0 2px 8px rgba(2,6,23,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
+
+/* brand & logo */
 .header .brand {
   display:flex;
   align-items:center;
@@ -39,10 +60,12 @@ body {
   width:42px;
   height:42px;
   border-radius:8px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--primary), var(--highlight));
   display:inline-block;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 -2px 6px rgba(255,255,255,0.02);
 }
 
+/* container spacing unchanged */
 .container {
   max-width: var(--max-width);
   margin: 28px auto;
@@ -50,6 +73,7 @@ body {
   width:100%;
 }
 
+/* hero layout preserved */
 .hero {
   display:flex;
   gap:28px;
@@ -58,54 +82,72 @@ body {
   margin-bottom: 28px;
 }
 
+/* left column behaviour unchanged */
 .hero .left {
   flex:1 1 520px;
 }
 
+/* heading color adapted to dark theme */
 .hero h1 {
   font-size: 2.1rem;
   margin: 0 0 10px 0;
-  color: white;
+  color: var(--header-text);
 }
 
+/* lead paragraph color — softer against dark bg */
 .hero p.lead {
   margin:0;
-  color: rgba(255,255,255,0.9);
+  color: var(--muted-light);
   font-size:1.02rem;
 }
 
+/* CTA row */
 .cta-row {
   margin-top:18px;
   display:flex;
   gap:12px;
 }
 
+/* buttons keep same sizing but new colors */
 .btn {
   padding:10px 14px;
   border-radius:8px;
   border: none;
   cursor:pointer;
   font-weight:600;
+  background: transparent;
+  color: var(--text);
 }
 
+/* primary button uses ribbon lavender with mint hover */
 .btn-primary {
-  background: var(--accent);
-  color: white;
+  background: linear-gradient(90deg, var(--primary), var(--highlight));
+  color: var(--bg);
+  box-shadow: 0 6px 18px rgba(15,10,25,0.5);
+  border-radius: 8px;
 }
 
+/* subtle bordered button (keep same inline fallback) */
+.btn[style] {
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* cards */
 .card {
   background: var(--card-bg);
   border-radius: 10px;
   padding: 18px;
-  box-shadow: 0 6px 18px rgba(11,17,23,0.06);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.02);
 }
 
+/* small muted text */
 .small {
   font-size:0.9rem;
   color: var(--muted);
 }
 
-/* demo layout */
+/* demo layout preserved */
 .demo-grid {
   display:grid;
   grid-template-columns: 1fr 420px;
@@ -113,9 +155,42 @@ body {
   align-items:start;
 }
 
+/* footer */
 .footer {
   margin-top:auto;
-  background: #0b1820;
-  color: #bcd8dd;
+  background: #0b1115;
+  color: #cfeff0;
   padding:18px 24px;
+  border-top: 1px solid rgba(255,255,255,0.02);
+}
+
+/* Link color adjustments so header links use var rather than inline white */
+.header nav a {
+  color: var(--header-text);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.header nav a:hover {
+  color: var(--accent);
+}
+
+/* small utility tweaks for readability */
+pre {
+  background: rgba(255,255,255,0.03);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--text);
+  overflow: auto;
+}
+
+/* ensure DataGrid cell text visible */
+.dx-datagrid .dx-data-row td {
+  color: var(--text);
+}
+
+/* responsive safety — keep existing layout behaviors */
+@media (max-width: 900px) {
+  .demo-grid { grid-template-columns: 1fr; }
+  .hero { flex-direction: column; gap: 18px; }
+  .header { padding: 14px; }
 }
