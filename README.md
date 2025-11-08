@@ -20,6 +20,7 @@ docker compose up --build
 fastapi
 uvicorn[standard]
 numpy
+pandas
 scikit-learn
 pydantic
 pytest
