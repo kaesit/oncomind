@@ -1,8 +1,20 @@
-import "devextreme/dist/css/dx.light.css"; // or dx.dark.css
+import "devextreme/dist/css/dx.light.css";
+import "./styles/theme.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./css/index.css"; // if you have styles
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
-const root = createRoot(document.getElementById("root") as HTMLElement);
-root.render(<App />);
+function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+createRoot(document.getElementById("root") as HTMLElement).render(<AppRouter />);
