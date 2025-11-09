@@ -1,0 +1,60 @@
+/* oncomind-frontend/src/styles/landing.css */
+/* small landing-specific tweaks that work with your theme.css variables */
+
+.landing-hero {
+  align-items: start;
+  padding: 8px 0 0 0;
+}
+
+.hero-sub {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: var(--muted-light);
+  font-weight: 500;
+}
+
+/* stat tiles */
+.stat {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  align-items:flex-start;
+}
+.stat-number {
+  font-weight:700;
+  font-size:1.05rem;
+  color: var(--primary);
+}
+
+/* features */
+.landing-feature {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+  border-radius: 8px;
+}
+
+/* a small icon dot */
+.feature-icon .dot {
+  width:40px;
+  height:40px;
+  border-radius:8px;
+  background: linear-gradient(135deg, var(--primary), var(--highlight));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+/* responsive stacks */
+@media (max-width: 1000px) {
+  .landing-hero { flex-direction: column; }
+  .landing-feature { flex-direction: row; }
+  .landing-feature h4 { font-size: 1rem; }
+}
+
+/* CTA bar accent */
+.card .btn.btn-primary {
+  padding: 10px 14px;
+  border-radius: 10px;
+}
