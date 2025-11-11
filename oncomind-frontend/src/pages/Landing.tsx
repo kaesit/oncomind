@@ -2,8 +2,10 @@
 import React from "react";
 import DemoCard from "../components/DemoCard";
 import "../css/landing.css";
+import "../css/index.css";
 import BrutalistButton from "../components/BrutalistButton";
-
+import { Navbar } from "../components/Navbar";
+import { BrutalistCard } from "../components/BrutalistCard";
 
 // A dark background for the whole app
 const appStyles: React.CSSProperties = {
@@ -31,7 +33,7 @@ const heroImageUrl = 'https://via.placeholder.com/600x600/1e293b/cbd5e1?text=Off
 export default function Landing() {
   return (
     <div className="landing-exact">
-      <header className="lex-header">
+      {/*<header className="lex-header">
         <div className="lex-container lex-header-inner">
           <div className="lex-brand">
             <div className="lex-logo" />
@@ -55,7 +57,8 @@ export default function Landing() {
             </BrutalistButton>
           </nav>
         </div>
-      </header>
+      </header>*/}
+      <Navbar></Navbar>
 
       {/* HERO */}
       <section className="lex-hero">

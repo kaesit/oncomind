@@ -1,0 +1,48 @@
+/* components/Navbar.css */
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: var(--bg-dark);
+  border: var(--border-main);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-main);
+  
+  /* Make it stick to the top */
+  position: sticky;
+  top: 1rem; /* Add some margin from the top */
+  margin: 1rem; /* Add margin to show it's a "block" */
+  z-index: 100;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: color 0.15s ease-out;
+}
+
+.navbar-links a:hover {
+  color: var(--accent-cyan); /* Use our medical accent color */
+}
+
+.navbar-cta {
+  /* This space is for the button */
+}
