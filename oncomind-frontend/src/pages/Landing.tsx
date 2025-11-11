@@ -2,6 +2,31 @@
 import React from "react";
 import DemoCard from "../components/DemoCard";
 import "../css/landing.css";
+import BrutalistButton from "../components/BrutalistButton";
+
+
+// A dark background for the whole app
+const appStyles: React.CSSProperties = {
+  backgroundColor: '#0f172a', // Tailwind slate-950
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '2rem',
+};
+
+// --- Dummy data for the example ---
+// Use placeholder images for logos
+const sampleLogos = [
+  { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client A' },
+  { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client B' },
+  { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client C' },
+  { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client D' },
+  { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client E' },
+];
+
+// Use a placeholder for the main hero image
+const heroImageUrl = 'https://via.placeholder.com/600x600/1e293b/cbd5e1?text=Official+Image';
 
 export default function Landing() {
   return (
@@ -20,13 +45,21 @@ export default function Landing() {
             <a href="#product">Product</a>
             <a href="#how">How</a>
             <a href="#demo">Demo</a>
-            <a className="lex-cta" href="/dashboard">Dashboard</a>
+            <BrutalistButton
+              width="120px"
+              height="35px"
+              transition_effect="ease-in"
+              font_size="12px"
+            >
+              <a href="/dashboard">Dashboard</a>
+            </BrutalistButton>
           </nav>
         </div>
       </header>
 
       {/* HERO */}
       <section className="lex-hero">
+        
         <div className="lex-container lex-hero-inner">
           <div className="lex-hero-left">
             <div className="lex-kicker">Presentation demo • Local-first</div>
@@ -39,6 +72,9 @@ export default function Landing() {
 
             <div className="lex-hero-ctas">
               <a className="btn-primary" href="#demo">Try live demo</a>
+              <BrutalistButton
+
+              >Try live demo</BrutalistButton>
               <a className="btn-ghost" href="#how">How it works</a>
             </div>
 
@@ -138,7 +174,7 @@ export default function Landing() {
             <p className="small">A lightweight tool to present model behavior clearly and ethically.</p>
           </div>
           <div className="proof-right">
-            <div className="testimonial card">“Great for live demos — zero surprises for judges.”<div className="small" style={{marginTop:8}}>— Demo user</div></div>
+            <div className="testimonial card">“Great for live demos — zero surprises for judges.”<div className="small" style={{ marginTop: 8 }}>— Demo user</div></div>
           </div>
         </div>
       </section>
@@ -148,7 +184,7 @@ export default function Landing() {
         <div className="lex-container">
           <div className="cta-inner card">
             <div>
-              <h3 style={{margin:0}}>Make your talk easier — run the demo now</h3>
+              <h3 style={{ margin: 0 }}>Make your talk easier — run the demo now</h3>
               <p className="small">Quick demo, slide-ready output, no patient data required.</p>
             </div>
             <div><a className="btn-primary" href="#demo">Run live demo</a></div>
@@ -157,7 +193,7 @@ export default function Landing() {
       </section>
 
       <footer className="lex-footer">
-        <div className="lex-container" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div className="lex-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>© {new Date().getFullYear()} OncoMind</div>
           <div><a href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
         </div>
