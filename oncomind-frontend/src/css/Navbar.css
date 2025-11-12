@@ -7,7 +7,7 @@
   padding: 1rem 2rem;
   background-color: var(--bg-dark);
   border: var(--border-main);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-main);
   
   /* Make it stick to the top */
