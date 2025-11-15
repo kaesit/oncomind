@@ -18,7 +18,7 @@ const styles = {
   title: {
     fontSize: "6rem",
     fontWeight: 700,
-    color: "#58f0b5", // Your primary color
+    color: "#60a5fa", // Your primary color
     margin: 0,
   },
   message: {
@@ -47,8 +47,8 @@ const NotFoundPage: React.FC = () => {
       <style>
         {`
           .notFoundLink:hover {
-            color: #34dfa5 !important; /* Your hover color */
-            border-color: #34dfa5 !important; /* Your hover border */
+            color: #60a5fa !important; /* Your hover color */
+            border-color: #60a5fa !important; /* Your hover border */
           }
         `}
       </style>

@@ -14,7 +14,7 @@
   --text-muted: #64748b;    /* slate-500 (Muted text) */
 
   /* === Medical Accent Colors === */
-  --accent-cyan: #06b6d4;      /* Clinical/Biotech Cyan */
+  --accent-blue: #60a5fa;      /* Clinical/Biotech Cyan */
   --accent-cyan-dark: #0e7490;  /* Cyan for hovers */
   --accent-pink: #ec4899;      /* Optional: Awareness Pink */
   
@@ -32,6 +32,4 @@
 body {
   background-color: var(--bg-darkest);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
 }

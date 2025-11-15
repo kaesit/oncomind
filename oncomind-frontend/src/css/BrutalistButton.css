@@ -1,15 +1,15 @@
 /* BrutalistButton.css */
+@import url('https://fonts.googleapis.com/css2?family=Lekton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
 
 .brutalist-button {
   /* === Typography & Layout === */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: "M PLUS 1 Code", monospace;
   font-size: 1rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 14px 28px;
   cursor: pointer;
@@ -21,10 +21,9 @@
 
   /* === Brutalist Shape & Border === */
   border-radius: var(--border-radius-m);
-  border: 1px solid rgba(255, 255, 255, 0.1); /* slate-700 */
-
+  border: 1px solid rgba(255, 255, 255, 0.03); /* slate-700 */
   /* === The Core Brutalist Effect === */
-  box-shadow: 4px 4px 0px #0f172a; /* slate-950 */
+  /*box-shadow: 4px 4px 0px #0f172a; */ /* slate-950 */ 
 
   /* === Interaction === */
   /*
@@ -32,8 +31,8 @@
    * The 'transition-timing-function' can be overridden
    * by the 'transition_effect' prop.
    */
-  transition-property: background-color, border-color, box-shadow, color;
-  transition-duration: 0.15s;
+  transition-property: background-color, border-color, box-shadow, border-radius, color;
+  transition-duration: 0.3s;
   transition-timing-function: ease-out; /* Default curve */
 
   /* Remove default browser button styling */
@@ -48,8 +47,11 @@
  * On hover, change colors. NO offset.
  */
 .brutalist-button:hover {
-  background-color: #334155; /* A slightly lighter background */
-  color: #e2e8f0; /* A slightly lighter text */
+  border-radius: calc(var(--border-radius-m) + 4px);
+  background-color: #17171c; /* A slightly lighter background */
+  border-color: #60a5fa;
+  color: #60a5fa; /* A slightly lighter text */
+  transition: 0.3s ease-out;
 }
 
 /*

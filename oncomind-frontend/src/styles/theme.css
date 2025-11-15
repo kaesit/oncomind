@@ -1,4 +1,5 @@
 /* Theme 1 — OncoMind Dark Pastel (keeps layout & containers) */
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
 :root{
   /* background & surfaces */
   --bg: #0f1116;           /* deep charcoal */
@@ -14,8 +15,8 @@
 
   /* accents & text */
   --accent: var(--ribbon-mint);
-  --primary: var(--ribbon-lavender);
-  --highlight: var(--ribbon-pink);
+  --primary: #60a5fa;
+  --highlight: #b7d0ee;
 
   --text: #edf0f5;           /* main text on dark bg */
   --muted: #98a0ad;          /* muted text */
@@ -28,7 +29,7 @@
 }
 
 body {
-  font-family: "VVDS Fifties Exp SBold";
+  font-family: "M PLUS 1 Code", monospace;
   margin: 0;
   padding: 0;
   background: var(--bg);

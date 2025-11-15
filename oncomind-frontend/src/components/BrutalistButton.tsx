@@ -3,6 +3,9 @@
 import React from 'react';
 import '../css/BrutalistButton.css'; // Importing the updated styles
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+</style>
 // Define the component's props
 type BrutalistButtonProps = {
   /** Sets the component's width. */

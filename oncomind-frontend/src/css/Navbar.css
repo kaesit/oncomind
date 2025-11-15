@@ -9,13 +9,15 @@
   padding: 1rem 2rem;
   background-color: var(--bg-dark);
   border: var(--border-main);
-  border-radius: var(--border-radius-m);
+  border-radius: var(--border-radius-l);
   box-shadow: var(--shadow-main);
-  
+
   /* Make it stick to the top */
   position: sticky;
-  top: 1rem; /* Add some margin from the top */
-  margin: 1rem; /* Add margin to show it's a "block" */
+  top: 1rem;
+  /* Add some margin from the top */
+  margin: 1rem;
+  /* Add margin to show it's a "block" */
   z-index: 100;
 }
 
@@ -28,10 +30,10 @@
 }
 
 .navbar-links {
-  font-family: "Cascadie Code" monospace;
   display: flex;
   gap: 1.5rem;
 }
+
 
 .navbar-links a {
   text-decoration: none;
@@ -39,12 +41,19 @@
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 12px;
   letter-spacing: 0.5px;
-  transition: color 0.15s ease-out;
+  transition: 0.3s ease-out;
 }
 
 .navbar-links a:hover {
-  color: var(--accent-cyan); /* Use our medical accent color */
+  border-color: #60a5fa;
+  border-radius: 16px;
+  transition: 0.3s ease-out;
+  color: var(--accent-blue);
+  /* Use our medical accent color */
 }
 
 .navbar-cta {

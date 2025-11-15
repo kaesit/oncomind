@@ -61,7 +61,7 @@ export default function Landing() {
 
       {/* HERO */}
       <section className="lex-hero">
-        
+
         <div className="lex-container lex-hero-inner">
           <div className="lex-hero-left">
             <div className="lex-kicker">Presentation demo • Local-first</div>
@@ -73,10 +73,10 @@ export default function Landing() {
             </p>
 
             <div className="lex-hero-ctas">
-              <a className="btn-primary" href="#demo">Try live demo</a>
-              <BrutalistButton
-
-              >Try live demo</BrutalistButton>
+              <a href="#demo"><BrutalistButton
+                onClick={() => console.log('Portal clicked')}
+                style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+              >Try live demo</BrutalistButton></a>
               <a className="btn-ghost" href="#how">How it works</a>
             </div>
 
@@ -109,7 +109,7 @@ export default function Landing() {
 
             <div className="features-grid">
               <div className="feature">
-                <div className="feature-icon">①</div>
+                <div className="feature-icon">1</div>
                 <div>
                   <h4>Local-first</h4>
                   <p className="small">Everything can run on your laptop — ideal for demos and privacy-sensitive presentations.</p>
@@ -117,7 +117,7 @@ export default function Landing() {
               </div>
 
               <div className="feature">
-                <div className="feature-icon">②</div>
+                <div className="feature-icon">2</div>
                 <div>
                   <h4>Explainable</h4>
                   <p className="small">Outputs include provenance and simple scores, easy to include in slides.</p>
@@ -125,7 +125,7 @@ export default function Landing() {
               </div>
 
               <div className="feature">
-                <div className="feature-icon">③</div>
+                <div className="feature-icon">3</div>
                 <div>
                   <h4>Reproducible</h4>
                   <p className="small">Synthetic dataset + training script shipped for reproducible demos.</p>
@@ -133,7 +133,7 @@ export default function Landing() {
               </div>
 
               <div className="feature">
-                <div className="feature-icon">④</div>
+                <div className="feature-icon">4</div>
                 <div>
                   <h4>Dev friendly</h4>
                   <p className="small">Docker, VS Code tasks & simple wiring for fast prototyping.</p>
