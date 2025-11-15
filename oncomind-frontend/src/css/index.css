@@ -2,8 +2,9 @@
 
 :root {
   /* === Dark/Blue Brutalist Base === */
-  --bg-darkest: #0f172a;    /* slate-950 (Shadows, page bg) */
-  --bg-dark: #0e131a;       /* slate-800 (Card/component bg) */
+  --bg-darkest: #17171c;    /* slate-950 (Shadows, page bg) */
+  --bg-dark: #17171c;       /* slate-800 (Card/component bg) */
+  --border-transparent:rgba(255, 255, 255, 0.1);
   --border-dark: #334155;    /* slate-700 (Borders) */
   --border-light: #475569;   /* slate-600 (Hover/accent borders) */
 
@@ -22,7 +23,7 @@
   --border-radius-m: 8px;
   --border-radius-l: 12px;
   --border-radius-xl: 16px;
-  --border-main: 2px solid var(--border-dark);
+  --border-main: 1px solid var(--border-transparent);
   --shadow-main: 4px 4px 0px var(--bg-darkest);
   --shadow-sm: 2px 2px 0px var(--bg-darkest);
 }

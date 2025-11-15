@@ -1,4 +1,6 @@
 /* components/Navbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Lekton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
 
 .navbar-container {
   display: flex;
@@ -7,7 +9,7 @@
   padding: 1rem 2rem;
   background-color: var(--bg-dark);
   border: var(--border-main);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--border-radius-m);
   box-shadow: var(--shadow-main);
   
   /* Make it stick to the top */
@@ -20,11 +22,13 @@
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: 700;
+  font-family: "VVDS Fifties Exp SBold";
   text-transform: uppercase;
   color: var(--text-heading);
 }
 
 .navbar-links {
+  font-family: "Cascadie Code" monospace;
   display: flex;
   gap: 1.5rem;
 }

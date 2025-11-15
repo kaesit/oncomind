@@ -4,7 +4,6 @@ import DemoCard from "../components/DemoCard";
 import "../css/landing.css";
 import "../css/index.css";
 import BrutalistButton from "../components/BrutalistButton";
-import { Navbar } from "../components/Navbar";
 import { BrutalistCard } from "../components/BrutalistCard";
 
 // A dark background for the whole app
@@ -58,7 +57,7 @@ export default function Landing() {
           </nav>
         </div>
       </header>*/}
-      <Navbar></Navbar>
+
 
       {/* HERO */}
       <section className="lex-hero">
