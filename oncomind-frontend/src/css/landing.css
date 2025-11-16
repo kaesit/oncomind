@@ -280,6 +280,19 @@
   color: var(--muted);
 }
 
+.footer-link
+{
+  text-decoration: none;
+  color: var(--accent-blue);
+  transition: 0.3s ease-out;
+}
+
+.footer-link:hover
+{
+  text-decoration: none;
+  color: var(--accent-cyan);
+  transition: 0.3s ease-out;
+}
 /* responsive */
 @media (max-width: 1000px) {
 

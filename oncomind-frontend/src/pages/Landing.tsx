@@ -220,7 +220,7 @@ export default function Landing() {
       <footer className="lex-footer">
         <div className="lex-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>© {new Date().getFullYear()} OncoMind</div>
-          <div><a href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
+          <div><a className="footer-link" href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
         </div>
       </footer>
     </div>
