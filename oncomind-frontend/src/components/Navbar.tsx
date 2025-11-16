@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { BrutalistButton } from './BrutalistButton'; // Import your button
 import '../css/Navbar.css';
+import cancer_icon from "../icons/forensic-science.png";
 
 export const Navbar: React.FC = () => {
   // State to manage the mobile menu (open/closed)
@@ -23,6 +24,7 @@ export const Navbar: React.FC = () => {
       {/* Logo - closes menu on click */}
       <a style={{ textDecoration: "none" }} href="/" onClick={closeMobileMenu}>
         <div className="navbar-logo">
+          <img style={{width:"25px", height:"25px", marginRight:"10px"}} src={cancer_icon} alt="" />
           OncoMind
         </div>
       </a>
