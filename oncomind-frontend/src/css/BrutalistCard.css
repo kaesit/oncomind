@@ -6,17 +6,73 @@
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-main);
   padding: 1.5rem;
-  
-  /* This gives a nice push-down effect */
+
   transition: all 0.15s ease-out;
-  position: relative; /* For the tag */
+  position: relative;
+  /* Required for pseudo-elements and tag */
+  overflow: hidden;
+  /* Clips the background image zoom */
+  z-index: 1;
+  /* Establishes stacking context */
 }
 
-/* Minimal hover effect */
+/* === NEW: Background Image Layer (::before) === */
+/* This layer holds the image and sits behind the overlay */
+.brutalist-card-wrapper.has-bg-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--card-bg-image);
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  /* Sits behind the overlay */
+  transition: transform 0.25s ease-out;
+}
+
+/* === NEW: Dark Overlay Layer (::after) === */
+/* This layer sits on top of the image but behind the text */
+.brutalist-card-wrapper.has-bg-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-dark);
+  /* Use the card bg as overlay */
+  opacity: 0.85;
+  /* Dark overlay to keep text readable */
+  z-index: -1;
+  /* Sits behind content */
+  transition: opacity 0.25s ease-out;
+}
+
+/* --- Minimal hover effect (for all cards) --- */
 .brutalist-card-wrapper:hover {
   border-color: var(--border-light);
   box-shadow: 6px 6px 0px var(--bg-darkest);
 }
+
+/* === NEW: Image-specific Hover Effects === */
+
+/* 1. Zoom the image */
+.brutalist-card-wrapper.has-bg-image:hover::before {
+  transform: scale(1.05);
+  /* Subtle zoom effect */
+}
+
+/* 2. Fade the overlay */
+.brutalist-card-wrapper.has-bg-image:hover::after {
+  opacity: 0.7;
+  /* Make the image more visible */
+}
+
+/* --- Content (unchanged) --- */
+/* (Text and tag are automatically on top due to z-index) */
 
 .card-title {
   font-size: 1.4rem;
@@ -32,21 +88,23 @@
   line-height: 1.6;
 }
 
-/* === Optional Tag (for drug pipeline, etc.) === */
+/* === Optional Tag (unchanged) === */
 .card-tag {
   position: absolute;
   top: 1rem;
   right: 1rem;
   background-color: var(--accent-cyan);
-  color: var(--bg-darkest);
+  color: var(--text-primary);
   padding: 4px 8px;
   font-size: 0.8rem;
   font-weight: 700;
   border-radius: var(--border-radius-sm);
   text-transform: uppercase;
+  z-index: 2;
+  /* Ensures it's above the image overlay */
 }
 
-/* === Featured State === */
+/* === Featured State (unchanged) === */
 .brutalist-card-wrapper.featured {
   border-color: var(--accent-cyan);
   box-shadow: 4px 4px 0px var(--accent-cyan-dark);

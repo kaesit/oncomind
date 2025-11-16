@@ -21,7 +21,7 @@
 
   /* === Brutalist Shape & Border === */
   border-radius: var(--border-radius-m);
-  border: 1px solid rgba(255, 255, 255, 0.03); /* slate-700 */
+  border: 1px solid rgba(255, 255, 255, 0.05); /* slate-700 */
   /* === The Core Brutalist Effect === */
   /*box-shadow: 4px 4px 0px #0f172a; */ /* slate-950 */ 
 

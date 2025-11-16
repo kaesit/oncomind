@@ -91,7 +91,30 @@ export default function Landing() {
             <div className="lex-preview">
               <div className="lex-preview-inner">
                 {/* Visual area: gradient + preview DemoCard */}
-                <DemoCard />
+                <BrutalistCard
+                  title="Genetic Research"
+                  backgroundImageUrl="https://media.istockphoto.com/id/1477214805/photo/cancer-detection.jpg?s=612x612&w=0&k=20&c=ylUbxrTIpDAISXL6-rUcW23yXUXn4oY0C8rYVoON62k="
+                  tag="Academic"
+                >
+                  Our lab is focused on identifying genetic markers for early-stage
+                  carcinoma.
+                </BrutalistCard>
+                <pre></pre>
+                <BrutalistCard
+                  title="Patient Awareness"
+                  backgroundImageUrl="https://t4.ftcdn.net/jpg/06/33/37/89/360_F_633378965_iRc8bqmOoxkrAlYKvNcBqUhqGXNBmfTB.jpg"
+                  tag="Priority"
+                >
+                  Download our guides and resources for patient families.
+                </BrutalistCard>
+                <pre></pre>
+                <BrutalistCard
+                  title="Personalized Medicine"
+                  backgroundImageUrl="https://www.news-medical.net/images/Article_Images/ImageForArticle_26037_17449621261067936.jpg"
+                  tag="Future"
+                >
+                  We are producing and formulazing personalized mRNA vaccines and drugs for cancer patients.
+                </BrutalistCard>
               </div>
             </div>
           </div>

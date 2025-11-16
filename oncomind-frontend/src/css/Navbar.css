@@ -11,29 +11,30 @@
   border: var(--border-main);
   border-radius: var(--border-radius-l);
   box-shadow: var(--shadow-main);
-
-  /* Make it stick to the top */
   position: sticky;
   top: 1rem;
-  /* Add some margin from the top */
   margin: 1rem;
-  /* Add margin to show it's a "block" */
   z-index: 100;
+  /* Add relative position for the mobile menu */
+  position: relative;
 }
 
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: 700;
   font-family: "VVDS Fifties Exp SBold";
+  /* Ensure this font is loaded */
   text-transform: uppercase;
   color: var(--text-heading);
+  /* Prevent logo from shrinking */
+  flex-shrink: 0;
 }
 
 .navbar-links {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 }
-
 
 .navbar-links a {
   text-decoration: none;
@@ -53,9 +54,124 @@
   border-radius: 16px;
   transition: 0.3s ease-out;
   color: var(--accent-blue);
-  /* Use our medical accent color */
 }
 
-.navbar-cta {
-  /* This space is for the button */
+.navbar-cta a {
+  border: none;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 0px;
+  padding: 0px;
+  letter-spacing: 0px;
+}
+
+/* === Hamburger Menu Button (Hidden by default) === */
+.navbar-hamburger {
+  display: none;
+  /* Hidden on desktop */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 110;
+  /* Above the links */
+}
+
+.navbar-hamburger span {
+  width: 30px;
+  height: 3px;
+  background: var(--text-primary);
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Hamburger "X" animation */
+.navbar-hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.navbar-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* === Media Query for Tablets and Phones === */
+/* We'll use 900px as the breakpoint */
+
+@media (max-width: 900px) {
+  .navbar-container {
+    /* Ensure margins still look good on smaller screens */
+    margin: 0.5rem;
+    top: 0.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .navbar-links {
+    /* --- This is the mobile menu --- */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Align links to the left */
+    gap: 1rem;
+    /* Space out the links vertically */
+
+    /* Full-screen dropdown styling */
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    /* Position below the navbar */
+    left: 0;
+    right: 0;
+
+    background-color: var(--bg-dark);
+    border: var(--border-main);
+    box-shadow: var(--shadow-main);
+    border-radius: var(--border-radius-l);
+    margin: 0 0.5rem;
+    /* Match the container's horizontal margin */
+    padding: 1.5rem;
+
+    /* Hide/Show animation */
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  .navbar-links.open {
+    /* Show the menu */
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .navbar-links a {
+    /* Make links full-width for easy tapping */
+    width: 100%;
+    padding: 1rem 0.5rem;
+  }
+
+  .navbar-cta {
+    /* Make the button full-width too */
+    width: 100%;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-dark);
+    padding-top: 1rem;
+  }
+
+  .navbar-cta button,
+  .navbar-cta a {
+    width: 100%;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+    /* Show the hamburger button */
+  }
 }
