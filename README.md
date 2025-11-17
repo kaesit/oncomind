@@ -27,6 +27,10 @@ pytest
 opencv-python
 tensorflow
 kaggle
+tissue-detection
+PyOpenGL
+pyvista
+skimage
 ```
 
 #### How to install packages:
