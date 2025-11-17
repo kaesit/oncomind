@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 ### Test Files
 
-#### early_diagnosis_test_from_image.py
+
 
 #### how to start the app
 
@@ -54,6 +54,8 @@ Run with:
 ```bash
 uvicorn app:app --reload --host 127.0.0.1 --port 8000
 ```
+
+#### early_diagnosis_test_from_image.py
 
 Run with:
 
