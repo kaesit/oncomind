@@ -64,7 +64,7 @@ export default function Landing() {
 
         <div className="lex-container lex-hero-inner">
           <div className="lex-hero-left">
-            <div className="lex-kicker">Semper Procedere - 常に前進 - Her zaman ileriye</div>
+            <div className="lex-kicker">Semper Procedere - 常に前進 - Her zaman ileriye - Always one step ahead</div>
             <h1 className="lex-hero-title">
               From genomic signatures to actionable insights
             </h1>
