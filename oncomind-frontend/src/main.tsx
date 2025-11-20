@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import NotFoundPage from "./pages/NotFoundPage"
+import About from "./pages/About";
 
 function AppRouter() {
   return (
@@ -17,6 +18,7 @@ function AppRouter() {
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<About />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

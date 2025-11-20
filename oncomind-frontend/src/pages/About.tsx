@@ -27,15 +27,15 @@ import "../css/About.css";
 
 
 const About: React.FC = () => {
-     return (
-          <div className="about-page">
-               {/* Sayfa Başlığı */}
-               <header className="about-header">
-                    <h1 className="about-title">OncoMind</h1>
-                    <p className="about-subtitle">Open Source AI Driven Cancer Analysis and Drug Sensitivity Platform</p>
-               </header>
+  return (
+    <div className="about-page">
+      {/* Sayfa Başlığı */}
+      <header className="about-header">
+        <h1 className="about-title">OncoMind</h1>
+        <p className="about-subtitle">Open Source AI Driven Cancer Analysis and Drug Sensitivity Platform</p>
+      </header>
 
-               {/* 
+      {/* 
       
       <div className="about-cards">
         <SpotlightCard
@@ -93,13 +93,15 @@ const About: React.FC = () => {
 
 
 
-               {/* Footer */}
-               <div style={{ position: "relative", zIndex: 1, paddingBottom: "0rem" }}>
-                    {/* Navbar, RotatingText, SpotlightCards vs */}
-                    <Footer />
-               </div>
-          </div>
-     );
+      {/* Footer */}
+      <footer className="lex-footer">
+        <div className="lex-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>© {new Date().getFullYear()} OncoMind</div>
+          <div><a className="footer-link" href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default About;
