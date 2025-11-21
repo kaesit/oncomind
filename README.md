@@ -2,6 +2,9 @@
 
 ## 🚀 Quickstart (Local, Requires Docker)
 
+Will be in live soon[oncomind.ai]
+
+
 ```bash
 # from repo root
 docker compose up --build
