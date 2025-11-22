@@ -1,8 +1,9 @@
 # OncoMind — AI-driven Cancer Analysis Starter
 
 ---
-<details><details/>
 
+
+<details>
 
 ## 🚀 Quickstart (Local, Requires Docker)
 
