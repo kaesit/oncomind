@@ -2,8 +2,6 @@
 ---
 
 ![title](Images/oncomind.png)
-<img src="https://cdn.cosmos.so/ba4fd898-73e2-443a-8295-dc22445d8743?format=jpeg" />
-
 ## What it does?
 OncoMind is a AI driven cancer anlysis platform, it's purpose is complex but meaningfull
 
