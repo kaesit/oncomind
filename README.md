@@ -1,5 +1,4 @@
 # OncoMind — AI-driven Cancer Analysis Starter
----
 
 ![title](Images/oncomind.png)
 ## What it does?
