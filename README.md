@@ -1,9 +1,14 @@
 # OncoMind — AI-driven Cancer Analysis Starter
+---
+
+## What it does?
+OncoMind is a AI driven cancer anlysis platform, it's purpose is complex but meaningfull
+
 
 ---
 
-
-<details> For developers
+## Details for developers
+<details>
 
 ## 🚀 Quickstart (Local, Requires Docker)
 
