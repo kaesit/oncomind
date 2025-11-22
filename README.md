@@ -1,5 +1,6 @@
 # OncoMind — AI-driven Cancer Analysis Starter
 ---
+![alt text](img/C:\Users\PC\Desktop\Programlama\Resimler, Kodlar,Numaralar\Resimler\WallPapers\windmill.jpg "Title")
 <img src="https://cdn.cosmos.so/ba4fd898-73e2-443a-8295-dc22445d8743?format=jpeg" />
 
 ## What it does?
