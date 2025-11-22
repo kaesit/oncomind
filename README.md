@@ -3,7 +3,7 @@
 ---
 
 
-<details>
+<details> For developers
 
 ## 🚀 Quickstart (Local, Requires Docker)
 
