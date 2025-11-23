@@ -47,6 +47,8 @@ tissue-detection
 PyOpenGL
 pyvista
 skimage
+glfw
+pygame
 ```
 
 #### How to install packages:
