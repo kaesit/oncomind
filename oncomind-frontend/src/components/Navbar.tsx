@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { BrutalistButton } from './BrutalistButton'; // Import your button
 import '../css/Navbar.css';
 import cancer_icon from "../icons/forensic-science.png";
+import search_icon from "../icons/search_icon.png"
 
 export const Navbar: React.FC = () => {
   // State to manage the mobile menu (open/closed)
@@ -111,7 +112,7 @@ export const Navbar: React.FC = () => {
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
-            <img style={{width: "20px", height: "20px", margin: "0.2rem"}} src="https://img.icons8.com/?size=100&id=132&format=png&color=ffffff" alt="" />
+            <img style={{width: "20px", height: "20px", margin: "0.2rem"}} src={search_icon} alt="" />
             Search
           </BrutalistButton>
         </a>
