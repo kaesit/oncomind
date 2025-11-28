@@ -6,17 +6,6 @@ import "../css/index.css";
 import BrutalistButton from "../components/BrutalistButton";
 import { BrutalistCard } from "../components/BrutalistCard";
 
-// A dark background for the whole app
-const appStyles: React.CSSProperties = {
-  backgroundColor: '#0f172a', // Tailwind slate-950
-  minHeight: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '2rem',
-};
-
-// --- Dummy data for the example ---
 // Use placeholder images for logos
 const sampleLogos = [
   { src: 'https://via.placeholder.com/100x40/0f172a/cbd5e1?text=CLIENT', alt: 'Client A' },
@@ -32,6 +21,7 @@ const heroImageUrl = 'https://via.placeholder.com/600x600/1e293b/cbd5e1?text=Off
 export default function Landing() {
   return (
     <div className="landing-exact">
+
       {/*<header className="lex-header">
         <div className="lex-container lex-header-inner">
           <div className="lex-brand">
@@ -80,6 +70,7 @@ export default function Landing() {
               <a className="btn-ghost" href="#how">How it works</a>
             </div>
 
+
             <div className="lex-hero-stats">
               <div><div className="stat-num">Local</div><div className="stat-label">Runs locally</div></div>
               <div><div className="stat-num">Repro</div><div className="stat-label">Synthetic dataset</div></div>
@@ -116,6 +107,7 @@ export default function Landing() {
                   We are producing and formulazing personalized mRNA vaccines and drugs for cancer patients.
                 </BrutalistCard>
               </div>
+              
             </div>
           </div>
         </div>

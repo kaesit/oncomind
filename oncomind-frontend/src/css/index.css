@@ -2,11 +2,15 @@
 
 :root {
   /* === Dark/Blue Brutalist Base === */
-  --bg-darkest: #17171c;    /* slate-950 (Shadows, page bg) */
+  --bg-darkest: #050505;    /* slate-950 (Shadows, page bg) */
   --bg-dark: #17171c;       /* slate-800 (Card/component bg) */
+  --bg-lightest: #e4e1e1;   /* slate-750 (Hover/accent borders) */
   --border-transparent:rgba(255, 255, 255, 0.1);
   --border-dark: #334155;    /* slate-700 (Borders) */
   --border-light: #475569;   /* slate-600 (Hover/accent borders) */
+  --border-lightest: #ffffff;   /* slate-500 (Hover/accent borders) */
+
+
 
   /* === Text Palette === */
   --text-primary: #cbd5e1;  /* slate-300 (Main paragraph text) */
@@ -23,6 +27,7 @@
   --border-radius-m: 8px;
   --border-radius-l: 12px;
   --border-radius-xl: 16px;
+  --border-radius-xxl: 50px;
   --border-main: 1px solid var(--border-transparent);
   --shadow-main: 4px 4px 0px var(--bg-darkest);
   --shadow-sm: 2px 2px 0px var(--bg-darkest);

@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
+import AdminLayout from "./layouts/AdminLayout.";
 import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
 
@@ -19,6 +20,10 @@ function AppRouter() {
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
+          
+        </Route>
+        <Route path="/admin" element={<AdminLayout/>}>
+        
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
