@@ -24,7 +24,7 @@ export const Navbar: React.FC = () => {
       {/* Logo - closes menu on click */}
       <a style={{ textDecoration: "none" }} href="/" onClick={closeMobileMenu}>
         <div className="navbar-logo">
-          <img style={{width:"25px", height:"25px", marginRight:"10px"}} src={cancer_icon} alt="" />
+          <img style={{ width: "25px", height: "25px", marginRight: "10px" }} src={cancer_icon} alt="" />
           OncoMind
         </div>
       </a>
@@ -43,24 +43,58 @@ export const Navbar: React.FC = () => {
 
       {/* Navigation Links (Toggles on Mobile) */}
       <div className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
-        <a href="/research" onClick={closeMobileMenu}>Research</a>
-        <a href="/awareness" onClick={closeMobileMenu}>Awareness</a>
-        <a href="/pipeline" onClick={closeMobileMenu}>Drug Pipeline</a>
-        <a href="/about" onClick={closeMobileMenu}>About Us</a>
-        <a href="/contact" onClick={closeMobileMenu}>Contact</a>
+        <a href="/research" style={{ textDecoration: "none", textWrap: "nowrap" }} onClick={closeMobileMenu}>
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
+            Research
+          </BrutalistButton></a>
+        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/awareness" onClick={closeMobileMenu}>
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
 
+            Awareness
+          </BrutalistButton></a>
+        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/pipeline" onClick={closeMobileMenu}>
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
 
-        {/* CTA Button (Now inside links container) */}
-        <div className="navbar-cta">
-          <a className="cta-button" style={{ textDecoration: "none" }} href="/dashboard" onClick={closeMobileMenu}>
-            <BrutalistButton
-              onClick={() => console.log('Portal clicked')}
-              style={{ padding: '10px 16px', fontSize: '0.9rem' }}
-            >
-              Dashboard
-            </BrutalistButton>
-          </a>
-        </div>
+            Drug Pipeline
+          </BrutalistButton>
+
+        </a>
+        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/about" onClick={closeMobileMenu}>
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
+
+            About Us
+          </BrutalistButton>
+        </a>
+        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/contact" onClick={closeMobileMenu}>
+
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
+
+            Contact
+          </BrutalistButton>
+        </a>
+        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/dashboard" onClick={closeMobileMenu}>
+          <BrutalistButton
+            onClick={() => console.log('Portal clicked')}
+            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
+          >
+            Dashboard
+          </BrutalistButton>
+        </a>
       </div>
     </nav>
   );

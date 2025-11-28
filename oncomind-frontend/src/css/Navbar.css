@@ -6,8 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: var(--bg-dark);
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-darkest);
   border: var(--border-main);
   border-radius: var(--border-radius-xxl);
   box-shadow: var(--shadow-main);
@@ -38,33 +38,9 @@
   gap: 1.5rem;
 }
 
-.navbar-links a {
-  text-decoration: none;
-  color: var(--text-primary);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  padding: 12px;
-  letter-spacing: 0.5px;
-  transition: 0.3s ease-out;
-}
-
-.navbar-links a:hover {
-  border-color: #60a5fa;
-  border-radius: 16px;
-  transition: 0.3s ease-out;
-  color: var(--accent-blue);
-}
-
-.navbar-cta a {
-  border: none;
-  text-decoration: none;
-  text-transform: uppercase;
-  border-radius: 0px;
-  padding: 0px;
-  letter-spacing: 0px;
+.navbar-links button,
+.navbar-links a{
+  width: 100%;
 }
 
 /* === Hamburger Menu Button (Hidden by default) === */
@@ -130,7 +106,7 @@
     /* Position below the navbar */
     left: 0;
     right: 0;
-
+    
     background-color: var(--bg-dark);
     border: var(--border-main);
     box-shadow: var(--shadow-main);
@@ -152,24 +128,11 @@
     transform: translateY(0);
     pointer-events: auto;
   }
-
+  .navbar-links button,
   .navbar-links a {
     /* Make links full-width for easy tapping */
     width: 100%;
     padding: 1rem 0.5rem;
-  }
-
-  .navbar-cta {
-    /* Make the button full-width too */
-    width: 100%;
-    margin-top: 1rem;
-    border-top: 1px solid var(--border-dark);
-    padding-top: 1rem;
-  }
-
-  .navbar-cta button,
-  .navbar-cta a {
-    width: 100%;
   }
 
   .navbar-hamburger {

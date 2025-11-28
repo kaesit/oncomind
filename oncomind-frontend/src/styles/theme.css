@@ -15,8 +15,8 @@
 
   /* accents & text */
   --accent: var(--ribbon-mint);
-  --primary: #60a5fa;
-  --highlight: #b7d0ee;
+  --primary: #3a9ff1;
+  --highlight: #316be9;
 
   --text: #edf0f5;           /* main text on dark bg */
   --muted: #98a0ad;          /* muted text */
