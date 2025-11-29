@@ -3,9 +3,9 @@
 :root {
   /* === Dark/Blue Brutalist Base === */
   --bg-darkest: #050505;    /* slate-950 (Shadows, page bg) */
-  --bg-dark: #17171c;       /* slate-800 (Card/component bg) */
+  --bg-dark: #1A1F36;       /* slate-800 (Card/component bg) */
   --bg-light:rgb(255, 255, 255); /* slate-775 (Card/component bg) */
-  --bg-lightest: #e4e1e1;   /* slate-750 (Hover/accent borders) */
+  --bg-lightest: #2D325A;   /* slate-750 (Hover/accent borders) */
   --border-transparent:rgba(255, 255, 255, 0.1);
   --border-dark: #334155;    /* slate-700 (Borders) */
   --border-light: #475569;   /* slate-600 (Hover/accent borders) */
@@ -21,7 +21,7 @@
   /* === Medical Accent Colors === */
   --accent-blue: #60a5fa;      /* Clinical/Biotech Cyan */
   --accent-cyan-dark: #0e7490;  /* Cyan for hovers */
-  --accent-pink: #ec4899;      /* Optional: Awareness Pink */
+  --accent-pink: #4B7F52;      /* Optional: Awareness Pink */
   
   /* === Brutalist Style Variables === */
   --border-radius-sm: 4px;
@@ -31,11 +31,11 @@
   --border-radius-xxl: 50px;
   --border-main: 1px solid var(--border-transparent);
   --shadow-main: 4px 4px 0px var(--bg-darkest);
-  --shadow-sm: 2px 2px 0px var(--bg-darkest);
+  --shadow-sm: 2px 2px 0px var(--bg-lightest);
 }
 
 /* Apply the base styles to the app */
 body {
-  background-color: var(--bg-darkest);
+  background-color: var(--bg-dark);
   color: var(--text-primary);
 }

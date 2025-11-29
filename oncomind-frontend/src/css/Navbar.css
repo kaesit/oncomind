@@ -7,10 +7,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  background-color: var(--bg-darkest);
+  background-color: var(--bg-dark);
   border: var(--border-main);
   border-radius: var(--border-radius-xxl);
-  box-shadow: var(--shadow-main);
+  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 1rem;
   margin: 1rem;
