@@ -4,6 +4,7 @@
   /* === Dark/Blue Brutalist Base === */
   --bg-darkest: #050505;    /* slate-950 (Shadows, page bg) */
   --bg-dark: #17171c;       /* slate-800 (Card/component bg) */
+  --bg-light:rgb(255, 255, 255); /* slate-775 (Card/component bg) */
   --bg-lightest: #e4e1e1;   /* slate-750 (Hover/accent borders) */
   --border-transparent:rgba(255, 255, 255, 0.1);
   --border-dark: #334155;    /* slate-700 (Borders) */
