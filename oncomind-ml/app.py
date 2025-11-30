@@ -4,8 +4,25 @@ import traceback
 from typing import Dict, Any, List, Optional
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
+
+
+app = FastAPI()
+# --- ADD THIS SECTION ---
+origins = [
+    "http://localhost:5173",  # The port your React app is running on
+    "http://127.0.0.1:5173",  # Alternative localhost URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow your React app
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Prefer the real trained wrapper if available; otherwise fall back to the toy stub.
 try:
