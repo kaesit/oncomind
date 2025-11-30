@@ -1,15 +1,15 @@
 :root {
-  --bg-dark: oklch(0.1 0 195);
-  --bg: oklch(0.15 0 195);
-  --bg-light: oklch(0.2 0 195);
-  --text: oklch(0.96 0 195);
-  --text-muted: oklch(0.76 0 195);
-  --highlight: oklch(0.5 0 195);
-  --border: oklch(40.167% 0.00005 271.152 / 0.411);
-  --border-muted: oklch(0.3 0 195);
-  --primary: oklch(68.2% 38% 247.217);
+  --bg-dark: oklch(0.1 0 238);
+  --bg: oklch(0.15 0 238);
+  --bg-light: oklch(0.2 0 238);
+  --text: oklch(0.96 0 238);
+  --text-muted: oklch(0.76 0 238);
+  --highlight: oklch(0.5 0 238);
+  --border: oklch(0.4 0 238);
+  --border-muted: oklch(0.3 0 238);
+  --primary: oklch(0.76 0.1 238);
   --primary-hover: oklch(56.4% 50.25% 262.974);
-  --secondary: oklch(74.104% 0.07855 14.006);
+  --secondary: oklch(0.76 0.1 58);
   --danger: oklch(0.7 0.05 30);
   --warning: oklch(0.7 0.05 100);
   --success: oklch(0.7 0.05 160);

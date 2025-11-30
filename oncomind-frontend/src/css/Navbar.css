@@ -9,7 +9,7 @@
   padding: 1rem 2rem;
   background-color: var(--bg);
   border: var(--border-main);
-  border-radius: var(--border-radius-xxl);
+  border-radius: var(--border-radius-l);
   box-shadow: var(--shadow-main);
   position: sticky;
   top: 1rem;

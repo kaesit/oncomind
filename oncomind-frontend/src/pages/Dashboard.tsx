@@ -5,7 +5,7 @@ export default function Dashboard() {
   const [rows, setRows] = useState<any[]>([]);
   useEffect(() => {
     // Try to fetch a little demo row via API
-    fetch("http://localhost:5000/api/predict?sample=5")
+    fetch("http://localhost:5173/api/predict?sample=5")
       .then((r) => r.json())
       .then((j) => {
         const item = { id: 1, sample: j.sample ?? j.ml?.sample, score: j.ml?.scores ? j.ml.scores[0] : j.prediction ?? 0 };
