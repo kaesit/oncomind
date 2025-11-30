@@ -1,0 +1,18 @@
+.divider {
+     background: rgba(255, 255, 255, 0.26);
+     padding: 1px;
+     border-radius: 8px;
+     color: var(--text);
+     overflow: auto;
+}
+
+.title_for_sections
+{
+     font-size: 24px;
+     font: optional;
+     color: hsl(0, 1%, 73%);
+}
+.research_container > p
+{
+     font: var(--p);
+}

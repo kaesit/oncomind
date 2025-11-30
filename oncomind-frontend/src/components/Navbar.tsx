@@ -96,16 +96,6 @@ export const Navbar: React.FC = () => {
             Dashboard
           </BrutalistButton>
         </a>
-        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/dashboard" onClick={closeMobileMenu}>
-          
-          <BrutalistButton
-            onClick={() => console.log('Portal clicked')}
-            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
-          >
-            Dashboard
-          </BrutalistButton>
-        </a>
-        
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/search" onClick={closeMobileMenu}>
           
           <BrutalistButton

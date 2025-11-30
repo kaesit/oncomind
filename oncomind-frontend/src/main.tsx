@@ -10,6 +10,7 @@ import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout.";
 import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
+import Research from "./pages/Research";
 
 function AppRouter() {
   return (
@@ -20,6 +21,7 @@ function AppRouter() {
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
+          <Route path="/research" element={<Research />} />
           
         </Route>
         <Route path="/admin" element={<AdminLayout/>}>
