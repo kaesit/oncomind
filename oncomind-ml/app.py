@@ -290,6 +290,3 @@ async def reload_diagnostic(force: bool = True):
     if _DIAGNOSTIC_TOOL_INSTANCE is None:
         raise HTTPException(status_code=500, detail=_DIAGNOSTIC_TOOL_LOADING_ERROR)
     return {"status": "loaded"}
-
-
-# --- end of file ---

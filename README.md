@@ -49,6 +49,7 @@ pyvista
 skimage
 glfw
 pygame
+pydantic_settings
 ```
 
 #### How to install packages:
