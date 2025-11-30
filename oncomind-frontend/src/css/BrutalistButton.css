@@ -16,12 +16,12 @@
   text-decoration: none;
 
   /* === Dark/Blue Theme === */
-  color: #cbd5e1; /* slate-300 */
-  background-color: #2D325A; /* slate-800 */
+  color: var(--bg); /* slate-300 */
+  background-color: var(--primary); /* slate-800 */
 
   /* === Brutalist Shape & Border === */
   border-radius: var(--border-radius-xxl);
-  border: 1px solid rgba(255, 255, 255, 0.05); /* slate-700 */
+  border: 1px solid var(--primary);
   /* === The Core Brutalist Effect === */
   /*box-shadow: 4px 4px 0px #0f172a; */ /* slate-950 */ 
 
@@ -48,9 +48,9 @@
  */
 .brutalist-button:hover {
   border-radius: calc(var(--border-radius-xxl) + 4px);
-  background-color: var(--bg-lightest); /* A slightly lighter background */
-  border-color: #60a5fa;
-  color: #60a5fa; /* A slightly lighter text */
+  background-color: var(--primary-hover); /* A slightly lighter background */
+  border-color: var(--primary-hover);
+  color: var(--bg-dark); /* A slightly lighter text */
   transform: scale(1.05);
   transition: 0.3s ease-out;
 }

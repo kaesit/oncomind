@@ -112,7 +112,7 @@ export const Navbar: React.FC = () => {
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
-            <img style={{width: "20px", height: "20px", margin: "0.2rem"}} src={search_icon} alt="" />
+            {/*<img style={{width: "20px", height: "20px", margin: "0.2rem"}} src={search_icon} alt="" /> */}
             Search
           </BrutalistButton>
         </a>

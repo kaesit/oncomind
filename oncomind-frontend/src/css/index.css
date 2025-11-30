@@ -1,41 +1,57 @@
-/* Add this to your main index.css or App.css */
-
 :root {
-  /* === Dark/Blue Brutalist Base === */
-  --bg-darkest: #050505;    /* slate-950 (Shadows, page bg) */
-  --bg-dark: #1A1F36;       /* slate-800 (Card/component bg) */
-  --bg-light:rgb(255, 255, 255); /* slate-775 (Card/component bg) */
-  --bg-lightest: #2D325A;   /* slate-750 (Hover/accent borders) */
-  --border-transparent:rgba(255, 255, 255, 0.1);
-  --border-dark: #334155;    /* slate-700 (Borders) */
-  --border-light: #475569;   /* slate-600 (Hover/accent borders) */
-  --border-lightest: #ffffff;   /* slate-500 (Hover/accent borders) */
+  --bg-dark: oklch(0.1 0 195);
+  --bg: oklch(0.15 0 195);
+  --bg-light: oklch(0.2 0 195);
+  --text: oklch(0.96 0 195);
+  --text-muted: oklch(0.76 0 195);
+  --highlight: oklch(0.5 0 195);
+  --border: oklch(40.167% 0.00005 271.152 / 0.411);
+  --border-muted: oklch(0.3 0 195);
+  --primary: oklch(68.2% 38% 247.217);
+  --primary-hover: oklch(56.4% 50.25% 262.974);
+  --secondary: oklch(74.104% 0.07855 14.006);
+  --danger: oklch(0.7 0.05 30);
+  --warning: oklch(0.7 0.05 100);
+  --success: oklch(0.7 0.05 160);
+  --info: oklch(0.7 0.05 260);
 
+  --ff: "Cascadia Code", sans-serif;
+  /* FIXED */
 
+  --h1: bold 4.4rem var(--ff);
+  --h2: bold clamp(2rem, 2.5vw, 3rem)/1.5em var(--ff);
+  --p: 1rem/1.8em var(--ff);
 
-  /* === Text Palette === */
-  --text-primary: #cbd5e1;  /* slate-300 (Main paragraph text) */
-  --text-heading: #e2e8f0;  /* slate-100 (Headings, bright text) */
-  --text-muted: #64748b;    /* slate-500 (Muted text) */
+  --colorgray: hsl(0, 0%, 60%);
+  --darkgradient: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.015));
 
-  /* === Medical Accent Colors === */
-  --accent-blue: #60a5fa;      /* Clinical/Biotech Cyan */
-  --accent-cyan-dark: #0e7490;  /* Cyan for hovers */
-  --accent-pink: #4B7F52;      /* Optional: Awareness Pink */
-  
-  /* === Brutalist Style Variables === */
+  --text-primary: #cbd5e1;
+  --text-heading: #e2e8f0;
+  --text-muted: #64748b;
+  /* This overwrites earlier one */
+
+  --accent-blue: #60a5fa;
+  --accent-cyan-dark: #0e7490;
+  --accent-pink: #4B7F52;
+
   --border-radius-sm: 4px;
   --border-radius-m: 8px;
   --border-radius-l: 12px;
   --border-radius-xl: 16px;
   --border-radius-xxl: 50px;
-  --border-main: 1px solid var(--border-transparent);
-  --shadow-main: 4px 4px 0px var(--bg-darkest);
-  --shadow-sm: 2px 2px 0px var(--bg-lightest);
+
+  --border-main: 1px solid var(--border);
+
+  /* Remove or define missing vars */
+  --bg-darkest: oklch(0.08 0 195);
+  --bg-lightest: oklch(43.128% 0.00005 271.152 / 0.541);
+
+  --shadow-main: 4px 4px 0px var(--bg-dark);
+  --shadow-sm: 1px 1px 1px var(--bg-lightest);
 }
 
 /* Apply the base styles to the app */
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
+  background-color: var(--bg);
+  color: var(--text);
 }
