@@ -297,7 +297,7 @@ async def diagnose(image: str = Query(..., description="Path or URL to image")):
     return out
 
 
-@app.post("/predict_batch")
+@app.post("/plot")
 async def plot(x: int, y: int):
     plt.text(
         -100, 270, "$y=x^2-9$", fontsize=20, bbox={"facecolor": "green", "alpha": 0.5}
