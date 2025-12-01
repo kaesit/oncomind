@@ -1,7 +1,7 @@
 .divider {
      background: rgba(255, 255, 255, 0.26);
      padding: 1px;
-     width: 95vw;
+     width: 90vw;
      border-radius: 8px;
      color: var(--text);
      overflow: auto;
