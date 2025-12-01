@@ -2,6 +2,10 @@
 import os
 import traceback
 from typing import Dict, Any, List, Optional
+import matplotlib.pyplot as plt
+import numpy as np
+import io
+import base64
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -291,6 +295,25 @@ async def diagnose(image: str = Query(..., description="Path or URL to image")):
     if not out.get("ok"):
         raise HTTPException(status_code=500, detail=out)
     return out
+
+
+@app.post("/predict_batch")
+async def plot(x: int, y: int):
+    plt.text(
+        -100, 270, "$y=x^2-9$", fontsize=20, bbox={"facecolor": "green", "alpha": 0.5}
+    )
+    plt.grid()
+    plt.plot(x, y)
+    # 2. Save to RAM (not disk)
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+
+    # 3. Encode to Base64
+    img_str = base64.b64encode(buf.read()).decode("utf-8")
+    plt.close()
+
+    return {"image": f"data:image/png;base64,{img_str}"}
 
 
 # utility endpoint to force reload diagnostic model (for dev)
