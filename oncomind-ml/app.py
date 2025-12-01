@@ -13,8 +13,9 @@ from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
 
-app = FastAPI()
-# --- ADD THIS SECTION ---
+app = FastAPI(title="OncoMind ML Service")
+
+# --- CORS Middleware Section --- (Ensure this is added as early as possible)
 origins = [
     "http://localhost:5173",  # The port your React app is running on
     "http://127.0.0.1:5173",  # Alternative localhost URL
@@ -54,7 +55,6 @@ try:
 except Exception:
     DIAGNOSTIC_TOOL_CLASS = None
 
-app = FastAPI(title="OncoMind ML Service")
 
 # Configuration: read model path for YOLO from env var, else None
 YOLO_MODEL_PATH = os.environ.get("YOLO_MODEL_PATH", "").strip() or None
