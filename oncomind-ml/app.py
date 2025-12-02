@@ -7,7 +7,7 @@ import numpy as np
 import io
 import base64
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
@@ -297,23 +297,71 @@ async def diagnose(image: str = Query(..., description="Path or URL to image")):
     return out
 
 
-@app.post("/plot")
-async def plot(x: int, y: int):
-    plt.text(
-        -100, 270, "$y=x^2-9$", fontsize=20, bbox={"facecolor": "green", "alpha": 0.5}
-    )
+@app.get("/parabol")
+async def parabol(x: float, y: float):
+    plt.figure(figsize=(6, 4))
+
+    # Parabol y = x^2 - 9
+    X = np.linspace(-10, 10, 300)
+    Y = X**2 - 9
+    plt.plot(X, Y, label="y = x² - 9", color="blue")
+
+    # Kullanıcı noktası
+    plt.scatter([x], [y], color="red", s=80, label=f"({x}, {y})")
+
     plt.grid()
-    plt.plot(x, y)
-    # 2. Save to RAM (not disk)
+    plt.legend()
+    plt.title("Parabol + Nokta")
+
     buf = io.BytesIO()
     plt.savefig(buf, format="png")
     buf.seek(0)
-
-    # 3. Encode to Base64
-    img_str = base64.b64encode(buf.read()).decode("utf-8")
     plt.close()
 
-    return {"image": f"data:image/png;base64,{img_str}"}
+    return Response(content=buf.getvalue(), media_type="image/png")
+
+
+@app.get("/scatter_line")
+async def scatter_line(x: list[float] = Query(...), y: list[float] = Query(...)):
+    if len(x) != len(y):
+        return {"error": "x ve y listelerinin uzunluğu aynı olmalı"}
+
+    plt.figure(figsize=(6, 4))
+
+    # Scatter
+    plt.scatter(x, y, color="orange", s=80, label="Veri")
+
+    # Line (Fit)
+    coef = np.polyfit(x, y, 1)
+    line_x = np.linspace(min(x), max(x), 100)
+    line_y = coef[0] * line_x + coef[1]
+
+    plt.plot(line_x, line_y, color="black", label="Regresyon Çizgisi")
+
+    plt.grid()
+    plt.legend()
+    plt.title("Scatter + Regression Line")
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+    image_bytes = buf.getvalue()
+    plt.close()
+
+    return Response(content=image_bytes, media_type="image/png")
+
+
+@app.get("/plot")
+async def plot(x: int, y: int):
+    plt.grid()
+    plt.plot([x], [y], marker="o", markersize=10, color="red")
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+    image_bytes = buf.getvalue()
+    plt.close()
+
+    return Response(content=image_bytes, media_type="image/png")
 
 
 # utility endpoint to force reload diagnostic model (for dev)
