@@ -17,7 +17,7 @@ const ScoreCellRender = (cellData: any) => {
   if (score > 0.8) color = "#4caf50"; // Green for high confidence
   else if (score > 0.5) color = "#ffeb3b"; // Yellow for medium
   else color = "#f44336"; // Red for low
-  
+
   return (
     <span style={{ color: color, fontWeight: "bold" }}>
       {cellData.text}
@@ -104,6 +104,8 @@ export default function Dashboard() {
             />
           </DataGrid>
         )}
+        <img src="http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
+        <img src="http://localhost:8000/hystogram" alt="" />
       </div>
     </div>
   );
