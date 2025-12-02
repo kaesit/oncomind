@@ -85,7 +85,7 @@ export default function Dashboard() {
             showBorders={true}
             showRowLines={true}
             rowAlternationEnabled={true} /* Adds zebra striping */
-            width="100%"
+            width="160%"
             height={300}
           >
             <Column
@@ -104,9 +104,11 @@ export default function Dashboard() {
             />
           </DataGrid>
         )}
-        <img src="http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
-        <img src="http://localhost:8000/hystogram" alt="" />
       </div>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+          <img src="http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
+          <img src="http://localhost:8000/hystogram" alt="" />
+        </div>
     </div>
   );
 }
