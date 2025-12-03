@@ -33,7 +33,11 @@
 }
 .image-data-div
 {
+    position: relative;
+    float: left;
     display: flex;
+    flex-wrap: wrap;
+    width: 120%;
     flex-direction: row;
 }
 

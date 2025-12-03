@@ -105,11 +105,14 @@ export default function Dashboard() {
           </DataGrid>
         )}
       </div>
-      <div className="image-data-div">
+      <center>
+        <h1>Matplotlib functions to post and get</h1>
+        <div className="image-data-div">
           <img src="http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
           <img src="http://localhost:8000/hystogram" alt="" />
           <img src="http://localhost:8000/parabol?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
         </div>
+      </center>
     </div>
   );
 }
