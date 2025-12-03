@@ -31,3 +31,15 @@
     border-radius: 8px;
     color: black;
 }
+.image-data-div
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.image-data-div > img
+{
+    width: 425px;
+    height: 425px;
+
+}

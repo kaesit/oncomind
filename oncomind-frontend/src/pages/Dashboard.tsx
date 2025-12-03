@@ -105,9 +105,10 @@ export default function Dashboard() {
           </DataGrid>
         )}
       </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className="image-data-div">
           <img src="http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
           <img src="http://localhost:8000/hystogram" alt="" />
+          <img src="http://localhost:8000/parabol?x=1&x=2&x=3&y=2&y=5&y=3" alt="" />
         </div>
     </div>
   );

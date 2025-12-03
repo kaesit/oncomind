@@ -26,10 +26,11 @@ function AppRouter() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
-          
+
         </Route>
-        <Route path="/admin" element={<AdminLayout/>}>
-        
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<Home />} />
+
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
