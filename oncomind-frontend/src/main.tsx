@@ -7,7 +7,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
-import AdminLayout from "./layouts/AdminLayout.";
+import AdminLayout from "./layouts/AdminLayout";
 import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
 import Research from "./pages/Research";
