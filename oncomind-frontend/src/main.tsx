@@ -11,10 +11,12 @@ import AdminLayout from "./layouts/AdminLayout.";
 import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
 import Research from "./pages/Research";
+import AdminDashboard from "./pages/AdminDashboard";
 // Add these imports to your main entry file (e.g., index.js or App.js)
 import 'devextreme/dist/css/dx.light.css';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
+
 
 function AppRouter() {
   return (
@@ -29,7 +31,7 @@ function AppRouter() {
 
         </Route>
         <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<Home />} />
+          <Route path="/admin" element={<AdminDashboard />} />
 
         </Route>
 

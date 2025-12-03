@@ -1,37 +1,37 @@
-version: '3.8'
+version: "3.9"
 
 services:
+  api:
+    build:
+      context: .
+      dockerfile: OncoMind.Api/Dockerfile
+    ports:
+      - "5001:8080"
+    networks:
+      - onco
+    depends_on:
+      - ml
+
   ml:
     build:
       context: ./oncomind-ml
       dockerfile: Dockerfile
-    container_name: oncomind-ml
     ports:
       - "8000:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: unless-stopped
-
-  api:
-    build:
-      context: ./OncoMind.Api
-      dockerfile: Dockerfile
-    container_name: oncomind-api
-    depends_on:
-      - ml
-    ports:
-      - "5000:80"            # map container port 80 -> host 5000
-    environment:
-      - ASPNETCORE_URLS=http://+:80
-    restart: unless-stopped
+    networks:
+      - onco
 
   frontend:
     build:
       context: ./oncomind-frontend
       dockerfile: Dockerfile
-    container_name: oncomind-frontend
+    ports:
+      - "5173:80"
+    networks:
+      - onco
     depends_on:
       - api
-    ports:
-      - "5173:5173"
-    restart: unless-stopped
+      - ml
+
+networks:
+  onco:
