@@ -1,38 +1,81 @@
+/* adminlayout.css */
 .admin-root {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: "Inter", "Helvetica Neue", "Segoe UI", Helvetica, Verdana, sans-serif;
+  /* Use the theme background color so there are no white flashes */
+  background-color: var(--dx-theme-base-background-color);
+  color: var(--dx-theme-text-color, #fff);
 }
 
-.admin-menu-item {
+/* NAV shell */
+.nav-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  /* Remove padding to make it look like a standard sidebar */
+  /* Hardcoded dark sidebar for contrast */
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-brand {
+  padding: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  font-size: 15px;
 }
 
-.admin-menu-item:hover {
-  background: #f1f1f1;
-  cursor: pointer;
+.nav-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #26a69a, #4dd0e1);
+  /* Matches Teal theme */
 }
 
-.admin-topbar {
-  height: 60px;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+.nav-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+}
+
+/* Clean up Nav Items */
+.nav-item {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.admin-title {
-  font-size: 18px;
-  font-weight: 600;
+/* Topbar */
+.admin-topbar {
+  background-color: var(--dx-theme-background-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Main Content Area */
 .admin-content {
   padding: 24px;
-  background: #f5f6f8;
   height: calc(100vh - 60px);
-  overflow-y: auto;
+  overflow: auto;
+  
+  /* Deep black background for content area */
+}
+
+.top-title {
+  font-weight: 600;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-title {
+    display: none;
+  }
+
+  .admin-content {
+    padding: 16px;
+  }
 }

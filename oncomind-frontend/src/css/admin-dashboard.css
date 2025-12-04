@@ -1,0 +1,99 @@
+/* admin-dashboard.css */
+
+.admin-dashboard .kpi-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.kpi-card {
+  /* Use DevExtreme base background color instead of custom gradients */
+  background-color: var(--dx-theme-background-color, #1e1e1e);
+  /* Add a subtle border or shadow consistent with the theme */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  border-radius: 4px;
+  /* Material design usually uses 4px or 8px */
+  min-width: 180px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.kpi-title {
+  color: var(--dx-theme-text-color-secondary, #9aa0b2);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  color: var(--dx-theme-text-color, #fff);
+  font-weight: 500;
+  font-size: 24px;
+  margin-top: 8px;
+}
+
+.two-up {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Replaced .card-dx with a cleaner look that respects the Dark Theme */
+.card-dx {
+  background-color: var(--dx-theme-background-color, #1e1e1e);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: 0.4s;
+}
+.reload_button
+{
+  width: 225px;
+  height: 40px;
+  color: white;
+  background: #1597e2;
+}
+
+.reload_button:hover
+{
+  width: 225px;
+  height: 40px;
+  color: white;
+  background: #1597e2;
+}
+.card-dx:hover {
+  scale: (1.3);
+  transition: 0.4s;
+}
+
+.card-left {
+  flex: 1;
+  overflow: hidden;
+  /* Prevents grid from exploding layout */
+}
+
+.card-right {
+  width: 400px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+  .two-up {
+    flex-direction: column;
+  }
+
+  .card-right {
+    width: 100%;
+  }
+}
+
+/* CRITICAL FIX: 
+   Removed .dx-grid { color: black; } 
+   Let DevExtreme handle the text color.
+*/
+.dx-datagrid {
+  /* Optional: removes outer border to blend better with the card */
+  border: none !important;
+}

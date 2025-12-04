@@ -1,36 +1,38 @@
 /* Dashboard.css */
 
 /* 1. Change the Header Background and Font */
-.dx-datagrid-headers .dx-datagrid-table .dx-row > td {
-    background-color: #ffffff !important; /* Overrides the Teal */
-    color: #525252; /* Orange text */
+/*.dx-datagrid-headers .dx-datagrid-table .dx-row > td {
+    background-color: #ffffff !important; Overrides the Teal
+    color: #525252; Orange text
     font-weight: bold;
     text-transform: uppercase;
-}
+}*/
 
-.dx-datagrid-headers .dx-datagrid-table .dx-row > td:hover {
-    background-color: #0f0e0e !important; /* Overrides the Teal */
-}
+/*.dx-datagrid-headers .dx-datagrid-table .dx-row > td:hover {
+    background-color: #0f0e0e !important; Overrides the Teal 
+}*/
 
 /* 2. Change the Row Background Alternation (if enabled) */
-.dx-datagrid-rowsview .dx-row.dx-data-row:nth-child(odd) {
+/*.dx-datagrid-rowsview .dx-row.dx-data-row:nth-child(odd) {
     background-color: rgba(255, 255, 255, 0.05);
-}
+}*/
 
 /* 3. Change the Hover Color */
+/* 
 .dx-datagrid-rowsview .dx-row.dx-data-row.dx-state-hover:not(.dx-selection):not(.dx-row-inserted):not(.dx-row-removed):not(.dx-edit-row) > td {
-    background-color: #000000 !important; /* Darker Teal on hover */
+    background-color: #000000 !important; /* Darker Teal on hover
     color: #525252;
 }
+*/
 
 /* 4. Customize the "dx-card" container you are using */
-.dx-card {
+/*.dx-card {
     max-width: 1500px;
     background-color: #ffffff !important;
     border: 1px solid #444;
     border-radius: 8px;
     color: black;
-}
+}*/
 .image-data-div
 {
     position: relative;
