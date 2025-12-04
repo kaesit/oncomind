@@ -76,81 +76,86 @@ export default function AdminLayout() {
   ];
 
   return (
-    <div className="dx-viewport admin-root">
-      <Drawer
-        opened={opened}
-        openedStateMode="shrink"   // always valid and closest to material design side-nav
-        position="left"
-        revealMode="slide"
-        shading={false}
-        component={() => (
-          <div className="nav-shell" role="navigation">
-            <div className="nav-brand">
-              <div className="nav-logo" />
-              <div className="nav-title">OncoMind</div>
-            </div>
-
-            <TreeView
-              items={navItems}
-              width="100%"
-              selectionMode="single"
-              showCheckBoxesMode="none"
-              keyExpr="id"
-              displayExpr="text"
-              onItemClick={onNavItemClick}
-              itemRender={(data) => (
-                <div className="nav-item">
-                  {data.icon ? <i className={`dx-icon dx-icon-${data.icon}`} /> : null}
-                  <span>{data.text}</span>
+    <>
+      <body className="dx-viewport">
+        <div className="admin-root">
+          <Drawer
+            opened={opened}
+            openedStateMode="shrink"   // always valid and closest to material design side-nav
+            position="left"
+            revealMode="slide"
+            shading={false}
+            component={() => (
+              <div className="nav-shell" role="navigation">
+                <div className="nav-brand">
+                  <div className="nav-logo" />
+                  <div className="nav-title">OncoMind</div>
                 </div>
-              )}
-            />
 
-            <div style={{ flex: 1 }} />
-            <div className="nav-footer small">v0.1 • Presentation demo</div>
-          </div>
-        )}
-      >
-        <header className="admin-topbar">
-          <Toolbar>
-            <ToolbarItem
-              location="before"
-              widget="dxButton"
-              options={{
-                icon: "menu",
-                stylingMode: "text",
-                onClick: () => setOpened(!opened),
-              }}
-            />
+                <TreeView
+                  items={navItems}
+                  width="100%"
+                  selectionMode="single"
+                  showCheckBoxesMode="none"
+                  keyExpr="id"
+                  displayExpr="text"
+                  onItemClick={onNavItemClick}
+                  itemRender={(data) => (
+                    <div className="nav-item">
+                      {data.icon ? <i className={`dx-icon dx-icon-${data.icon}`} /> : null}
+                      <span>{data.text}</span>
+                    </div>
+                  )}
+                />
 
-            <ToolbarItem
-              location="center"
-              template={() => <div className="top-title">Admin • OncoMind</div>}
-            />
+                <div style={{ flex: 1 }} />
+                <div className="nav-footer small">v0.1 • Presentation demo</div>
+              </div>
+            )}
+          >
+            <header className="admin-topbar">
+              <Toolbar>
+                <ToolbarItem
+                  location="before"
+                  widget="dxButton"
+                  options={{
+                    icon: "menu",
+                    stylingMode: "text",
+                    onClick: () => setOpened(!opened),
+                  }}
+                />
 
-            <ToolbarItem
-              location="after"
-              template={() => (
-                <div className="top-actions">
-                  <Button icon="refresh" stylingMode="text" onClick={() => window.location.reload()} />
-                  <DropDownButton
-                    displayExpr="text"
-                    dropDownOptions={{ width: 180 }}
-                    stylingMode="text"
-                    icon="user"
-                    items={userMenuItems}
-                    onItemClick={(e: any) => e.itemData.onClick()}
-                  />
-                </div>
-              )}
-            />
-          </Toolbar>
-        </header>
+                <ToolbarItem
+                  location="center"
+                  template={() => <div className="top-title">Admin • OncoMind</div>}
+                />
 
-        <main className="admin-content">
-          <Outlet />
-        </main>
-      </Drawer>
-    </div>
+                <ToolbarItem
+                  location="after"
+                  template={() => (
+                    <div className="top-actions">
+                      <Button icon="refresh" stylingMode="text" onClick={() => window.location.reload()} />
+                      <DropDownButton
+                        displayExpr="text"
+                        dropDownOptions={{ width: 180 }}
+                        stylingMode="text"
+                        icon="user"
+                        items={userMenuItems}
+                        onItemClick={(e: any) => e.itemData.onClick()}
+                      />
+                    </div>
+                  )}
+                />
+              </Toolbar>
+            </header>
+
+            <main className="admin-content">
+              <Outlet />
+            </main>
+          </Drawer>
+        </div>
+      </body>
+    </>
+
   );
 }

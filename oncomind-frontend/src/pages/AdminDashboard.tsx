@@ -2,7 +2,10 @@ import React, { useMemo, useState } from "react";
 import DataGrid, { Column, Paging, FilterRow, SearchPanel } from "devextreme-react/data-grid";
 import Chart, { Series, ArgumentAxis, CommonSeriesSettings, Legend, Tooltip } from "devextreme-react/chart";
 import Button from "devextreme-react/button";
+import { type TreeListTypes } from 'devextreme-react/tree-list';
+
 import "../css/admin-dashboard.css";
+import "../styles/dx.fluent.custom-scheme.css";
 
 // mock data
 const predictions = new Array(30).fill(0).map((_, i) => ({
@@ -19,6 +22,39 @@ const chartData = [
   { day: "Thu", preds: 25 },
   { day: "Fri", preds: 14 },
 ];
+
+import TreeList, {
+  Column, ColumnChooser, HeaderFilter, SearchPanel, Selection, Lookup,
+} from 'devextreme-react/tree-list';
+
+import { employees, priorities, tasks } from './data.ts';
+import EmployeeCell from './EmployeeCell.tsx';
+
+const expandedKeys = [1, 2];
+const selectedKeys = [1, 29, 42];
+
+const statuses = [
+  'Not Started',
+  'Need Assistance',
+  'In Progress',
+  'Deferred',
+  'Completed',
+];
+
+const dataSourceOptions = {
+  store: tasks.map((task) => {
+    employees.forEach((employee) => {
+      if (task.Task_Assigned_Employee_ID === employee.ID) {
+        task.Task_Assigned_Employee = employee;
+      }
+    });
+    return task;
+  }),
+};
+
+const customizeTaskCompletionText = (cellInfo) => `${cellInfo.valueText}%`;
+
+const columns = ['CompanyName', 'City', 'State', 'Phone', 'Fax'];
 
 export default function AdminDashboard() {
   const [gridData] = useState(predictions);
@@ -47,13 +83,12 @@ export default function AdminDashboard() {
         <div className="dx-viewport card-left card-dx">
           <h3>Predictions — recent</h3>
           <DataGrid
-            className="dx-grid"
             dataSource={gridData}
             keyExpr="id"
             showBorders={true}
             showRowLines={true}
-            columnAutoWidth={true}
-            rowAlternationEnabled={true} // Helps readability in dark mode
+            columnAutoWidth={false}
+            rowAlternationEnabled={false} // Helps readability in dark mode
           >
             <SearchPanel visible />
             <FilterRow visible />
@@ -62,15 +97,74 @@ export default function AdminDashboard() {
             <Column dataField="score" caption="Score" dataType="number" />
             <Column dataField="ts" caption="Timestamp" dataType="datetime" />
           </DataGrid>
+
+          <TreeList
+            dataSource={dataSourceOptions}
+            showBorders={true}
+            columnAutoWidth={true}
+            wordWrapEnabled={true}
+            defaultExpandedRowKeys={expandedKeys}
+            defaultSelectedRowKeys={selectedKeys}
+            keyExpr="Task_ID"
+            parentIdExpr="Task_Parent_ID"
+            id="tasks"
+          >
+            <SearchPanel visible={true} width={250} />
+            <HeaderFilter visible={true} />
+            <Selection mode="multiple" />
+            <ColumnChooser enabled={true} />
+
+            <Column dataField="Task_Subject" width={300} />
+            <Column
+              dataField="Task_Assigned_Employee_ID"
+              caption="Assigned"
+              allowSorting={true}
+              minWidth={200}
+              cellComponent={EmployeeCell}
+            >
+              <Lookup dataSource={employees} displayExpr="Name" valueExpr="ID" />
+            </Column>
+            <Column
+              dataField="Task_Status"
+              caption="Status"
+              minWidth={100}
+            >
+              <Lookup dataSource={statuses} />
+            </Column>
+            <Column
+              dataField="Task_Priority"
+              caption="Priority"
+              visible={false}
+            >
+              <Lookup dataSource={priorities} valueExpr="id" displayExpr="value" />
+            </Column>
+            <Column
+              dataField="Task_Completion"
+              caption="% Completed"
+              minWidth={100}
+              customizeText={customizeTaskCompletionText}
+              visible={false}
+            />
+            <Column
+              dataField="Task_Start_Date"
+              caption="Start Date"
+              dataType="date"
+            />
+            <Column
+              dataField="Task_Due_Date"
+              caption="Due Date"
+              dataType="date"
+            />
+          </TreeList>
         </div>
 
-        <div className="dx-viewport card-right card-dx">
+        <div className="card-right card-dx">
           <h3>Activity</h3>
           <Chart dataSource={chartData} title="Predictions per day">
             <CommonSeriesSettings argumentField="day" type="bar" />
             <Series valueField="preds" name="Predictions" />
             <ArgumentAxis />
-            <Legend visible={false} />
+            <Legend visible={true} />
             <Tooltip enabled />
           </Chart>
         </div>

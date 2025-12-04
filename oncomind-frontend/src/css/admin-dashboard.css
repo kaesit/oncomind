@@ -20,7 +20,7 @@
 }
 
 .kpi-title {
-  color: var(--dx-theme-text-color-secondary, #9aa0b2);
+  color: var(--dx-theme-text-color-secondary, #dadadb);
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -35,34 +35,53 @@
 
 .two-up {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   align-items: flex-start;
 }
 
+#chart {
+  height: 440px;
+}
+
+.tooltip-header {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+.tooltip-body {
+  width: 170px;
+}
+
+.tooltip-body .series-name {
+  font-weight: normal;
+  opacity: 0.6;
+  display: inline-block;
+  line-height: 1.5;
+  padding-right: 10px;
+  width: 126px;
+}
+
+.tooltip-body .value-text {
+  display: inline-block;
+  line-height: 1.5;
+  width: 30px;
+}
+
+
 /* Replaced .card-dx with a cleaner look that respects the Dark Theme */
 .card-dx {
-  background-color: var(--dx-theme-background-color, #1e1e1e);
+  background-color: var(--dx-theme-background-color);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   transition: 0.4s;
 }
-.reload_button
-{
-  width: 225px;
-  height: 40px;
-  color: white;
-  background: #1597e2;
-}
 
-.reload_button:hover
-{
-  width: 225px;
-  height: 40px;
-  color: white;
-  background: #1597e2;
-}
 .card-dx:hover {
   scale: (1.3);
   transition: 0.4s;
@@ -97,3 +116,5 @@
   /* Optional: removes outer border to blend better with the card */
   border: none !important;
 }
+
+
