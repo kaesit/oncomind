@@ -7,23 +7,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: "M PLUS 1 Code", monospace;
+  font-family: "VVDS Fifties SExp Thin";
+  font-optical-sizing: auto;
+  font-weight: 100;
   font-size: 1rem;
-  font-weight: 700;
+  font-style: normal;
   letter-spacing: 0.5px;
   padding: 14px 28px;
   cursor: pointer;
   text-decoration: none;
 
   /* === Dark/Blue Theme === */
-  color: var(--bg); /* slate-300 */
-  background-color: var(--primary); /* slate-800 */
+  color: var(--bg);
+  /* slate-300 */
+  background-color: var(--primary);
+  /* slate-800 */
 
   /* === Brutalist Shape & Border === */
   border-radius: var(--border-radius-l);
   border: 1px solid var(--primary);
   /* === The Core Brutalist Effect === */
-  /*box-shadow: 4px 4px 0px #0f172a; */ /* slate-950 */ 
+  /*box-shadow: 4px 4px 0px #0f172a; */
+  /* slate-950 */
 
   /* === Interaction === */
   /*
@@ -33,7 +38,8 @@
    */
   transition-property: background-color, border-color, box-shadow, border-radius, color, transform;
   transition-duration: 0.3s;
-  transition-timing-function: ease-out; /* Default curve */
+  transition-timing-function: ease-out;
+  /* Default curve */
 
   /* Remove default browser button styling */
   -webkit-appearance: none;
@@ -48,9 +54,11 @@
  */
 .brutalist-button:hover {
   border-radius: calc(var(--border-radius-l) + 4px);
-  background-color: var(--primary-hover); /* A slightly lighter background */
+  background-color: var(--primary-hover);
+  /* A slightly lighter background */
   border-color: var(--primary-hover);
-  color: var(--text); /* A slightly lighter text */
+  color: var(--text);
+  /* A slightly lighter text */
   transform: scale(1.05);
   transition: 0.3s ease-out;
 }
@@ -59,9 +67,12 @@
  * On click, "flatten" the button. NO offset.
  */
 .brutalist-button:active {
-  background-color: #1e293b; /* Back to original BG */
-  color: #cbd5e1; /* Back to original text */
-  box-shadow: none; /* The "push" effect, without moving */
+  background-color: #1e293b;
+  /* Back to original BG */
+  color: #cbd5e1;
+  /* Back to original text */
+  box-shadow: none;
+  /* The "push" effect, without moving */
 }
 
 /* Accessibility: Show a clear focus ring */

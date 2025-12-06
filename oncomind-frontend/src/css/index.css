@@ -15,7 +15,7 @@
   --success: oklch(0.7 0.05 160);
   --info: oklch(0.7 0.05 260);
 
-  --ff: "Cascadia Code", sans-serif;
+  --ff: "Poiret One", sans-serif;
   /* FIXED */
 
   --h1: bold 4.4rem var(--ff);

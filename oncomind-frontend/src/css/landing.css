@@ -43,11 +43,6 @@
   color: var(--text);
 }
 
-.lex-title {
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
 .lex-sub {
   font-size: 0.78rem;
   color: var(--muted);
@@ -109,13 +104,16 @@
 
 .lex-hero-title {
   font: var(--h1);
+  font-weight: 600;
   color: var(--text);
   margin: 0;
 }
 
 .lex-hero-lead {
+  font-family: "Poiret One", sans-serif;
   color: var(--muted-light);
   max-width: 60ch;
+  font-size: 1.5rem;
   margin: 6px 0 0 0;
 }
 
@@ -131,7 +129,7 @@
   border-radius: 10px;
   background: linear-gradient(90deg, #3a9ff1, #316be9);
   color: var(--bg);
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
   display: inline-block;
   transition: 0.2s ease-in-out;
@@ -166,6 +164,7 @@
 
 /* preview */
 .lex-hero-right {
+  
   flex: 0 0 420px;
   display: flex;
   flex-direction: row;
