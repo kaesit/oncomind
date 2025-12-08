@@ -174,6 +174,14 @@ def root():
         "model_loaded": getattr(MODEL, "loaded", True) if MODEL else False,
     }
 
+@app.get("/download_model")
+def download_model(model_selected:str, model_type:str, model_url:str):
+    return {
+        "Model Selected": model_selected,
+        "Model Type": model_type,
+        "Model URL" : model_url
+        
+    }
 
 @app.get("/model_info")
 def model_info():
