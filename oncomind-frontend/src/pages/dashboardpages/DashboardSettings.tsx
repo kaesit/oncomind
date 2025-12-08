@@ -43,7 +43,6 @@ export default function DashboardSettings() {
                          </div>
                     </div>
                </div>
-
                {/* ===== USER PREFERENCES CARD ===== */}
                <div className="settings-card">
                     <h3 className="card-title">User Preferences</h3>
@@ -56,7 +55,8 @@ export default function DashboardSettings() {
 
                          <div className="field">
                               <label>Notifications</label>
-                              <Switch />
+                              <Switch>
+                              </Switch>
                          </div>
 
                          <div className="field full">
@@ -71,6 +71,10 @@ export default function DashboardSettings() {
                     <Button text="Save Settings" type="default" stylingMode="contained" />
                     <Button text="Reset" type="normal" />
                </div>
+               <div className="card-dx">
+                    fksdlkflşsdkşlfds
+               </div>
           </div>
+
      );
 }

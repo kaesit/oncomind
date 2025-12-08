@@ -5,7 +5,7 @@ import Button from "devextreme-react/button";
 import { type TreeListTypes } from 'devextreme-react/tree-list';
 
 import "../css/admin-dashboard.css";
-import "../styles/dx.fluent.custom-scheme.css";
+import "../styles/dx.generic.custom-scheme.css";
 
 // mock data
 const predictions = new Array(30).fill(0).map((_, i) => ({
