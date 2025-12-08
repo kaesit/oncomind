@@ -12,7 +12,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
 import Research from "./pages/Research";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
 
 function AppRouter() {
   return (
@@ -28,7 +28,7 @@ function AppRouter() {
         </Route>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<AdminDashboard />} />
-
+          <Route path="/admin/settings" element={<DashboardSettings />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
