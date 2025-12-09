@@ -1,5 +1,6 @@
 # oncomind-ml/app.py
 import os
+from pathlib import Path
 import traceback
 from typing import Dict, Any, List, Optional
 # --- FIX START ---
@@ -35,6 +36,8 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
+
+
 # Prefer the real trained wrapper if available; otherwise fall back to the toy stub.
 try:
     # if you added model_wrapper.py via the previous step, it exposes MODEL
@@ -68,6 +71,7 @@ YOLO_MODEL_PATH = os.environ.get("YOLO_MODEL_PATH", "").strip() or None
 # Module-level diagnostic tool instance (lazy)
 _DIAGNOSTIC_TOOL_INSTANCE = None
 _DIAGNOSTIC_TOOL_LOADING_ERROR: Optional[str] = None
+DATASET_PATH = Path("/dataset")
 
 
 def model_files_check() -> Dict[str, Any]:
@@ -176,6 +180,8 @@ def root():
 
 @app.get("/download_model")
 def download_model(model_selected:str, model_type:str, model_url:str):
+    print(DATASET_PATH)
+    print(f"{DATASET_PATH}\{model_selected}")
     return {
         "Model Selected": model_selected,
         "Model Type": model_type,

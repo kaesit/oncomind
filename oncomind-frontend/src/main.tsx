@@ -29,6 +29,8 @@ function AppRouter() {
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/settings" element={<DashboardSettings />} />
+          <Route path="/admin/datasets" element={<DashboardSettings />} />
+
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
