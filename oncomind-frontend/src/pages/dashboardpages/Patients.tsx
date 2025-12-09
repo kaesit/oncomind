@@ -11,12 +11,12 @@ import "../../css/DataSets.css";
 const mockPatients = [
      {
           id: 1,
-          name: "John Carter",
+          name: "Judie Carter",
           status: "LOW",
           room: "Block A - Room 12",
           admitted: true,
           preview:
-               "https://images.unsplash.com/photo-1576765607924-b3e0cf1248c7?auto=format&fit=crop&w=500&q=60",
+               "https://images.unsplash.com/photo-1631201036602-c557ad26828e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fGNhbmNlciUyMHBhdGllbnR8ZW58MHx8MHx8fDA%3D",
      },
      {
           id: 2,
@@ -127,6 +127,18 @@ const Patients: React.FC = () => {
 
                {/* ----------- TOP ACTIONS ----------- */}
                <div className="datasets-actions">
+
+                    <Button
+                         text="Add New"
+                         icon="add"
+                         type="default"
+                    />
+                    <Button
+                         text="Delete"
+                         icon="trash"
+                         type="danger"
+                         disabled={selected.length === 0}
+                    />
                     <TextBox
                          placeholder="Search patient..."
                          value={search}
@@ -140,12 +152,7 @@ const Patients: React.FC = () => {
                          stylingMode="outlined"
                     />
 
-                    <Button
-                         text="Delete"
-                         icon="trash"
-                         type="danger"
-                         disabled={selected.length === 0}
-                    />
+
                </div>
 
                {/* ----------- CARD GRID ----------- */}
