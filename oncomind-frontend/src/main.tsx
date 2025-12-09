@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Research from "./pages/Research";
 import AdminDashboard from "./pages/AdminDashboard";
 import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
+import DataSets from "./pages/dashboardpages/DataSets";
 
 function AppRouter() {
   return (
@@ -29,7 +30,7 @@ function AppRouter() {
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/settings" element={<DashboardSettings />} />
-          <Route path="/admin/datasets" element={<DashboardSettings />} />
+          <Route path="/admin/datasets" element={<DataSets />} />
 
         </Route>
 
