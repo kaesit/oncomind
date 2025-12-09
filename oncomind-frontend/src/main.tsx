@@ -14,6 +14,7 @@ import Research from "./pages/Research";
 import AdminDashboard from "./pages/AdminDashboard";
 import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
 import DataSets from "./pages/dashboardpages/DataSets";
+import Patients from "./pages/dashboardpages/Patients";
 
 function AppRouter() {
   return (
@@ -31,6 +32,8 @@ function AppRouter() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/settings" element={<DashboardSettings />} />
           <Route path="/admin/datasets" element={<DataSets />} />
+          <Route path="/admin/patients" element={<Patients />} />
+
 
         </Route>
 

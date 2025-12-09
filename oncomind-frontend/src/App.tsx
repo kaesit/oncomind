@@ -1,3 +1,4 @@
+import 'devextreme/dist/css/dx.light.css';
 import React, { useEffect, useState } from 'react'
 import DataGrid, { Column } from 'devextreme-react/data-grid'
 
