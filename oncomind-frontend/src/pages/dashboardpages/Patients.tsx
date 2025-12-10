@@ -52,6 +52,7 @@ const mockPatients = [
    MUI CARD STYLING WITH DX THEME VARIABLES
 ------------------------------------------------------ */
 const CardContainer = styled("div")({
+     position: "relative",   // <-- add this
      background: "var(--dx-theme-background-color)",
      border: "1px solid rgba(255,255,255,0.07)",
      borderRadius: "12px",
@@ -68,6 +69,7 @@ const CardContainer = styled("div")({
           transform: "translateY(-2px)",
      },
 });
+
 
 const PreviewImg = styled("img")({
      width: "100%",
@@ -196,13 +198,17 @@ const Patients: React.FC = () => {
                                    checked={selected.includes(p.id)}
                                    onChange={() => toggleSelect(p.id)}
                                    sx={{
+                                        position: "absolute",
+                                        top: "10px",
+                                        left: "10px",
+                                        zIndex: 5,
                                         color: "var(--dx-theme-secondary-color)",
                                         "&.Mui-checked": {
                                              color: "var(--dx-theme-accent-color)",
                                         },
-                                        position: "absolute",
                                    }}
                               />
+
 
                               <PreviewImg src={p.preview} alt={p.name} />
 
