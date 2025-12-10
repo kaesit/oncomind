@@ -3,6 +3,8 @@ import TextBox from "devextreme-react/text-box";
 import { Button } from "devextreme-react/button";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
+import { Popup } from "devextreme-react/popup";
+import { SelectBox } from "devextreme-react/select-box";
 import "../../css/DataSets.css";
 
 /* ------------------------------------------------------
@@ -122,6 +124,9 @@ const Patients: React.FC = () => {
           );
      };
 
+     const [filterPopup, setFilterPopup] = useState(false);
+     const [filterType, setFilterType] = useState(null);
+     const [filterSize, setFilterSize] = useState(null);
      return (
           <div className="datasets-wrapper">
 
@@ -150,10 +155,38 @@ const Patients: React.FC = () => {
                          text="Filter"
                          icon="filter"
                          stylingMode="outlined"
+                         onClick={() => setFilterPopup(true)}
                     />
 
 
                </div>
+               {/* FILTER POPUP */}
+               <Popup
+                    visible={filterPopup}
+                    dragEnabled={false}
+                    hideOnOutsideClick={true}
+                    onHiding={() => setFilterPopup(false)}
+                    showCloseButton={true}
+                    width={360}
+                    height="auto"
+                    title="Filter Datasets"
+               >
+                    <div className="filter-popup-body">
+                         <SelectBox
+                              label="Image Type"
+                              placeholder="Select Type"
+                              items={["PNG", "JPG", "TIFF"]}
+                              onValueChanged={(e) => setFilterType(e.value)}
+                         />
+
+                         <SelectBox
+                              label="Dataset Size"
+                              placeholder="Select Size"
+                              items={["<100MB", "100-500MB", ">500MB", "1GB+"]}
+                              onValueChanged={(e) => setFilterSize(e.value)}
+                         />
+                    </div>
+               </Popup>
 
                {/* ----------- CARD GRID ----------- */}
                <div className="datasets-grid">
