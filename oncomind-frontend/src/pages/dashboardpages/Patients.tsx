@@ -8,51 +8,63 @@ import { SelectBox } from "devextreme-react/select-box";
 import "../../css/DataSets.css";
 
 /* ------------------------------------------------------
-   MOCK PATIENT DATA (no data.ts extra file)
+   UPDATED MOCK PATIENT DATA
 ------------------------------------------------------ */
 const mockPatients = [
      {
           id: 1,
           name: "Judie Carter",
+          age: 6,
+          gender: "Female",
+          treatmentStart: "2024-09-15",
           status: "LOW",
           room: "Block A - Room 12",
           admitted: true,
           preview:
-               "https://images.unsplash.com/photo-1631201036602-c557ad26828e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fGNhbmNlciUyMHBhdGllbnR8ZW58MHx8MHx8fDA%3D",
+               "https://images.unsplash.com/photo-1631201036602-c557ad26828e?w=500",
      },
      {
           id: 2,
           name: "Emily Watson",
+          age: 32,
+          gender: "Female",
+          treatmentStart: "2024-11-03",
           status: "URGENT",
           room: "Block C - Room 5",
           admitted: true,
           preview:
-               "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=60",
+               "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500",
      },
      {
           id: 3,
           name: "Jacob Myers",
+          age: 41,
+          gender: "Male",
+          treatmentStart: "2023-02-20",
           status: "NORMAL",
           admitted: false,
           preview:
-               "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=500&q=60",
+               "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500",
      },
      {
           id: 4,
-          name: "Sarah Kim",
+          name: "Geraldo Piet",
+          age: 29,
+          gender: "Male",
+          treatmentStart: "2024-05-12",
           status: "HIGH",
           admitted: true,
           room: "Block B - Room 8",
           preview:
-               "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=500&q=60",
+               "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500",
      },
 ];
 
 /* ------------------------------------------------------
-   MUI CARD STYLING WITH DX THEME VARIABLES
+   UI STYLING
 ------------------------------------------------------ */
 const CardContainer = styled("div")({
-     position: "relative",   // <-- add this
+     position: "relative",
      background: "var(--dx-theme-background-color)",
      border: "1px solid rgba(255,255,255,0.07)",
      borderRadius: "12px",
@@ -70,7 +82,6 @@ const CardContainer = styled("div")({
      },
 });
 
-
 const PreviewImg = styled("img")({
      width: "100%",
      height: "150px",
@@ -78,7 +89,6 @@ const PreviewImg = styled("img")({
      borderRadius: "8px",
 });
 
-/* Dynamic status color */
 const getStatusColor = (status: string) => {
      switch (status) {
           case "LOW":
@@ -105,18 +115,19 @@ const StatusBadge = styled("span")(({ status }: { status: string }) => ({
 }));
 
 /* ------------------------------------------------------
-   MAIN PATIENT PAGE COMPONENT
+   MAIN COMPONENT
 ------------------------------------------------------ */
 const Patients: React.FC = () => {
      const [search, setSearch] = useState("");
      const [selected, setSelected] = useState<number[]>([]);
 
-     const filteredPatients = useMemo(() => {
-          const term = search.toLowerCase();
-          return mockPatients.filter((p) =>
-               p.name.toLowerCase().includes(term)
-          );
-     }, [search]);
+     // Filter popup controls
+     const [filterPopup, setFilterPopup] = useState(false);
+     const [filterGender, setFilterGender] = useState(null);
+     const [filterStatus, setFilterStatus] = useState(null);
+     const [filterAdmitted, setFilterAdmitted] = useState(null);
+     const [startDate, setStartDate] = useState("");
+     const [endDate, setEndDate] = useState("");
 
      const toggleSelect = (id: number) => {
           setSelected((prev) =>
@@ -126,26 +137,57 @@ const Patients: React.FC = () => {
           );
      };
 
-     const [filterPopup, setFilterPopup] = useState(false);
-     const [filterType, setFilterType] = useState(null);
-     const [filterSize, setFilterSize] = useState(null);
+     /* ------------------------------------------------------
+        FILTERING LOGIC
+     ------------------------------------------------------ */
+     const filteredPatients = useMemo(() => {
+          return mockPatients.filter((p) => {
+               const matchesSearch = p.name
+                    .toLowerCase()
+                    .includes(search.toLowerCase());
+
+               const matchesGender =
+                    !filterGender || p.gender === filterGender;
+
+               const matchesStatus =
+                    !filterStatus || p.status === filterStatus;
+
+               const matchesAdmitted =
+                    filterAdmitted === null
+                         ? true
+                         : filterAdmitted === "Yes"
+                              ? p.admitted
+                              : !p.admitted;
+
+               const matchesStartDate =
+                    !startDate || new Date(p.treatmentStart) >= new Date(startDate);
+
+               const matchesEndDate =
+                    !endDate || new Date(p.treatmentStart) <= new Date(endDate);
+
+               return (
+                    matchesSearch &&
+                    matchesGender &&
+                    matchesStatus &&
+                    matchesAdmitted &&
+                    matchesStartDate &&
+                    matchesEndDate
+               );
+          });
+     }, [search, filterGender, filterStatus, filterAdmitted, startDate, endDate]);
+
      return (
           <div className="datasets-wrapper">
-
                {/* ----------- TOP ACTIONS ----------- */}
                <div className="datasets-actions">
-
-                    <Button
-                         text="Add New"
-                         icon="add"
-                         type="default"
-                    />
+                    <Button text="Add New" icon="add" type="default" />
                     <Button
                          text="Delete"
                          icon="trash"
                          type="danger"
                          disabled={selected.length === 0}
                     />
+
                     <TextBox
                          placeholder="Search patient..."
                          value={search}
@@ -159,33 +201,49 @@ const Patients: React.FC = () => {
                          stylingMode="outlined"
                          onClick={() => setFilterPopup(true)}
                     />
-
-
                </div>
-               {/* FILTER POPUP */}
+
+               {/* -------- FILTER POPUP -------- */}
                <Popup
                     visible={filterPopup}
-                    dragEnabled={false}
                     hideOnOutsideClick={true}
                     onHiding={() => setFilterPopup(false)}
                     showCloseButton={true}
-                    width={360}
-                    height="auto"
-                    title="Filter Datasets"
+                    width={380}
+                    title="Filter Patients"
                >
                     <div className="filter-popup-body">
                          <SelectBox
-                              label="Image Type"
-                              placeholder="Select Type"
-                              items={["PNG", "JPG", "TIFF"]}
-                              onValueChanged={(e) => setFilterType(e.value)}
+                              label="Gender"
+                              placeholder="All"
+                              items={["Male", "Female"]}
+                              onValueChanged={(e) => setFilterGender(e.value)}
                          />
 
                          <SelectBox
-                              label="Dataset Size"
-                              placeholder="Select Size"
-                              items={["<100MB", "100-500MB", ">500MB", "1GB+"]}
-                              onValueChanged={(e) => setFilterSize(e.value)}
+                              label="Status"
+                              placeholder="All"
+                              items={["LOW", "NORMAL", "URGENT", "HIGH"]}
+                              onValueChanged={(e) => setFilterStatus(e.value)}
+                         />
+
+                         <SelectBox
+                              label="Admitted"
+                              placeholder="All"
+                              items={["Yes", "No"]}
+                              onValueChanged={(e) => setFilterAdmitted(e.value)}
+                         />
+
+                         <TextBox
+                              label="Treatment Start (From)"
+                              value={startDate}
+                              onValueChanged={(e) => setStartDate(e.value)}
+                         />
+
+                         <TextBox
+                              label="Treatment Start (To)"
+                              value={endDate}
+                              onValueChanged={(e) => setEndDate(e.value)}
                          />
                     </div>
                </Popup>
@@ -209,12 +267,18 @@ const Patients: React.FC = () => {
                                    }}
                               />
 
-
                               <PreviewImg src={p.preview} alt={p.name} />
 
                               <h3 style={{ margin: 0 }}>{p.name}</h3>
-
                               <StatusBadge status={p.status}>{p.status}</StatusBadge>
+
+                              <p style={{ margin: 0, opacity: 0.85 }}>
+                                   Age: {p.age} | Gender: {p.gender}
+                              </p>
+
+                              <p style={{ margin: 0, opacity: 0.85 }}>
+                                   Treatment Start: {p.treatmentStart}
+                              </p>
 
                               <p style={{ margin: 0, opacity: 0.85 }}>
                                    {p.admitted ? p.room : "Not admitted"}
