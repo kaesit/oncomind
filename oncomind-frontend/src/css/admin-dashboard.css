@@ -9,7 +9,7 @@
 
 .kpi-card {
   /* Use DevExtreme base background color instead of custom gradients */
-  background-color: var(--dx-theme-background-color, #1e1e1e);
+  background-color: #1e1e1e;
   /* Add a subtle border or shadow consistent with the theme */
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 16px;
@@ -27,7 +27,6 @@
 }
 
 .kpi-value {
-  color: var(--dx-theme-text-color, #fff);
   font-weight: 500;
   font-size: 24px;
   margin-top: 8px;
@@ -74,7 +73,7 @@
 
 /* Replaced .card-dx with a cleaner look that respects the Dark Theme */
 .card-dx {
-  background-color: var(--dx-theme-background-color);
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px;
   border-radius: 4px;
