@@ -111,9 +111,4 @@
    Removed .dx-grid { color: black; } 
    Let DevExtreme handle the text color.
 */
-.dx-datagrid {
-  /* Optional: removes outer border to blend better with the card */
-  border: none !important;
-}
-
 

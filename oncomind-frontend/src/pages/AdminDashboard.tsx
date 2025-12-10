@@ -1,13 +1,15 @@
 import React, { useMemo, useState } from "react";
-import DataGrid, { Column, Paging, FilterRow, SearchPanel } from "devextreme-react/data-grid";
-import Chart, { Series, ArgumentAxis, CommonSeriesSettings, Legend, Tooltip } from "devextreme-react/chart";
+import DataGrid, { Column, Paging, SearchPanel } from "devextreme-react/data-grid";
+import Chart, { Series, CommonSeriesSettings, ArgumentAxis, Tooltip, Legend } from "devextreme-react/chart";
 import Button from "devextreme-react/button";
-import { type TreeListTypes } from 'devextreme-react/tree-list';
+import CircularGauge, { Scale, RangeContainer, ValueIndicator } from "devextreme-react/circular-gauge";
+
+import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider } from "@mui/material";
 
 import "../css/admin-dashboard.css";
 import "../styles/dx.generic.custom-scheme.css";
+/* ---------------- MOCK DATA ---------------- */
 
-// mock data
 const predictions = new Array(30).fill(0).map((_, i) => ({
   id: i + 1,
   sample: `S-${1000 + i}`,
@@ -23,50 +25,37 @@ const chartData = [
   { day: "Fri", preds: 14 },
 ];
 
-import TreeList, {
-  Column, ColumnChooser, HeaderFilter, SearchPanel, Selection, Lookup,
-} from 'devextreme-react/tree-list';
-
-import { employees, priorities, tasks } from './data.ts';
-import EmployeeCell from './EmployeeCell.tsx';
-
-const expandedKeys = [1, 2];
-const selectedKeys = [1, 29, 42];
-
-const statuses = [
-  'Not Started',
-  'Need Assistance',
-  'In Progress',
-  'Deferred',
-  'Completed',
+const highRiskPatients = [
+  { id: 1, name: "John Carter", status: "HIGH", probability: 0.89 },
+  { id: 2, name: "Emily Stone", status: "URGENT", probability: 0.76 },
+  { id: 3, name: "Mark Philips", status: "NORMAL", probability: 0.45 },
+  { id: 4, name: "Sarah Young", status: "LOW", probability: 0.12 },
+  { id: 5, name: "David Morris", status: "HIGH", probability: 0.81 },
 ];
 
-const dataSourceOptions = {
-  store: tasks.map((task) => {
-    employees.forEach((employee) => {
-      if (task.Task_Assigned_Employee_ID === employee.ID) {
-        task.Task_Assigned_Employee = employee;
-      }
-    });
-    return task;
-  }),
-};
+const activity = [
+  "Model X updated — accuracy improved +3.1%",
+  "5 new samples processed",
+  "Anomaly detected in sample S-1394",
+  "User Dr. Smith exported model logs",
+  "Background training job finished",
+];
 
-const customizeTaskCompletionText = (cellInfo) => `${cellInfo.valueText}%`;
-
-const columns = ['CompanyName', 'City', 'State', 'Phone', 'Fax'];
+/* ---------------------------------------------------- */
 
 export default function AdminDashboard() {
   const [gridData] = useState(predictions);
 
   const kpis = useMemo(() => [
-    { id: 1, title: "Predictions (24h)", value: 342 },
-    { id: 2, title: "Models loaded", value: 2 },
-    { id: 3, title: "Errors (24h)", value: 1 },
+    { id: 1, title: "Patients scanned (24h)", value: 58 },
+    { id: 2, title: "AI classifications", value: 342 },
+    { id: 3, title: "Model anomalies", value: 1 },
   ], []);
 
   return (
     <div className="admin-dashboard">
+
+      {/* KPI ROW */}
       <div className="kpi-row">
         {kpis.map(k => (
           <div className="kpi-card" key={k.id}>
@@ -74,111 +63,116 @@ export default function AdminDashboard() {
             <div className="kpi-value">{k.value}</div>
           </div>
         ))}
+
         <div style={{ marginLeft: "auto" }}>
           <Button className="reload_button" text="Reload model" icon="refresh" />
         </div>
       </div>
 
+      {/* MAIN GRID */}
       <div className="two-up">
-        <div className="dx-viewport card-left card-dx">
-          <h3>Predictions — recent</h3>
+
+        {/* LEFT COLUMN */}
+        <div className="card-left card-dx">
+
+          {/* HIGH RISK PATIENTS */}
+          <h3>High-Risk Patients</h3>
+          <Card sx={{ background: "#141414", color: "white", marginBottom: "20px" }}>
+            <CardContent>
+              {highRiskPatients.map((p, index) => (
+                <div key={p.id}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography>{p.name}</Typography>
+                    <Typography
+                      sx={{
+                        color:
+                          p.status === "HIGH"
+                            ? "#ff4d4f"
+                            : p.status === "URGENT"
+                              ? "#ffa940"
+                              : p.status === "NORMAL"
+                                ? "#40a9ff"
+                                : "#52c41a",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {p.status}
+                    </Typography>
+                  </div>
+                  <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                    Probability: {(p.probability * 100).toFixed(1)}%
+                  </Typography>
+                  {index < highRiskPatients.length - 1 && <Divider sx={{ my: 1, opacity: 0.2 }} />}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* RECENT PREDICTIONS */}
+          <h3>Recent Predictions</h3>
           <DataGrid
             dataSource={gridData}
             keyExpr="id"
             showBorders={true}
             showRowLines={true}
-            columnAutoWidth={false}
-            rowAlternationEnabled={false} // Helps readability in dark mode
+            height={350}
           >
             <SearchPanel visible />
-            <FilterRow visible />
             <Paging defaultPageSize={8} />
-            <Column dataField="sample" caption="Sample" />
+            <Column dataField="sample" caption="Sample ID" />
             <Column dataField="score" caption="Score" dataType="number" />
             <Column dataField="ts" caption="Timestamp" dataType="datetime" />
           </DataGrid>
-
-          <TreeList
-            dataSource={dataSourceOptions}
-            showBorders={true}
-            columnAutoWidth={true}
-            wordWrapEnabled={true}
-            defaultExpandedRowKeys={expandedKeys}
-            defaultSelectedRowKeys={selectedKeys}
-            keyExpr="Task_ID"
-            parentIdExpr="Task_Parent_ID"
-            id="tasks"
-          >
-            <SearchPanel visible={true} width={250} />
-            <HeaderFilter visible={true} />
-            <Selection mode="multiple" />
-            <ColumnChooser enabled={true} />
-
-            <Column dataField="Task_Subject" width={300} />
-            <Column
-              dataField="Task_Assigned_Employee_ID"
-              caption="Assigned"
-              allowSorting={true}
-              minWidth={200}
-              cellComponent={EmployeeCell}
-            >
-              <Lookup dataSource={employees} displayExpr="Name" valueExpr="ID" />
-            </Column>
-            <Column
-              dataField="Task_Status"
-              caption="Status"
-              minWidth={100}
-            >
-              <Lookup dataSource={statuses} />
-            </Column>
-            <Column
-              dataField="Task_Priority"
-              caption="Priority"
-              visible={false}
-            >
-              <Lookup dataSource={priorities} valueExpr="id" displayExpr="value" />
-            </Column>
-            <Column
-              dataField="Task_Completion"
-              caption="% Completed"
-              minWidth={100}
-              customizeText={customizeTaskCompletionText}
-              visible={false}
-            />
-            <Column
-              dataField="Task_Start_Date"
-              caption="Start Date"
-              dataType="date"
-            />
-            <Column
-              dataField="Task_Due_Date"
-              caption="Due Date"
-              dataType="date"
-            />
-          </TreeList>
         </div>
 
-        <div className="card-right card-dx">
-          <h3>Activity</h3>
-          <Chart dataSource={chartData} title="Predictions per day">
-            <CommonSeriesSettings argumentField="day" type="bar" />
-            <Series valueField="preds" name="Predictions" />
-            <ArgumentAxis />
-            <Legend visible={true} />
-            <Tooltip enabled />
-          </Chart>
-        </div>
-      </div>
+        {/* RIGHT COLUMN */}
+        <div className="card-right">
 
-      <div style={{ marginTop: 18 }}>
-        <h3>Actions & logs</h3>
-        <div className="card-dx">
-          <div style={{ display: "flex", gap: 12 }}>
-            <Button text="Export JSON" icon="export" />
-            <Button text="Open logs" icon="folder" stylingMode="outlined" />
+          {/* PREDICTIONS PER DAY CHART */}
+          <div className="card-dx">
+            <h3>Prediction Volume</h3>
+            <Chart dataSource={chartData} height={260}>
+              <CommonSeriesSettings argumentField="day" type="bar" />
+              <Series valueField="preds" name="Predictions" />
+              <ArgumentAxis />
+              <Legend visible={false} />
+              <Tooltip enabled />
+            </Chart>
+          </div>
+
+          {/* SYSTEM LOAD GAUGE */}
+          <div className="card-dx">
+            <h3>System Load</h3>
+            <CircularGauge value={78} size={200}>
+              <Scale startValue={0} endValue={100} />
+              <RangeContainer backgroundColor="#333" />
+              <ValueIndicator type="triangleNeedle" />
+            </CircularGauge>
+          </div>
+
+          {/* ACTIVITY LOG */}
+          <div className="card-dx">
+            <h3>Recent Activity</h3>
+            <List sx={{ color: "white" }}>
+              {activity.map((a, i) => (
+                <ListItem key={i} dense>
+                  <ListItemText primary={a} />
+                </ListItem>
+              ))}
+            </List>
           </div>
         </div>
       </div>
-    </div >
+
+      {/* ACTION BUTTONS */}
+      <div style={{ marginTop: 20 }}>
+        <h3>Actions</h3>
+        <div className="card-dx" style={{ display: "flex", gap: 12 }}>
+          <Button text="Export JSON" icon="export" />
+          <Button text="Open logs" icon="folder" stylingMode="outlined" />
+        </div>
+      </div>
+
+    </div>
   );
 }
