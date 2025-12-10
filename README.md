@@ -81,6 +81,7 @@ Run with:
 ```bash
 python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --test-image PATH_OR_URL
 ```
+
 #### test_or_diagnosis_from_video_source.py
 
 Run with:
@@ -101,3 +102,12 @@ Run with:
 ```bash
 python torch_to_onnx.py --model MODEL_PATH\<model_name>.pt --output OUTPUT_PATH\<model_name>.onnx
 ```
+### cn3 to PDB format 
+
+#### cn3_to_pdb.py
+
+Run with:
+```bash
+python cn3_to_pdb.py --input example.cn3 --output example.pdb
+```
+
