@@ -12,7 +12,7 @@ __pycache__/
 yolov10n.pt
 my_model.onnx
 simple-exploration-notebook-personalized-medicine.ipynb
-
+.pytest_cache/
 # Node
 node_modules/
 dist/

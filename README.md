@@ -50,6 +50,9 @@ skimage
 glfw
 pygame
 pydantic_settings
+pip-audit
+bandit
+httpx
 ```
 
 #### How to install packages:
