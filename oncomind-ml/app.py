@@ -153,7 +153,6 @@ async def _lazy_init_diagnostic_tool():
         _DIAGNOSTIC_TOOL_LOADING_ERROR = None
 
 
-@app.on_event("startup")
 async def startup_event():
     # Optionally kick off lazy init in background (non-blocking)
     # If you want the diagnostic tool loaded at startup, uncomment the following line:
@@ -181,7 +180,7 @@ def root():
 @app.get("/download_model")
 def download_model(model_selected:str, model_type:str, model_url:str):
     print(DATASET_PATH)
-    print(f"{DATASET_PATH}\{model_selected}")
+    print(rf"{DATASET_PATH}\{model_selected}")
     return {
         "Model Selected": model_selected,
         "Model Type": model_type,

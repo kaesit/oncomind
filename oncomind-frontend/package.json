@@ -30,7 +30,10 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
     "devextreme-themebuilder": "25.1.7",
+    "eslint": "^9.39.1",
     "typescript": "^5.0.0",
     "vite": "^5.0.0"
   }
