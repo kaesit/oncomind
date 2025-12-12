@@ -1,104 +1,150 @@
-import React from "react";
-import SpotlightCard from "../components/SpotlightCard";
-import Footer from "../components/Footer";
+import React, { useEffect, useRef } from "react";
 import "../css/About.css";
-
-{/*const items = [
-  {
-    image: "https://i.pravatar.cc/300?img=1",
-    title: "Sarah Johnson",
-    subtitle: "Frontend Developer",
-    handle: "@sarahjohnson",
-    borderColor: "#3B82F6",
-    gradient: "linear-gradient(145deg, #3B82F6, #000)",
-    url: "https://github.com/sarahjohnson",
-  },
-  {
-    image: liberty_icon,
-    title: "Mike Chen",
-    subtitle: "Backend Engineer",
-    handle: "@mikechen",
-    borderColor: "#10B981",
-    gradient: "linear-gradient(180deg, #10B981, #000)",
-    url: "https://linkedin.com/in/mikechen",
-  },
-];
-*/}
-
-
 const About: React.FC = () => {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current ?? document;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            el.classList.add("active");
+          } else {
+            // keep it visible after reveal; remove this line if you want persistent reveal
+            // el.classList.remove("active");
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.12,
+      }
+    );
+
+    const targets = root.querySelectorAll(".reveal");
+    targets.forEach((t) => observer.observe(t));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="about-page">
-      {/* Sayfa Başlığı */}
-      <header className="about-header">
-        <h1 className="about-title">OncoMind</h1>
-        <p className="about-subtitle">Open Source AI Driven Cancer Analysis and Drug Sensitivity Platform</p>
-      </header>
-
-      {/* 
-      
-      <div className="about-cards">
-        <SpotlightCard
-          className="about-spotlight-card"
-          spotlightColor="rgba(75, 218, 232, 0.75)"
-          position={{ x: 12, y: 12 }}
-        >
-          <div className="card-content">
-            <img src={ai_icon} alt="AI Icon" className="card-icon" />
-            <h3>AI Solutions</h3>
-            <p>
-              Building intelligent systems and smart automation tools to empower
-              businesses and modern workflows.
-            </p>
-          </div>
-        </SpotlightCard>
-
-        <SpotlightCard
-          className="about-spotlight-card"
-          spotlightColor="rgba(125, 232, 75, 0.75)"
-          position={{ x: 32, y: 32 }}
-        >
-          <div className="card-content">
-            <img
-              src={innovation_icon}
-              alt="Innovation Icon"
-              className="card-icon"
-            />
-            <h3>Innovation</h3>
-            <p>
-              Creating forward-thinking solutions, experimenting with new
-              technologies, and pushing boundaries of software development.
-            </p>
-          </div>
-        </SpotlightCard>
-
-        <SpotlightCard
-          className="about-spotlight-card"
-          spotlightColor="rgba(232, 75, 127, 0.75)"
-          position={{ x: 24, y: 24 }}
-        >
-          <div className="card-content">
-            <img src={liberty_icon} alt="Liberty Icon" className="card-icon" />
-            <h3>Liberty</h3>
-            <p>
-              Advocating open-source, ethical coding practices, and freedom of
-              choice in tech solutions.
-            </p>
-          </div>
-        </SpotlightCard>
-      </div>
-      
-      
-      */}
-
-
-
-      {/* Footer */}
-      <footer className="lex-footer">
-        <div className="lex-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>© {new Date().getFullYear()} OncoMind</div>
-          <div><a className="footer-link" href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
+    <div className="about-page" ref={rootRef}>
+      {/* HERO */}
+      <section className="hero-section reveal">
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Precision-Engineered AI for
+            <br />
+            <span className="neon-accent">Medical Intelligence</span>
+          </h1>
+          <p className="hero-text">
+            We architect intelligent systems designed to augment clinical workflows,
+            accelerate biomedical research, and transform oncology through accurate
+            image-driven diagnostics.
+          </p>
         </div>
+
+        <div className="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1557825835-70d97c4aa567?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVkaWNhbCUyMHRlY2h8ZW58MHx8MHx8fDA%3D"
+            alt="Medical Tech"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      {/* PHILOSOPHY */}
+      <section className="section-block reveal">
+        <div className="section-text">
+          <h2 className="section-title">Design Philosophy</h2>
+          <p>
+            Our UI and computational architecture follow a techno-minimalistic
+            paradigm: transparent information flow, readable data hierarchy,
+            modular machine learning pipelines, and a visual language inspired by
+            clinical precision instruments.
+          </p>
+        </div>
+
+        <div className="section-image">
+          <img
+            src="https://images.unsplash.com/photo-1582560469781-1965b9af903d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVkaWNhbCUyMHRlY2h8ZW58MHx8MHx8fDA%3D"
+            alt="Design Philosophy"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      {/* TECH STACK */}
+      <section className="section-block reverse reveal">
+        <div className="section-text">
+          <h2 className="section-title">Technical Framework</h2>
+          <ul className="tech-list">
+            <li>— Computer Vision inference pipelines</li>
+            <li>— On-device accelerated segmentation</li>
+            <li>— FastAPI backend with modular endpoints</li>
+            <li>— PyTorch, ONNX interoperability</li>
+            <li>— 3D molecular visualization for protein targets</li>
+          </ul>
+        </div>
+
+        <div className="section-image">
+          <img
+            src="https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHVpfGVufDB8fDB8fHww"
+            alt="Technical Architecture"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      {/* FULL WIDTH — fixed layout */}
+      <section className="full-width-image reveal">
+        <img
+          src="https://images.unsplash.com/photo-1635776063043-ab23b4c226f6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGdyYWRpZW50JTIwYmFja2dyb3VuZHxlbnwwfDB8MHx8fDA%3D"
+          className="bg-image"
+          loading="lazy"
+        />
+        <div className="overlay">
+          <h2>Oncology-Driven Computer Vision</h2>
+          <p>
+            Our platform identifies cellular structures, tissue abnormalities,
+            segmentation masks, and diagnostic indicators to assist healthcare
+            professionals with reliable precision.
+          </p>
+        </div>
+      </section>
+
+      {/* TIMELINE */}
+      <section className="timeline-section reveal">
+        <h2 className="section-title">Our Long-Term Development Roadmap</h2>
+
+        <div className="timeline">
+          <div className="timeline-item">
+            <h3>Phase 1 – Prototype</h3>
+            <p>Dataset acquisition, YOLO-based diagnostics, demo pipeline.</p>
+          </div>
+
+          <div className="timeline-item">
+            <h3>Phase 2 – Core Engine</h3>
+            <p>FastAPI backend, ONNX inference, GPU acceleration.</p>
+          </div>
+
+          <div className="timeline-item">
+            <h3>Phase 3 – Molecular AI</h3>
+            <p>Protein-structure integration, ligand scoring, 3D visualization.</p>
+          </div>
+
+          <div className="timeline-item">
+            <h3>Phase 4 – Clinical UX</h3>
+            <p>Dashboard refinement, patient indexing, advanced analytics.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <p>© 2025 – OncoMind AI Interface Framework</p>
       </footer>
     </div>
   );

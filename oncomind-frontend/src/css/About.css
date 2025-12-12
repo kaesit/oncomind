@@ -1,61 +1,255 @@
-/* Genel sayfa ayarları */
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Source+Code+Pro:wght@300;400;600&display=swap');
+
+/* Root */
 .about-page {
-  background:linear-gradient(180deg, #18191c 0%, #161b22 50%, #161a20 100%);
-  color: #d7dedf;
-  align-items: center;
-  font-family: "VVDS Fifties Exp SBold Italic";
-
-}
-
-/* Başlık */
-.about-header {
+  background: oklch(0.15 0 238);
+  color: #e6f3ff;
+  overflow-x: hidden;
+  font-family: "Source Code Pro", monospace;
   position: relative;
-  text-align: center;
-  top: 13vh;
-  text-shadow: 0 0 15px rgba(175, 210, 255, 0.25); /* Spotlight ile uyumlu daha belirgin bir ışık */
-
 }
 
-.about-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin: 0;
+/* --------------------
+   NOISE LAYER (animated subtle)
+   Uses an SVG turbulence noise embedded as data URI.
+   opacity very low so it stays subtle.
+   -------------------- */
+.about-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='2' seed='2' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  animation: noiseShift 18s linear infinite;
+  transform: translateZ(0);
 }
 
-.about-subtitle {
-  font-size: 1.5rem;
-  color: #d2cbcb;
-  margin-top: 0.5rem;
+@keyframes noiseShift {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 50% 50%;
+  }
+
+  100% {
+    background-position: 0% 100%;
+  }
 }
 
-/* Spotlight kartlar */
-.about-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  width: 100%;
-  margin-top: 8rem;
-  gap: 2rem;
-  justify-content: center;
-  padding: 0 4rem;
-  box-sizing: border-box;
+/* Reveal base state */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(.16, .84, .44, 1);
+  will-change: transform, opacity;
+  position: relative;
+  z-index: 2;
+  /* above noise layer */
 }
 
-.custom-spotlight-card {
-  border-radius: 12px;
-  /*background-color: #58f0b5;*/
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.card-content {
+/* HERO */
+.hero-section {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-  gap: 1rem;
+  padding: 80px 8%;
+  gap: 40px;
 }
 
-.card-icon {
-  width: 48px;
-  height: 48px;
+.hero-content {
+  max-width: 56%;
+}
+
+.hero-title {
+  font-size: 5rem;
+  font-family: "Poiret One", sans-serif;
+  letter-spacing: 2px;
+  margin: 0 0 18px 0;
+  line-height: 1.05;
+}
+
+.neon-accent {
+  color: #82caff;
+  text-shadow: 0 0 12px rgba(120, 180, 255, 0.95);
+}
+
+.hero-text {
+  max-width: 520px;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Hero image */
+.hero-image img {
+  width: 620px;
+  height: 420px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(10, 20, 30, 0.5), 0 0 18px rgba(120, 180, 255, 0.08);
+  display: block;
+  z-index: 2;
+}
+
+/* SECTION BLOCKS */
+.section-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 8%;
+  gap: 40px;
+}
+
+.section-block.reverse {
+  flex-direction: row-reverse;
+}
+
+.section-title {
+  font-family: "Poiret One", sans-serif;
+  font-size: 5rem;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.section-text {
+  max-width: 520px;
+}
+
+.section-image img {
+  width: 620px;
+  height: 420px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(10, 20, 30, 0.5);
+  display: block;
+}
+
+/* Full width image panel — fixed and responsive */
+.full-width-image {
+  position: relative;
+  margin: 70px 0;
+  height: 420px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* make image a full cover background but still use <img> for lazy-loading accessibility */
+.full-width-image .bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  filter: brightness(0.55) saturate(1.05);
+  transform-origin: center;
+  transition: transform 16s ease-out;
+  will-change: transform;
+}
+
+/* subtle slow zoom to add life */
+.reveal.active .bg-image {
+  transform: scale(1.03);
+}
+
+/* overlay centered and readable */
+.full-width-image .overlay {
+  position: absolute;
+  z-index: 3;
+  width: 78%;
+  text-align: center;
+  color: #eaf6ff;
+  pointer-events: none;
+}
+
+.full-width-image .overlay h2 {
+  font-size: 40px;
+  font-family: "Poiret One";
+  margin: 0 0 12px 0;
+  text-shadow: 0 0 16px rgba(120, 180, 255, 0.8);
+}
+
+.full-width-image .overlay p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 16px;
+}
+
+/* TIMELINE */
+.timeline-section {
+  padding: 80px 8%;
+}
+
+.timeline {
+  margin-top: 30px;
+  border-left: 2px solid rgba(160, 200, 255, 0.25);
+  padding-left: 36px;
+}
+
+.timeline-item {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #82caff;
+  box-shadow: 0 0 10px rgba(120, 180, 255, 0.9);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px 0 64px;
+  font-size: 14px;
+  opacity: 0.7;
+  z-index: 2;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+
+  .hero-section,
+  .section-block {
+    flex-direction: column;
+    padding: 60px 6%;
+  }
+
+  .hero-content,
+  .section-text {
+    max-width: 100%;
+  }
+
+  .hero-image img,
+  .section-image img {
+    width: 100%;
+    height: 260px;
+  }
+
+  .full-width-image {
+    height: 300px;
+  }
+
+  .full-width-image .overlay {
+    width: 90%;
+  }
 }
