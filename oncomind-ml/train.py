@@ -1,9 +1,6 @@
 # oncomind-ml/train.py
 """
-Train a small baseline model on synthetic data and save artifacts:
- - model.joblib
- - scaler.joblib
-This is intentionally simple and reproducible to give you a concrete baseline.
+This file is for traning models for spesific paremeters that come from website training interface
 """
 import numpy as np
 import pandas as pd

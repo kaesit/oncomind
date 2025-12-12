@@ -13,6 +13,10 @@ yolov10n.pt
 my_model.onnx
 simple-exploration-notebook-personalized-medicine.ipynb
 .pytest_cache/
+Cancer detection.v3i.yolov11
+cancer_cell_healthy_unhealthy
+cancer_cell_healthy_unhealthy2
+cancer_cell_healthy_unhealthy_fixed
 # Node
 node_modules/
 dist/
