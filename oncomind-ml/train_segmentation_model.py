@@ -40,3 +40,20 @@ if __name__ == "__main__":
         name="cancer_cell_healthy_unhealthy_fixed",
         workers=4,  # Reduced from 8 to 4 to be safer on Windows/GTX 1660
     )
+
+"""
+data="./datasets/Cancer detection.v3i.yolov11/data.yaml",
+epochs=EPOCHS,
+imgsz=960,              # 🔥 EN KRİTİK DEĞİŞİKLİK
+batch=2,                # VRAM’i çözüne harca
+device=0,
+
+# Augmentations (SEGMENTATION-FRIENDLY)
+flipud=0.0,             # medikalde kapat
+fliplr=0.5,             # OK
+mosaic=0.0,             # 🔥 KAPAT
+
+name="cancer_cell_healthy_unhealthy_fixed_v2",
+workers=4,
+
+"""
