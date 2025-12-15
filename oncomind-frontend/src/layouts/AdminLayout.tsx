@@ -16,12 +16,13 @@ const navItems: NavItem[] = [
     text: "Data",
     icon: "folder",
     items: [
-      { id: "datasets", text: "Datasets", path: "/admin/datasets" },
-      { id: "patients", text: "Patients", path: "/admin/patients" },
+      { id: "datasets", text: "Datasets", icon:"doc", path: "/admin/datasets" },
+      { id: "models", text: "Models", icon: "chart", path: "/admin/models" },
+
     ],
   },
-  { id: "models", text: "Models", icon: "chart", path: "/admin/models" },
-  { id: "experiments", text: "Experiments", icon: "flask", path: "/admin/experiments" },
+  { id: "patients", text: "Patients", icon: "user", path: "/admin/patients" },
+  { id: "experiments", text: "Experiments", icon: "clock", path: "/admin/experiments" },
   { id: "settings", text: "Settings", icon: "preferences", path: "/admin/settings" },
 ];
 

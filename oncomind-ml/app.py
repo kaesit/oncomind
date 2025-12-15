@@ -3,16 +3,13 @@ import os
 from pathlib import Path
 import traceback
 from typing import Dict, Any, List, Optional
-# --- FIX START ---
 import matplotlib
 # "Agg" stands for Anti-Grain Geometry. It is a non-interactive backend
 # that only writes to files/buffers and never tries to open a window.
 matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
-# --- FIX END ---
 import numpy as np
 import io
-import base64
 
 from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
