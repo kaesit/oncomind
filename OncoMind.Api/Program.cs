@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
 // CORS policy for local development (vite default is http://localhost:5173)
-var frontendOrigins = new[] { "http://localhost:5173", "http://127.0.0.1:5173" };
+var frontendOrigins = new[] { "http://localhost:5173", "http://127.0.0.1:8000" };
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", policy =>
