@@ -1,5 +1,5 @@
-# oncomind-ml/app.py
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 import traceback
 from typing import Dict, Any, List, Optional
@@ -17,6 +17,7 @@ from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
 
+load_dotenv()
 app = FastAPI(title="OncoMind ML Service")
 
 # --- CORS Middleware Section --- (Ensure this is added as early as possible)
@@ -33,11 +34,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-
-
-# Prefer the real trained wrapper if available; otherwise fall back to the toy stub.
 try:
-    # if you added model_wrapper.py via the previous step, it exposes MODEL
     from model_wrapper import MODEL as TRAINED_MODEL
 except Exception:
     TRAINED_MODEL = None
@@ -47,10 +44,8 @@ try:
 except Exception:
     TOY_MODEL = None
 
-# Use the trained model if present, else toy model
 MODEL = TRAINED_MODEL if TRAINED_MODEL is not None else TOY_MODEL
 
-# Diagnostic tool import (class only) — we import the class but we DO NOT instantiate it here
 DIAGNOSTIC_TOOL_CLASS = None
 try:
     from scripts_py.diagnostic_tool import (
@@ -61,28 +56,20 @@ try:
 except Exception:
     DIAGNOSTIC_TOOL_CLASS = None
 
+YOLO_MODEL_PATH = os.environ.get('YOLO_MODEL_PATH', "").strip() or None
 
-# Configuration: read model path for YOLO from env var, else None
-YOLO_MODEL_PATH = os.environ.get("YOLO_MODEL_PATH", "").strip() or None
-
-# Module-level diagnostic tool instance (lazy)
 _DIAGNOSTIC_TOOL_INSTANCE = None
 _DIAGNOSTIC_TOOL_LOADING_ERROR: Optional[str] = None
 DATASET_PATH = Path("/dataset")
 
-
+@app.get("/check")
 def model_files_check() -> Dict[str, Any]:
-    """
-    Simple check for presence of trained artifacts and YOLO model path.
-    Returns a dict with status information.
-    """
     checks = {
         "trained_model_exists": False,
         "toy_model_available": TOY_MODEL is not None,
         "yolo_model_path": YOLO_MODEL_PATH,
         "yolo_class_available": DIAGNOSTIC_TOOL_CLASS is not None,
     }
-    # trained model presence
     try:
         if TRAINED_MODEL is not None:
             # If wrapper has attribute 'loaded' we can use it
@@ -91,13 +78,12 @@ def model_files_check() -> Dict[str, Any]:
         checks["trained_model_exists"] = False
     return checks
 
-
+@app.get("/multi_cloud_service_check")
 def multi_cloud_service_connection():
     """
     Placeholder: you can add code here to initialize cloud clients,
     credentials, or check connectivity to AWS/GCP endpoints.
     """
-    # Example: read env vars and return a small status dict
     return {
         "aws_configured": bool(os.environ.get("AWS_ACCESS_KEY_ID")),
         "gcp_configured": bool(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")),
@@ -407,13 +393,8 @@ async def plot(x: int, y: int):
     return Response(content=image_bytes, media_type="image/png")
 
 
-# utility endpoint to force reload diagnostic model (for dev)
 @app.post("/admin/reload_diagnostic")
 async def reload_diagnostic(force: bool = True):
-    """
-    Call this to attempt to (re)load the diagnostic tool with current YOLO_MODEL_PATH.
-    Useful when you set YOLO_MODEL_PATH at runtime and want to load model without restarting server.
-    """
     global _DIAGNOSTIC_TOOL_INSTANCE, _DIAGNOSTIC_TOOL_LOADING_ERROR
     _DIAGNOSTIC_TOOL_INSTANCE = None
     _DIAGNOSTIC_TOOL_LOADING_ERROR = None
