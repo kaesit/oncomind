@@ -21,12 +21,14 @@
     "devextreme-react": "22.2",
     "gsap": "^3.13.0",
     "ogl": "^1.0.11",
+    "papaparse": "^5.5.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "^7.9.5",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
+    "@types/papaparse": "^5.5.2",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-router-dom": "^5.3.3",

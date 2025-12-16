@@ -13,6 +13,7 @@ import io
 
 from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
@@ -61,6 +62,7 @@ YOLO_MODEL_PATH = os.environ.get('YOLO_MODEL_PATH', "").strip() or None
 _DIAGNOSTIC_TOOL_INSTANCE = None
 _DIAGNOSTIC_TOOL_LOADING_ERROR: Optional[str] = None
 DATASET_PATH = Path("/dataset")
+CSV_PATH = Path(str(Path.cwd()) + "/datasets/CHEMBL1978_nonredundant.csv")
 
 @app.get("/check")
 def model_files_check() -> Dict[str, Any]:
@@ -89,6 +91,14 @@ def multi_cloud_service_connection():
         "gcp_configured": bool(os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")),
     }
 
+
+@app.get("/datasets/CHEMBL1978_nonredundant.csv")
+def send_csv_data():
+    return FileResponse(
+        path=CSV_PATH,
+        media_type="text/csv",
+        filename="dataset.csv"
+    )
 
 async def multi_model_async_functions():
     """

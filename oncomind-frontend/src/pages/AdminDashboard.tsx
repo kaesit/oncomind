@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import DataGrid, { Column, Paging, SearchPanel } from "devextreme-react/data-grid";
 import Chart, { Series, CommonSeriesSettings, ArgumentAxis, Tooltip, Legend } from "devextreme-react/chart";
 import Button from "devextreme-react/button";
 import CircularGauge, { Scale, RangeContainer, ValueIndicator } from "devextreme-react/circular-gauge";
-
+import Papa from "papaparse";
 import { Card, CardContent, Typography, List, ListItem, ListItemText, Divider } from "@mui/material";
 
 import "../css/admin-dashboard.css";
@@ -51,6 +51,21 @@ export default function AdminDashboard() {
     { id: 2, title: "AI classifications", value: 342 },
     { id: 3, title: "Model anomalies", value: 1 },
   ], []);
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/datasets/CHEMBL1978_nonredundant.csv")
+      .then((res) => res.text())
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            setData(result.data as any[]);
+          }
+        });
+      });
+  }, []);
 
   return (
     <div className="admin-dashboard">
@@ -111,17 +126,14 @@ export default function AdminDashboard() {
           {/* RECENT PREDICTIONS */}
           <h3>Recent Predictions</h3>
           <DataGrid
-            dataSource={gridData}
-            keyExpr="id"
+            dataSource={data}
             showBorders={true}
-            showRowLines={true}
-            height={350}
+            columnAutoWidth={true}
           >
-            <SearchPanel visible />
-            <Paging defaultPageSize={8} />
-            <Column dataField="sample" caption="Sample ID" />
-            <Column dataField="score" caption="Score" dataType="number" />
-            <Column dataField="ts" caption="Timestamp" dataType="datetime" />
+            {data.length > 0 &&
+              Object.keys(data[0]).map((key) => (
+                <Column key={key} dataField={key} />
+              ))}
           </DataGrid>
         </div>
 
@@ -143,7 +155,7 @@ export default function AdminDashboard() {
           {/* SYSTEM LOAD GAUGE */}
           <div className="card-dx">
             <h3>System Load</h3>
-            <CircularGauge value={78} size={200}>
+            <CircularGauge value={78}>
               <Scale startValue={0} endValue={100} />
               <RangeContainer backgroundColor="#333" />
               <ValueIndicator type="triangleNeedle" />
