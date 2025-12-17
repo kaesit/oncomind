@@ -1,0 +1,311 @@
+/* --- DARK THEME AWARENESS STYLES --- */
+
+/* Base Container */
+.awareness-page-container {
+     width: 100%;
+     min-height: 100vh;
+     background-color: var(--bg-dark);
+     /* Deepest background */
+     color: var(--text);
+     /* Lightest text */
+     font-family: inherit;
+}
+
+.content-wrapper {
+     max-width: 1100px;
+     margin: 0 auto;
+     padding: 0 20px;
+}
+
+/* --- HERO SECTION --- */
+.awareness-hero {
+     padding: 100px 0 60px;
+     text-align: center;
+     /* Subtle gradient using your palette */
+     background: radial-gradient(circle at top, var(--bg-light) 0%, var(--bg-dark) 80%);
+     border-bottom: 1px solid var(--border-muted);
+}
+
+.badge-pill {
+     display: inline-block;
+     background-color: var(--primary);
+     /* Primary Blue/Purple */
+     color: var(--bg-dark);
+     /* Dark text on bright pill */
+     padding: 6px 16px;
+     border-radius: 50px;
+     font-size: 0.85rem;
+     font-weight: 700;
+     margin-bottom: 24px;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+}
+
+.hero-title {
+     font-size: 3.5rem;
+     font-weight: 800;
+     margin-bottom: 20px;
+     color: var(--text);
+     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-description {
+     font-size: 1.25rem;
+     line-height: 1.6;
+     max-width: 700px;
+     margin: 0 auto 40px;
+     color: var(--text-muted);
+     /* Muted text for description */
+}
+
+/* --- BUTTONS --- */
+.btn-primary {
+     background-color: var(--primary);
+     color: var(--bg-dark);
+     /* Contrast text */
+     padding: 14px 35px;
+     border-radius: 8px;
+     font-weight: bold;
+     border: none;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     font-size: 1rem;
+}
+
+.btn-primary:hover {
+     background-color: var(--primary-hover);
+     box-shadow: 0 0 15px var(--primary);
+     /* Glow effect */
+     transform: translateY(-2px);
+}
+
+/* --- PILLARS (CARDS) --- */
+.awareness-pillars {
+     padding: 80px 0;
+     background-color: var(--bg);
+     /* Slightly lighter than bg-dark */
+}
+
+.pillars-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+     gap: 30px;
+}
+
+.pillar-card {
+     background-color: var(--bg-light);
+     /* Distinct card background */
+     border: 1px solid var(--border-muted);
+     padding: 40px 30px;
+     border-radius: 16px;
+     transition: transform 0.3s ease, border-color 0.3s;
+}
+
+.pillar-card:hover {
+     transform: translateY(-5px);
+     border-color: var(--primary);
+     /* Highlight border on hover */
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Special styling for Mental Resilience card */
+.highlight-card {
+     border: 1px solid var(--secondary);
+     /* Gold/Yellow border */
+     background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg) 100%);
+}
+
+.highlight-card .pillar-icon {
+     text-shadow: 0 0 20px var(--secondary);
+}
+
+.pillar-icon {
+     font-size: 3rem;
+     margin-bottom: 20px;
+}
+
+.pillar-card h3 {
+     font-size: 1.5rem;
+     margin-bottom: 15px;
+     color: var(--text);
+}
+
+.pillar-card p {
+     color: var(--text-muted);
+     margin-bottom: 20px;
+}
+
+.pillar-list {
+     list-style: none;
+     padding: 0;
+     border-top: 1px solid var(--border-muted);
+     padding-top: 20px;
+}
+
+.pillar-list li {
+     padding: 8px 0;
+     color: var(--text);
+     font-size: 0.95rem;
+     display: flex;
+     align-items: center;
+}
+
+.pillar-list li::before {
+     content: "•";
+     color: var(--primary);
+     font-weight: bold;
+     margin-right: 10px;
+}
+
+/* --- SCREENING SECTION --- */
+.screening-section {
+     padding: 80px 0;
+     background-color: var(--bg-dark);
+}
+
+.screening-box {
+     background-color: var(--bg);
+     padding: 50px;
+     border-radius: 20px;
+     border: 1px solid var(--border);
+}
+
+.section-heading {
+     text-align: center;
+     font-size: 2.2rem;
+     color: var(--text);
+     margin-bottom: 10px;
+}
+
+.section-subtext {
+     text-align: center;
+     margin-bottom: 50px;
+     color: var(--text-muted);
+}
+
+.checklist-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+     gap: 20px;
+}
+
+.check-item {
+     background-color: var(--bg-light);
+     border: 1px solid var(--border-muted);
+     padding: 25px;
+     border-radius: 12px;
+     text-align: center;
+     transition: 0.3s;
+}
+
+.check-item:hover {
+     border-color: var(--info);
+}
+
+.age-tag {
+     display: inline-block;
+     background-color: var(--highlight);
+     /* Uses your highlight color */
+     color: var(--bg-dark);
+     padding: 4px 12px;
+     border-radius: 4px;
+     font-weight: bold;
+     font-size: 0.9rem;
+     margin-bottom: 15px;
+}
+
+.check-details strong {
+     display: block;
+     font-size: 1.1rem;
+     margin-bottom: 8px;
+     color: var(--primary);
+}
+
+.check-details p {
+     color: var(--text-muted);
+     font-size: 0.9rem;
+}
+
+.disclaimer-box {
+     text-align: center;
+     margin-top: 40px;
+     color: var(--text-muted);
+     opacity: 0.7;
+}
+
+/* --- MYTHS SECTION --- */
+.myths-section {
+     padding: 80px 0;
+     background-color: var(--bg);
+}
+
+.myth-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+     gap: 30px;
+     margin-top: 40px;
+}
+
+.myth-card {
+     background: var(--bg-light);
+     border: 1px solid var(--border-muted);
+     border-radius: 12px;
+     overflow: hidden;
+}
+
+.myth-header {
+     padding: 25px;
+     border-bottom: 1px solid var(--border-muted);
+}
+
+.myth-badge {
+     color: var(--danger);
+     /* Red for Myth */
+     font-weight: 900;
+     letter-spacing: 1px;
+     font-size: 0.85rem;
+     display: block;
+     margin-bottom: 8px;
+}
+
+.myth-header p {
+     font-size: 1.2rem;
+     font-weight: 600;
+     color: var(--text);
+     font-style: italic;
+}
+
+.fact-reveal {
+     padding: 25px;
+     background-color: rgba(0, 255, 0, 0.03);
+     /* Very subtle green tint */
+}
+
+.fact-badge {
+     color: var(--success);
+     /* Green for Fact */
+     font-weight: 900;
+     letter-spacing: 1px;
+     font-size: 0.85rem;
+     display: block;
+     margin-bottom: 8px;
+}
+
+.fact-reveal p {
+     color: var(--text-muted);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+     .hero-title {
+          font-size: 2.2rem;
+     }
+
+     .checklist-grid {
+          grid-template-columns: 1fr;
+     }
+
+     .myth-grid {
+          grid-template-columns: 1fr;
+     }
+}

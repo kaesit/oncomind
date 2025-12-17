@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
 import DataSets from "./pages/dashboardpages/DataSets";
 import Patients from "./pages/dashboardpages/Patients";
+import AwarenessPage from "./pages/Awareness";
 
 function AppRouter() {
   return (
@@ -26,6 +27,8 @@ function AppRouter() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
+          <Route path="/awareness" element={<AwarenessPage />} />
+
 
         </Route>
         <Route element={<AdminLayout />}>

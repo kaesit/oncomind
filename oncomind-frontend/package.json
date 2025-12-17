@@ -20,6 +20,7 @@
     "devextreme": "22.2",
     "devextreme-react": "22.2",
     "gsap": "^3.13.0",
+    "lucide-react": "^0.561.0",
     "ogl": "^1.0.11",
     "papaparse": "^5.5.3",
     "react": "18.3.1",
