@@ -16,6 +16,7 @@ import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
 import DataSets from "./pages/dashboardpages/DataSets";
 import Patients from "./pages/dashboardpages/Patients";
 import AwarenessPage from "./pages/Awareness";
+import Models from "./pages/dashboardpages/Models";
 
 function AppRouter() {
   return (
@@ -36,6 +37,7 @@ function AppRouter() {
           <Route path="/admin/settings" element={<DashboardSettings />} />
           <Route path="/admin/datasets" element={<DataSets />} />
           <Route path="/admin/patients" element={<Patients />} />
+          <Route path="/admin/models" element={<Models />} />
 
 
         </Route>
