@@ -17,7 +17,7 @@ import DataSets from "./pages/dashboardpages/DataSets";
 import Patients from "./pages/dashboardpages/Patients";
 import AwarenessPage from "./pages/Awareness";
 import Models from "./pages/dashboardpages/Models";
-
+import Contact from "./pages/Contact";
 function AppRouter() {
   return (
     <BrowserRouter>
@@ -29,6 +29,7 @@ function AppRouter() {
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
           <Route path="/awareness" element={<AwarenessPage />} />
+          <Route path="/contact" element={<Contact />} />
 
 
         </Route>
