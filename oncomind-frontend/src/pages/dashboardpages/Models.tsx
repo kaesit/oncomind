@@ -1,13 +1,11 @@
 "use client";
-
 import React, { useState } from "react";
 import { Button } from "devextreme-react/button";
 import { TextBox } from "devextreme-react/text-box";
 import { SelectBox } from "devextreme-react/select-box";
 import { Popup } from "devextreme-react/popup";
 import CheckBox from "devextreme-react/check-box";
-
-import "../../css/Models.css"; // Optional stylesheet for layout
+import "../../css/Models.css";
 
 const initialDatasets = [
      {

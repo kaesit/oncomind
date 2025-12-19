@@ -59,16 +59,6 @@ export const Navbar: React.FC = () => {
 
             Awareness
           </BrutalistButton></a>
-        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/pipeline" onClick={closeMobileMenu}>
-          <BrutalistButton
-            onClick={() => console.log('Portal clicked')}
-            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
-          >
-
-            Drug Pipeline
-          </BrutalistButton>
-
-        </a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/about" onClick={closeMobileMenu}>
           <BrutalistButton
             onClick={() => console.log('Portal clicked')}
@@ -94,16 +84,6 @@ export const Navbar: React.FC = () => {
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
             Dashboard
-          </BrutalistButton>
-        </a>
-        <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/search" onClick={closeMobileMenu}>
-          
-          <BrutalistButton
-            onClick={() => console.log('Portal clicked')}
-            style={{ padding: '10px 16px', fontSize: '0.9rem' }}
-          >
-            {/*<img style={{width: "20px", height: "20px", margin: "0.2rem"}} src={search_icon} alt="" /> */}
-            Search
           </BrutalistButton>
         </a>
       </div>
