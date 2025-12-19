@@ -18,23 +18,73 @@
      align-items: center;
      /*background: linear-gradient(90deg, #192031 0%, #0c0d10 50%, #060607 100%);*/
      background: transparent;
-     border: 1px solid rgba(255, 255, 255, 0.26);
      width: 95vw;
-     height: 65vh;
+     height: 85vh;
      padding: 20px;
      gap: 5rem;
      border-radius: 40px;
 }
 
-.information-section>div {
+
+.research-section {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     background: transparent;
+     width: 95vw;
+     height: 35vh;
+     padding: 10px;
+     gap: 1rem;
+}
+
+
+.publication-section {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     background: transparent;
+     width: 95vw;
+     height: 35vh;
+     padding: 10px;
+     gap: 1rem;
+}
+
+.info-div-title {
+     font-size: 2.1rem;
+     letter-spacing: 0.05em;
+     margin-top: 1rem;
+}
+
+.information-card::before {
+     content: "";
+     position: absolute;
+     inset: 0;
+     background: linear-gradient(180deg,
+               rgba(0, 0, 0, 0.15) 0%,
+               rgba(0, 0, 0, 0.65) 100%);
+     border-radius: 32px;
+     z-index: 0;
+}
+
+.information-card>* {
+     position: relative;
+     z-index: 1;
+}
+
+.information-card {
+     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+     font-size: 1.6rem;
+     background-repeat: no-repeat;
+     background-size: contain;
+     backdrop-filter: blur(12px);
+     background-color: rgba(15, 18, 30, 0.55);
      width: 100%;
      height: 95%;
      justify-content: center;
      align-items: center;
-     background: linear-gradient(180deg,
-               #111212 0%,
-               #212223 100%);
-
+     padding: 4px;
      /* Or a semi-transparent version */
      /* background: linear-gradient(180deg, rgba(60, 85, 222, 0.8) 0%, rgba(74, 144, 226, 0.8) 100%); */
      border: 1px solid rgba(163, 163, 163, 0.324);
@@ -46,16 +96,98 @@
      transition: 0.2s ease-in-out;
 }
 
-.information-section>div:hover {
-     transform: translateY(-2px);
-     transition: 0.2s ease-in-out;
-     border-color: #fff;
+.information-card:nth-child(1) {
+     background-image: url("https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHByb3RvdHlwZXxlbnwwfHwwfHx8MA%3D%3D");
+     animation-delay: 0.1s;
+}
+
+.information-card:nth-child(2) {
+     background-image: url("https://news.mit.edu/sites/default/files/images/202511/MIT-Optimal-Decisions-01-press.jpg");
+     animation-delay: 0.25s;
+}
+
+.information-card:nth-child(3) {
+     background-image: url("https://dpjh8al9zd3a4.cloudfront.net/sites/default/files/styles/rti_masthead_with_image_large_image/public/istock_56013860_molecule_computer_2500.jpg.webp?itok=OR6Nehpf");
+     animation-delay: 0.4s;
+}
+
+.information-card {
+     animation: fadeUp 0.8s ease forwards;
+     opacity: 0;
+}
+
+.research-steps {
+     list-style: none;
+     padding: 0;
+     margin-top: 1.5rem;
+}
+
+.research-steps li {
+     font-family: "Cascadia Code", monospace;
+     font-size: 1.2rem;
+     margin: 0.6rem 0;
+     opacity: 0.85;
+}
+
+.publication-list {
+     display: flex;
+     flex-direction: column;
+     gap: 0.4rem;
+     margin-top: 1.5rem;
+}
+
+.publication-list a {
+     color: #aab4ff;
+     text-decoration: none;
+     font-family: "Cascadia Code", monospace;
+     transition: 0.2s ease;
+}
+
+.publication-list a:hover {
+     color: #ffffff;
+     transform: translateX(-6px);
+}
+
+@keyframes fadeUp {
+     from {
+          opacity: 0;
+          transform: translateY(30px);
+     }
+
+     to {
+          opacity: 1;
+          transform: translateY(0);
+     }
+}
+
+.information-card:hover {
+     transform: translateY(-6px) scale(1.02);
+     border-color: rgba(255, 255, 255, 0.6);
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.info-code-text {
+     font-family: "Cascadia Code", monospace;
+     font-size: 1.4rem;
+     font-weight: 200;
+     position: relative;
+     top: 1.5rem;
+     line-height: 1.6;
+     opacity: 0.9;
 }
 
 .research-card-images {
      width: 90%;
-     height: 80%;
+     height: 45%;
+     object-fit: cover;
      border-radius: 20px;
+     margin-top: 1rem;
+     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+     transition: transform 0.3s ease;
+}
+
+.information-card:hover .research-card-images {
+     transform: scale(1.03);
 }
 
 .title_for_sections {
@@ -66,4 +198,23 @@
 
 .research_container>p {
      font: var(--p);
+}
+
+
+.lex-footer {
+     padding: 28px 0;
+     border-top: 1px solid rgba(255, 255, 255, 0.02);
+     color: var(--muted);
+}
+
+.footer-link {
+     text-decoration: none;
+     color: var(--accent-blue);
+     transition: 0.3s ease-out;
+}
+
+.footer-link:hover {
+     text-decoration: none;
+     color: var(--accent-cyan);
+     transition: 0.3s ease-out;
 }
