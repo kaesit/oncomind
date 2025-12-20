@@ -10385,6 +10385,7 @@
 }
 .dx-pager,
 .dx-pagination {
+  background-color: #040404;
   overflow: hidden;
   width: 100%;
   line-height: normal;
@@ -10606,7 +10607,7 @@
 .dx-pagination .dx-page,
 .dx-pagination .dx-page-size {
   border-radius: 13px;
-  border: 1px solid transparent;
+  border: 1px solid #000;
 }
 .dx-pager .dx-page-sizes .dx-page-size,
 .dx-pagination .dx-page-sizes .dx-page-size {
@@ -21490,7 +21491,7 @@ input.dx-hidden {
 .dx-gantt .dx-gantt-task-edit-dependency-r,
 .dx-gantt .dx-gantt-task-edit-successor-dependency-l,
 .dx-gantt .dx-gantt-task-edit-successor-dependency-r {
-  background: #fff;
+  background: #000;
   border: 1px solid #1686b0;
   width: 10px;
   height: 10px;
@@ -21752,7 +21753,7 @@ input.dx-hidden {
   max-height: var(--dx-cardview-card-cover-max-height);
   aspect-ratio: var(--dx-cardview-card-cover-ratio);
   width: 100%;
-  background-color: #fff;
+  background-color: #000;
 }
 .dx-card-cover-noimage {
   background-color: #3f3f3f;

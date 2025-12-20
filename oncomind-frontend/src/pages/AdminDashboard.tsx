@@ -102,12 +102,12 @@ export default function AdminDashboard() {
                       sx={{
                         color:
                           p.status === "HIGH"
-                            ? "#ff4d4f"
+                            ? "oklch(0.6293 0.2249 25.3)"
                             : p.status === "URGENT"
-                              ? "#ffa940"
+                              ? "oklch(0.8075 0.1671 106.56)"
                               : p.status === "NORMAL"
-                                ? "#40a9ff"
-                                : "#52c41a",
+                                ? "oklch(0.627 0.1809 255.49)"
+                                : "oklch(0.797 0.1936 133.33)",
                         fontWeight: "bold",
                       }}
                     >
