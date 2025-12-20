@@ -1,0 +1,16 @@
+# Python
+*.py linguist-language=Python
+
+# TypeScript / TSX (React)
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+
+# C#
+*.cs linguist-language=C#
+
+# Jupyter Notebooks
+*.ipynb linguist-language=Jupyter Notebook
+
+# Docker
+Dockerfile linguist-language=Dockerfile
+*.dockerfile linguist-language=Dockerfile
