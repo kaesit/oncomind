@@ -17,3 +17,6 @@ Dockerfile linguist-language=Dockerfile
 
 # Ignore CSS from language stats
 *.css linguist-documentation
+
+# Ignore Jupyter notebooks from language stats
+*.ipynb linguist-documentation
