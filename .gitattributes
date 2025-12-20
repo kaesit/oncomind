@@ -14,3 +14,6 @@
 # Docker
 Dockerfile linguist-language=Dockerfile
 *.dockerfile linguist-language=Dockerfile
+
+# Ignore CSS from language stats
+*.css linguist-documentation
