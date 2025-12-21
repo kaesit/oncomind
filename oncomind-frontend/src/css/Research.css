@@ -8,23 +8,18 @@
 }
 
 .research-page-title {
-     font-size: 5.4rem;
+     font-family: "VVDS Fifties Exp SBold", sans-serif;
+     font-size: clamp(3.2rem, 6vw, 5.4rem);
+     letter-spacing: 0.12em;
 }
 
 .information-section {
-     display: flex;
-     flex-direction: row;
-     justify-content: center;
-     align-items: center;
-     /*background: linear-gradient(90deg, #192031 0%, #0c0d10 50%, #060607 100%);*/
-     background: transparent;
-     width: 95vw;
-     height: 85vh;
-     padding: 20px;
-     gap: 5rem;
-     border-radius: 40px;
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+     gap: 3rem;
+     width: 92vw;
+     padding: 4rem 2rem;
 }
-
 
 .research-section {
      display: flex;
@@ -36,6 +31,16 @@
      height: 35vh;
      padding: 10px;
      gap: 1rem;
+}
+
+.research_container::after {
+     content: "";
+     position: fixed;
+     inset: 0;
+     pointer-events: none;
+     background-image: url("/noise.png");
+     opacity: 0.04;
+     mix-blend-mode: overlay;
 }
 
 
@@ -52,9 +57,10 @@
 }
 
 .info-div-title {
-     font-size: 2.1rem;
-     letter-spacing: 0.05em;
-     margin-top: 1rem;
+     font-family: "Poiret One", sans-serif;
+     font-size: 1.9rem;
+     letter-spacing: 0.18em;
+     text-transform: uppercase;
 }
 
 .information-card::before {
@@ -74,26 +80,18 @@
 }
 
 .information-card {
-     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-     font-size: 1.6rem;
-     background-repeat: no-repeat;
-     background-size: contain;
-     backdrop-filter: blur(12px);
-     background-color: rgba(15, 18, 30, 0.55);
-     width: 100%;
-     height: 95%;
-     justify-content: center;
-     align-items: center;
-     padding: 4px;
-     /* Or a semi-transparent version */
-     /* background: linear-gradient(180deg, rgba(60, 85, 222, 0.8) 0%, rgba(74, 144, 226, 0.8) 100%); */
-     border: 1px solid rgba(163, 163, 163, 0.324);
-     border-radius: 12px;
-     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-     color: white;
-     /* Ensure text is white */
-     border-radius: 32px;
-     transition: 0.2s ease-in-out;
+     position: relative;
+     background: linear-gradient(180deg,
+               rgba(18, 22, 36, 0.75),
+               rgba(10, 12, 20, 0.9));
+     backdrop-filter: blur(14px);
+     border: 1px solid rgba(255, 255, 255, 0.08);
+     border-radius: 28px;
+     padding: 2.4rem;
+     display: flex;
+     flex-direction: column;
+     gap: 1.2rem;
+     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .information-card:nth-child(1) {
@@ -167,27 +165,25 @@
 }
 
 .info-code-text {
-     font-family: "Cascadia Code", monospace;
-     font-size: 1.4rem;
-     font-weight: 200;
-     position: relative;
-     top: 1.5rem;
-     line-height: 1.6;
-     opacity: 0.9;
+     font-family: "Source Code Pro", monospace;
+     font-size: 1.15rem;
+     line-height: 1.7;
+     opacity: 0.85;
 }
 
 .research-card-images {
-     width: 90%;
-     height: 45%;
+     width: 100%;
+     height: 180px;
      object-fit: cover;
-     border-radius: 20px;
-     margin-top: 1rem;
-     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-     transition: transform 0.3s ease;
+     border-radius: 18px;
+     filter: saturate(0.9) contrast(1.05);
+     transition: 0.6s ease-in-out;
 }
 
 .information-card:hover .research-card-images {
      transform: scale(1.03);
+     transition: 0.6s ease-in-out;
+
 }
 
 .title_for_sections {
@@ -200,6 +196,17 @@
      font: var(--p);
 }
 
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 .lex-footer {
      padding: 28px 0;
