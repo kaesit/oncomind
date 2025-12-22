@@ -10,7 +10,65 @@
 .research-page-title {
      font-family: "VVDS Fifties Exp SBold", sans-serif;
      font-size: clamp(3.2rem, 6vw, 5.4rem);
-     letter-spacing: 0.12em;
+     letter-spacing: 0.16em;
+     line-height: 1.1;
+     font-weight: 700;
+
+     /* Cool retro-futuristic blue gradient */
+     background: linear-gradient(120deg,
+               #00d4ff 0%,
+               #0ea5e9 30%,
+               #3b82f6 60%,
+               #6366f1 85%,
+               #8b5cf6 100%);
+     -webkit-background-clip: text;
+     background-clip: text;
+     -webkit-text-fill-color: transparent;
+
+     /* Smooth animated gradient */
+     background-size: 200% 200%;
+     animation: gradientShift 10s ease-in-out infinite;
+
+     /* Subtle glow - much lighter */
+     filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.15));
+     
+}
+
+@keyframes gradientShift {
+
+     0%,
+     100% {
+          background-position: 0% 50%;
+     }
+
+     50% {
+          background-position: 100% 50%;
+     }
+}
+
+/* Optional: Minimal decorative elements */
+.research-page-title::before {
+     content: '';
+     position: absolute;
+     top: 50%;
+     left: -40px;
+     width: 30px;
+     height: 2px;
+     background: linear-gradient(90deg, transparent, oklch(0.65 0.2 240));
+     transform: translateY(-50%);
+     opacity: 0.6;
+}
+
+.research-page-title::after {
+     content: '';
+     position: absolute;
+     top: 50%;
+     right: -40px;
+     width: 30px;
+     height: 2px;
+     background: linear-gradient(90deg, oklch(0.65 0.19 260), transparent);
+     transform: translateY(-50%);
+     opacity: 0.6;
 }
 
 .information-section {
@@ -92,7 +150,7 @@
      flex-direction: column;
      gap: 1.2rem;
      transition: transform 0.6s ease-in-out, box-shadow 0.6s ease;
-     
+
 }
 
 .information-card:nth-child(1) {
@@ -200,14 +258,14 @@
 
 
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: 0.8s ease;
+     opacity: 0;
+     transform: translateY(40px);
+     transition: 0.8s ease;
 }
 
 .reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+     opacity: 1;
+     transform: translateY(0);
 }
 
 .lex-footer {
