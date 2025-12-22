@@ -19,6 +19,7 @@ import AwarenessPage from "./pages/Awareness";
 import Models from "./pages/dashboardpages/Models";
 import Contact from "./pages/Contact";
 import PatientProfile from "./pages/dashboardpages/PatientInfo";
+import DrugCandidates from "./pages/dashboardpages/DrugCandidates";
 
 function AppRouter() {
   return (
@@ -42,6 +43,7 @@ function AppRouter() {
           <Route path="/admin/patients" element={<Patients />} />
           <Route path="/admin/models" element={<Models />} />
           <Route path="/admin/patients/patient_info" element={<PatientProfile />} />
+          <Route path="/admin/drug_candidates" element={<DrugCandidates />} />
 
 
         </Route>
