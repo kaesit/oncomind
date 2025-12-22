@@ -251,39 +251,41 @@ const Patients: React.FC = () => {
                {/* ----------- CARD GRID ----------- */}
                <div className="datasets-grid">
                     {filteredPatients.map((p) => (
-                         <CardContainer key={p.id}>
-                              <Checkbox
-                                   checked={selected.includes(p.id)}
-                                   onChange={() => toggleSelect(p.id)}
-                                   sx={{
-                                        position: "absolute",
-                                        top: "10px",
-                                        left: "10px",
-                                        zIndex: 5,
-                                        color: "var(--dx-theme-secondary-color)",
-                                        "&.Mui-checked": {
-                                             color: "var(--dx-theme-accent-color)",
-                                        },
-                                   }}
-                              />
+                         <a style={{textDecoration:"none", color:"white"}} href="/admin/patients/patient_info">
+                              <CardContainer key={p.id}>
+                                   <Checkbox
+                                        checked={selected.includes(p.id)}
+                                        onChange={() => toggleSelect(p.id)}
+                                        sx={{
+                                             position: "absolute",
+                                             top: "10px",
+                                             left: "10px",
+                                             zIndex: 5,
+                                             color: "var(--dx-theme-secondary-color)",
+                                             "&.Mui-checked": {
+                                                  color: "var(--dx-theme-accent-color)",
+                                             },
+                                        }}
+                                   />
 
-                              <PreviewImg src={p.preview} alt={p.name} />
+                                   <PreviewImg src={p.preview} alt={p.name} />
 
-                              <h3 style={{ margin: 0 }}>{p.name}</h3>
-                              <StatusBadge status={p.status}>{p.status}</StatusBadge>
+                                   <h3 style={{ margin: 0 }}>{p.name}</h3>
+                                   <StatusBadge status={p.status}>{p.status}</StatusBadge>
 
-                              <p style={{ margin: 0, opacity: 0.85 }}>
-                                   Age: {p.age} | Gender: {p.gender}
-                              </p>
+                                   <p style={{ margin: 0, opacity: 0.85 }}>
+                                        Age: {p.age} | Gender: {p.gender}
+                                   </p>
 
-                              <p style={{ margin: 0, opacity: 0.85 }}>
-                                   Treatment Start: {p.treatmentStart}
-                              </p>
+                                   <p style={{ margin: 0, opacity: 0.85 }}>
+                                        Treatment Start: {p.treatmentStart}
+                                   </p>
 
-                              <p style={{ margin: 0, opacity: 0.85 }}>
-                                   {p.admitted ? p.room : "Not admitted"}
-                              </p>
-                         </CardContainer>
+                                   <p style={{ margin: 0, opacity: 0.85 }}>
+                                        {p.admitted ? p.room : "Not admitted"}
+                                   </p>
+                              </CardContainer>
+                         </a>
                     ))}
                </div>
           </div>
