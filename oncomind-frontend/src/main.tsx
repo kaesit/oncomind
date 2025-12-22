@@ -18,6 +18,8 @@ import Patients from "./pages/dashboardpages/Patients";
 import AwarenessPage from "./pages/Awareness";
 import Models from "./pages/dashboardpages/Models";
 import Contact from "./pages/Contact";
+import PatientProfile from "./pages/dashboardpages/PatientInfo";
+
 function AppRouter() {
   return (
     <BrowserRouter>
@@ -39,6 +41,7 @@ function AppRouter() {
           <Route path="/admin/datasets" element={<DataSets />} />
           <Route path="/admin/patients" element={<Patients />} />
           <Route path="/admin/models" element={<Models />} />
+          <Route path="/admin/patients/patient_info" element={<PatientProfile />} />
 
 
         </Route>
