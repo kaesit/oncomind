@@ -6,6 +6,9 @@ import { TextBox } from "devextreme-react/text-box";
 import { SelectBox } from "devextreme-react/select-box";
 import { Popup } from "devextreme-react/popup";
 import CheckBox from "devextreme-react/check-box";
+import candidateMoleculeImage from "../../img/molecules/Cc1c(F)cncc1-c1ccc2nc(NC(=O)[C@@H]3C[C@@H]3F)c(Cl)n2c1.png";
+import candidateMoleculeImage2 from "../../img/molecules/CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21.png";
+
 
 import "../../css/DataSets.css"; // Optional stylesheet for layout
 
@@ -18,7 +21,7 @@ const initialMolecules = [
           downloaded: "2025-11-20",
           QED: 0.77,
           MW: 362.8,
-          preview: "../../img/molecules/Cc1c(F)cncc1-c1ccc2nc(NC(=O)[C@@H]3C[C@@H]3F)c(Cl)n2c1.png"
+          preview: candidateMoleculeImage
      },
      {
           id: 2,
@@ -26,8 +29,8 @@ const initialMolecules = [
           smiles: "CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21",
           downloaded: "2025-11-20",
           QED: 0.77,
-          MW: 362.8,
-          preview: "../../img/molecules/CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21.png"
+          MW: 330.8,
+          preview: candidateMoleculeImage2
      }
 ];
 
@@ -85,7 +88,7 @@ export default function DrugCandidates() {
      return (
           <div className="datasets-wrapper">
                {/* TITLE */}
-               <h1 className="page-title">Datasets</h1>
+               <h1 className="page-title">Drug Candidates</h1>
 
                {/* TOP ACTION BAR */}
                <div className="datasets-actions dx-card">
