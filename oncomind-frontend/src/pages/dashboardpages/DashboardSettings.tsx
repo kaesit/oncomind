@@ -7,15 +7,18 @@ import "../../css/DashboardSettings.css";
 import { RadioGroup } from 'devextreme-react/radio-group';
 
 const dataSource = ['Low', 'Normal', 'Urgent', 'High'];
+const dataSource2 = ['Mail', 'SMS', 'Slack', 'Teams'];
+
 
 export default function DashboardSettings() {
      return (
           <div className="settings-page">
 
                <h2 className="page-title">Dashboard Settings</h2>
-
                {/* ===== SYSTEM SETTINGS CARD ===== */}
                <div className="page-grid">
+
+
                     <div className="settings-card">
                          <h3 className="card-title">System Configuration</h3>
 
@@ -72,10 +75,7 @@ export default function DashboardSettings() {
                          </div>
 
                          {/* ==== SAVE BUTTON BAR ===== */}
-                         <div className="settings-actions">
-                              <Button text="Save Settings" type="default" stylingMode="contained" />
-                              <Button text="Reset" type="normal" />
-                         </div>
+
                     </div>
                     <div>
                          <div className="card-dx">
@@ -96,16 +96,111 @@ export default function DashboardSettings() {
                                         />
                                    </div>
                                    <div className="field">
-                                        <label>Yes or No to Stay</label>
+                                        <label>Open at Background</label>
                                         <Switch></Switch>
                                    </div>
                               </div>
 
                          </div>
-                         <div className="settings-actions">
-                              <Button text="Save Settings" type="default" stylingMode="contained" />
-                              <Button text="Reset" type="normal" />
+                    </div>
+                    <div className="settings-actions">
+                         <Button text="Save Settings" type="default" stylingMode="contained" />
+                         <Button text="Reset" type="normal" />
+                    </div>
+               </div>
+               <h2 className="page-title">API Settings</h2>
+               <div className="page-grid">
+                    <div className="settings-card">
+                         <h3 className="card-title">API Configurations</h3>
+
+                         <div className="settings-grid">
+                              <div className="field">
+                                   <label>Environment Name</label>
+                                   <TextBox placeholder="My Environment" />
+                              </div>
+
+                              <div className="field">
+                                   <label>Theme</label>
+                                   <SelectBox
+                                        items={["Jupyter", "Colab", "Kaggle"]}
+                                        placeholder="Select Notebook Type"
+                                   />
+                              </div>
+
+                              <div className="field">
+                                   <label>Mail API Provider</label>
+                                   <SelectBox
+                                        items={["SMTP2Go", "Postmark", "Yandex Mail", "Brevo"]}
+                                        placeholder="Select a default mail transaction service"
+                                   />
+                              </div>
+
+                              <div className="field">
+                                   <label>Enable Logs</label>
+                                   <Switch defaultValue={true} />
+                              </div>
                          </div>
+                    </div>
+                    {/* ===== USER PREFERENCES CARD ===== */}
+                    <div>
+                         <div className="settings-card">
+                              <h3 className="card-title">User Preferences</h3>
+
+                              <div className="settings-grid">
+                                   <div className="field">
+                                        <label>Log-Backup Period</label>
+                                        <SelectBox items={["1 Day", "1 Week", "1 Month", "Never(Not Recommended)"]} />
+                                   </div>
+
+                                   <div className="field">
+                                        <label>Mail Notifications</label>
+                                        <Switch>
+                                        </Switch>
+                                   </div>
+
+                                   <div className="field">
+                                        <label>SMS Notifications</label>
+                                        <Switch>
+                                        </Switch>
+                                   </div>
+                                   <div className="field">
+                                        <label>Slack Notifications</label>
+                                        <Switch>
+                                        </Switch>
+                                   </div>
+                                   <div className="field">
+                                        <label>Teams Notifications</label>
+                                        <Switch>
+                                        </Switch>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    <div>
+                         <div className="card-dx">
+                              <h3 className="card-title">System Traffic Preferences</h3>
+                              <div className="settings-grid">
+                                   <div className="field">
+                                        <label>Are you using API benefits lot?</label>
+                                        <RadioGroup
+                                             dataSource={dataSource}
+                                             defaultValue={"Low"}
+                                        />
+                                   </div>
+                                   <div className="field">
+                                        <label>What is the API tool you use most</label>
+                                        <RadioGroup
+                                             dataSource={dataSource2}
+                                             defaultValue={"Mail"}
+                                        />
+                                   </div>
+                              </div>
+
+                         </div>
+                    </div>
+                    <div className="settings-actions">
+                         <Button text="Save Settings" type="default" stylingMode="contained" />
+                         <Button text="Reset" type="normal" />
                     </div>
                </div>
           </div>
