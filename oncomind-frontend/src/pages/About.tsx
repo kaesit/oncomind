@@ -47,7 +47,7 @@ const About: React.FC = () => {
 
           <div className="hero-image">
             <img
-              src="https://images.unsplash.com/photo-1557825835-70d97c4aa567?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVkaWNhbCUyMHRlY2h8ZW58MHx8MHx8fDA%3D"
+              src="https://cdn.cosmos.so/6990b780-d4c3-4764-aa2d-4575d6d6bd2f?format=jpeg"
               alt="Medical Tech"
               loading="lazy"
             />
@@ -68,7 +68,7 @@ const About: React.FC = () => {
 
           <div className="section-image">
             <img
-              src="https://images.unsplash.com/photo-1582560469781-1965b9af903d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVkaWNhbCUyMHRlY2h8ZW58MHx8MHx8fDA%3D"
+              src="https://images.unsplash.com/photo-1606206873764-fd15e242df52?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Design Philosophy"
               loading="lazy"
             />
@@ -90,7 +90,7 @@ const About: React.FC = () => {
 
           <div className="section-image">
             <img
-              src="https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHVpfGVufDB8fDB8fHww"
+              src="https://cdn.cosmos.so/df64935a-3d99-46e0-bc38-9daa349f2947?format=jpeg"
               alt="Technical Architecture"
               loading="lazy"
             />
@@ -100,7 +100,7 @@ const About: React.FC = () => {
         {/* FULL WIDTH */}
         <section className="full-width-image reveal">
           <img
-            src="https://images.unsplash.com/photo-1644426358812-879f02d1d867?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://images.unsplash.com/photo-1620121478247-ec786b9be2fa?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             className="bg-image"
             loading="lazy"
             alt="Background"
