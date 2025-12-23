@@ -8,7 +8,7 @@ import { Popup } from "devextreme-react/popup";
 import CheckBox from "devextreme-react/check-box";
 import candidateMoleculeImage from "../../img/molecules/Cc1c(F)cncc1-c1ccc2nc(NC(=O)[C@@H]3C[C@@H]3F)c(Cl)n2c1.png";
 import candidateMoleculeImage2 from "../../img/molecules/CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21.png";
-
+import candidateMoleculeImage3 from "../../img/molecules/CC(C)(C)C(=O)N1Cc2c(NC(=O)c3cc(F)cc(F)c3)n[nH]c2C1(C)C.png";
 
 import "../../css/DataSets.css"; // Optional stylesheet for layout
 
@@ -31,6 +31,15 @@ const initialMolecules = [
           QED: 0.77,
           MW: 330.8,
           preview: candidateMoleculeImage2
+     },
+     {
+          id: 3,
+          name: "Drug Candidate",
+          smiles: "CC(C)(C)C(=O)N1Cc2c(NC(=O)c3cc(F)cc(F)c3)n[nH]c2C1(C)C",
+          downloaded: "2025-11-20",
+          QED: 0.84,
+          MW: 376.4,
+          preview: candidateMoleculeImage3
      }
 ];
 
