@@ -8,37 +8,6 @@
   padding: 0 20px;
 }
 
-.lex-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(6px);
-  background: var(--bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-}
-
-.lex-header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-}
-
-/* brand */
-.lex-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.lex-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-}
-
 .lex-brand-text {
   color: var(--text);
 }
@@ -181,7 +150,6 @@
   min-height: 360px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   border: 1px solid rgba(255, 255, 255, 0.02);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   padding: 18px;
 }
 
@@ -203,7 +171,7 @@
 }
 
 .card:hover {
-  transform: scale(1.05);
+  border: 1px solid var(--accent-blue);
   transition: 0.4s ease-in-out;
 }
 
@@ -223,8 +191,13 @@
   transition: 0.4s ease-in-out;
 }
 
+#whatitdoes
+{
+  padding: 10px;
+}
+
 .feature:hover {
-  transform: scale(1.05);
+  border: 1px solid var(--accent-blue);
   transition: 0.4s ease-in-out;
 }
 

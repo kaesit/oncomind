@@ -107,7 +107,7 @@ export default function Landing() {
                   We are producing and formulazing personalized mRNA vaccines and drugs for cancer patients.
                 </BrutalistCard>
               </div>
-              
+
             </div>
           </div>
         </div>
@@ -119,7 +119,20 @@ export default function Landing() {
           <div className="lex-grid-2">
             <div className="card">
               <h3>What it does</h3>
-              <p className="small">Processes genomic signatures, runs a trained model, and returns interpretable predictions suitable for slide-ready export and discussion.</p>
+              <p className="small" id="whatitdoes">
+                <ul>
+                  <li>
+                    Processes genomic signatures, runs a trained model, and returns interpretable predictions suitable for slide-ready export and discussion.
+                  </li>
+                  <li>
+                    Help Doctors to refine treatment process.
+
+                  </li>
+                  <li>
+                    Analytics will help the researchers to decrease long project tiems.
+                  </li>
+                </ul>
+              </p>
             </div>
 
             <div className="features-grid">
