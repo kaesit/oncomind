@@ -71,46 +71,46 @@ export const Navbar: React.FC = () => {
       {/* Navigation Links (Toggles on Mobile) */}
       <div className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
         <a href="/research" style={{ textDecoration: "none", textWrap: "nowrap" }} onClick={closeMobileMenu}>
-          <Button
+          <BrutalistButton
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
             Research
-          </Button></a>
+          </BrutalistButton></a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/awareness" onClick={closeMobileMenu}>
-          <Button
+          <BrutalistButton
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             Awareness
-          </Button></a>
+          </BrutalistButton></a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/about" onClick={closeMobileMenu}>
-          <Button
+          <BrutalistButton
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             About Us
-          </Button>
+          </BrutalistButton>
         </a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/contact" onClick={closeMobileMenu}>
 
-          <Button
+          <BrutalistButton
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             Contact
-          </Button>
+          </BrutalistButton>
         </a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/dashboard" onClick={closeMobileMenu}>
-          <Button
+          <BrutalistButton
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
             Dashboard
-          </Button>
+          </BrutalistButton>
         </a>
       </div>
     </nav>
