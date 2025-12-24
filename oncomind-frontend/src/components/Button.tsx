@@ -1,7 +1,7 @@
 // BrutalistButton.tsx
 
 import React from 'react';
-import '../css/BrutalistButton.css'; // Importing the updated styles
+import '../css/Button.css'; // Importing the updated styles
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');

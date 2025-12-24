@@ -7,14 +7,24 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background-color: var(--bg);
-  border: var(--border-main);
-  border-radius: var(--border-radius-l);
-  box-shadow: var(--shadow-main);
+  background-color: #0d1a2f;
+  box-shadow: var(--shadow-sm);
   position: sticky;
-  top: 1rem;
-  margin: 1rem;
+  top: 0;
+  border: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   z-index: 100;
+}
+
+.navbar-container.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navbar-container.show {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .navbar-logo {
@@ -51,7 +61,7 @@
   justify-content: space-around;
   width: 30px;
   height: 30px;
-  background: transparent;
+  background: var(--bg);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -106,12 +116,6 @@
     /* Position below the navbar */
     left: 0;
     right: 0;
-    
-    background-color: var(--bg);
-    border: var(--border-main);
-    box-shadow: var(--shadow-main);
-    border-radius: var(--border-radius-l);
-    margin: 0 0.5rem;
     /* Match the container's horizontal margin */
     padding: 1.5rem;
 

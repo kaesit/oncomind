@@ -18,9 +18,9 @@
   text-decoration: none;
 
   /* === Dark/Blue Theme === */
-  color: var(--bg);
+  color: var(--text);
   /* slate-300 */
-  background-color: var(--primary);
+  background-color: transparent;
   /* slate-800 */
 
   /* === Brutalist Shape & Border === */

@@ -1,7 +1,7 @@
 // components/Navbar.tsx
 
-import React, { useState } from 'react';
-import { BrutalistButton } from './BrutalistButton'; // Import your button
+import React, { useState, useEffect } from 'react';
+import { BrutalistButton } from './Button'; // Import your button
 import '../css/Navbar.css';
 import cancer_icon from "../icons/forensic-science.png";
 import search_icon from "../icons/search_icon.png"
@@ -19,9 +19,35 @@ export const Navbar: React.FC = () => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+  const [lastScroll, setLastScroll] = useState(0);
+  const [showNavbar, setShowNavbar] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll <= 0) {
+        setShowNavbar(true);
+        return;
+      }
+
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        setShowNavbar(false); // Aşağı scroll - gizle
+      } else if (currentScroll < lastScroll) {
+        setShowNavbar(true); // Yukarı scroll - göster
+      }
+
+      setLastScroll(currentScroll);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScroll]);
+
 
   return (
-    <nav className="navbar-container">
+
+    <nav className={`navbar-container ${showNavbar ? 'show' : 'hide'}`}>
       {/* Logo - closes menu on click */}
       <a style={{ textDecoration: "none" }} href="/" onClick={closeMobileMenu}>
         <div className="navbar-logo">

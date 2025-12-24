@@ -20,6 +20,7 @@ import Models from "./pages/dashboardpages/Models";
 import Contact from "./pages/Contact";
 import PatientProfile from "./pages/dashboardpages/PatientInfo";
 import DrugCandidates from "./pages/dashboardpages/DrugCandidates";
+import Signin from "./pages/Signin";
 
 function AppRouter() {
   return (
@@ -47,7 +48,7 @@ function AppRouter() {
 
 
         </Route>
-
+        <Route path="/signin" element={<Signin />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

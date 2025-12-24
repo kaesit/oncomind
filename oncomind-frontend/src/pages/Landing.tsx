@@ -3,7 +3,7 @@ import React from "react";
 import DemoCard from "../components/DemoCard";
 import "../css/landing.css";
 import "../css/index.css";
-import BrutalistButton from "../components/BrutalistButton";
+import BrutalistButton from "../components/Button";
 import { BrutalistCard } from "../components/BrutalistCard";
 
 // Use placeholder images for logos
