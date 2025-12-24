@@ -8,10 +8,9 @@ export default function Research() {
      return (
 
           <>
-               <main className="research_container">
-                    <center>
-                         <h1 className="research-page-title">Research</h1>
-                    </center>
+               <center className="research_container">
+
+                    <h1 className="research-page-title">Research</h1>
                     <section className="information-section">
                          <div className="information-card">
                               <h2 className="info-div-title">Prototyping</h2>
@@ -69,7 +68,7 @@ export default function Research() {
                               <div><a className="footer-link" href="https://github.com/kaesit/oncomind" target="_blank" rel="noreferrer">GitHub</a></div>
                          </div>
                     </footer>
-               </main>
+               </center>
           </>
 
      )

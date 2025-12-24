@@ -1,6 +1,6 @@
 :root {
   --bg-dark: oklch(0.1 0 238);
-  --bg: linear-gradient(180deg, #0d1a2f 0%, #0b1525 50%, #06162d 100%);
+  --bg: oklch(0.1067 0 0);
   --bg-light: oklch(0.2 0 238);
   --text: oklch(0.96 0 238);
   --text-muted: #A3A4A8;
@@ -47,7 +47,7 @@
   --bg-lightest: oklch(43.128% 0.00005 271.152 / 0.541);
 
   --shadow-main: 4px 4px 0px var(--bg-dark);
-  --shadow-sm: 1px 1px 1px var(--border);
+  --shadow-sm: 1px 1px 1px var(--bg-lightest);
 }
 
 /* Apply the base styles to the app */

@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background-color: #0d1a2f;
+  background-color: var(--bg);
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;

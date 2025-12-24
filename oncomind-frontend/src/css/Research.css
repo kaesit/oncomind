@@ -8,10 +8,12 @@
 }
 
 .research-page-title {
+     position: relative;
      font-family: "VVDS Fifties Exp SBold", sans-serif;
      font-size: clamp(3.2rem, 6vw, 5.4rem);
      letter-spacing: 0.16em;
      line-height: 1.1;
+     top: 2rem;
      font-weight: 700;
 
      /* Cool retro-futuristic blue gradient */
