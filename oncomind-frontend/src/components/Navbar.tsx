@@ -1,7 +1,7 @@
 // components/Navbar.tsx
 
 import React, { useState, useEffect } from 'react';
-import { BrutalistButton } from './Button'; // Import your button
+import BrutalistButton from './BrutalistButton'; // Import your button
 import '../css/Navbar.css';
 import cancer_icon from "../icons/forensic-science.png";
 import search_icon from "../icons/search_icon.png"
@@ -71,46 +71,46 @@ export const Navbar: React.FC = () => {
       {/* Navigation Links (Toggles on Mobile) */}
       <div className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
         <a href="/research" style={{ textDecoration: "none", textWrap: "nowrap" }} onClick={closeMobileMenu}>
-          <BrutalistButton
+          <Button
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
             Research
-          </BrutalistButton></a>
+          </Button></a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/awareness" onClick={closeMobileMenu}>
-          <BrutalistButton
+          <Button
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             Awareness
-          </BrutalistButton></a>
+          </Button></a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/about" onClick={closeMobileMenu}>
-          <BrutalistButton
+          <Button
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             About Us
-          </BrutalistButton>
+          </Button>
         </a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/contact" onClick={closeMobileMenu}>
 
-          <BrutalistButton
+          <Button
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
 
             Contact
-          </BrutalistButton>
+          </Button>
         </a>
         <a style={{ textDecoration: "none", textWrap: "nowrap" }} href="/dashboard" onClick={closeMobileMenu}>
-          <BrutalistButton
+          <Button
             onClick={() => console.log('Portal clicked')}
             style={{ padding: '10px 16px', fontSize: '0.9rem' }}
           >
             Dashboard
-          </BrutalistButton>
+          </Button>
         </a>
       </div>
     </nav>

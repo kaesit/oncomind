@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PieChart, {
      Legend,
      Series,
@@ -14,9 +14,8 @@ import Chart, {
      ValueAxis,
      ConstantLine,
 } from 'devextreme-react/chart';
-
+import Button from "devextreme-react/button";
 import "../../css/DashboardAnalytics.css";
-
 
 const mostUsedGenes = [{
      region: 'ABL1',
@@ -57,6 +56,29 @@ const dataArray = data.map((item) => {
      };
 });
 
+interface Image {
+     id: number;
+     name: string;
+     url: string;
+}
+export const images = [
+     {
+          id: 1,
+          name: "image_1",
+          url: "http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3"
+     },
+     {
+          id: 2,
+          name: "image_2",
+          url: "http://localhost:8000/hystogram"
+     },
+     {
+          id: 3,
+          name: "image_3",
+          url: "http://localhost:8000/parabol?x=1&x=2&x=3&y=2&y=5&y=3"
+     }
+];
+
 
 function customizeTooltip(arg: { valueText: string; percent: number; }) {
      return {
@@ -65,21 +87,30 @@ function customizeTooltip(arg: { valueText: string; percent: number; }) {
 }
 
 export const DashboardAnalytics: React.FC = () => {
-
+     const kpis = useMemo(() => [
+          { id: 1, title: "Patients scanned (24h)", value: 58 },
+          { id: 2, title: "AI classifications", value: 342 },
+          { id: 3, title: "Model anomalies", value: 1 },
+     ], []);
+     const [selectedId, setSelectdId] = useState<number>(1);
+     const prevImage = () => {
+          setSelectdId((prev) => (prev <= 1 ? images.length : prev - 1));
+     };
+     const nextImage = () => {
+          setSelectdId((prev) => (prev >= images.length ? 1 : prev + 1));
+     };
      return (
           <>
                <div id="top_infos">
-                    <div>
+                    {kpis.map(k => (
+                         <div className="kpi-card" key={k.id}>
+                              <div className="kpi-title">{k.title}</div>
+                              <div className="kpi-value">{k.value}</div>
+                         </div>
+                    ))}
 
-                    </div>
-                    <div>
-
-                    </div>
-                    <div>
-
-                    </div>
-                    <div>
-
+                    <div style={{ marginLeft: "auto" }}>
+                         <Button className="reload_button" text="Reload model" icon="refresh" />
                     </div>
                </div>
                <div className="charts">
@@ -125,7 +156,7 @@ export const DashboardAnalytics: React.FC = () => {
                          palette="Harmony Light"
                          id="chart"
                     >
-                         <CommonSeriesSettings argumentField="complaint" type={"bar"}/>
+                         <CommonSeriesSettings argumentField="complaint" type={"bar"} />
                          <Series
                               name="Complaint frequency"
                               valueField="count"
@@ -160,6 +191,27 @@ export const DashboardAnalytics: React.FC = () => {
                          <Legend verticalAlignment="top" horizontalAlignment="center" />
                     </Chart>
 
+               </div>
+               <div className="plots">
+                    <div className="image">
+                         <div className="image_slider">
+                              <div className="images">
+                                   {images
+                                        .filter((image) => image.id === selectedId)
+                                        .map((image) => {
+                                             return <img key={image.id} src={image.url} alt={image.name} />;
+                                        })}
+                              </div>
+                              <button className="button_prev" onClick={prevImage}>
+                                   {" "}
+                                   Prev{" "}
+                              </button>
+                              <button className="button_next" onClick={nextImage}>
+                                   {" "}
+                                   Next{" "}
+                              </button>
+                         </div>
+                    </div>
                </div>
           </>
      );

@@ -1,7 +1,7 @@
 // BrutalistHero.tsx
 
 import React from 'react';
-import { BrutalistButton } from './Button'; // Import our button
+import { BrutalistButton } from './BrutalistButton'; // Import our button
 import '../css/BrutalistHero.css'; // Import the hero styles
 
 // Define the type for a single logo
