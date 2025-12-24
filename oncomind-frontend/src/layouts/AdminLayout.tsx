@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
     ],
   },
   { id: "patients", text: "Patients", icon: "user", path: "/admin/patients" },
+  { id: "analytics", text:"Analytics", icon: "event", path: "/admin/analytics"},
   { id: "drug_candidates", text: "Drug Candidates", icon: "formula", path: "/admin/drug_candidates" },
   { id: "settings", text: "Settings", icon: "preferences", path: "/admin/settings" },
 ];
