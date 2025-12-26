@@ -1,4 +1,5 @@
 import os
+import uvicorn
 from dotenv import load_dotenv
 from pathlib import Path
 import traceback
@@ -406,3 +407,6 @@ async def reload_diagnostic(force: bool = True):
     if _DIAGNOSTIC_TOOL_INSTANCE is None:
         raise HTTPException(status_code=500, detail=_DIAGNOSTIC_TOOL_LOADING_ERROR)
     return {"status": "loaded"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5000)
