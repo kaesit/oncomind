@@ -57,27 +57,21 @@ try:
 except Exception:
     DIAGNOSTIC_TOOL_CLASS = None
 
-YOLO_MODEL_PATH = os.environ.get('YOLO_MODEL_PATH', "").strip() or None
+BASE_DIR = Path(os.getenv("BASE_DIR", ".")) 
+DATASET_PATH = Path("/app/datasets") if os.getenv("DOCKER_ENV") else Path("./datasets")
+CSV_PATH = DATASET_PATH / "CHEMBL1978_nonredundant.csv"
+YOLO_MODEL_PATH = os.environ.get('YOLO_MODEL_PATH') # Should be /app/models/yolo_best.pt in Docker
 
-_DIAGNOSTIC_TOOL_INSTANCE = None
-_DIAGNOSTIC_TOOL_LOADING_ERROR: Optional[str] = None
-DATASET_PATH = Path("/dataset")
-CSV_PATH = Path(str(Path.cwd()) + "/datasets/CHEMBL1978_nonredundant.csv")
-
+# ... inside @app.get("/check") ...
 @app.get("/check")
 def model_files_check() -> Dict[str, Any]:
     checks = {
-        "trained_model_exists": False,
-        "toy_model_available": TOY_MODEL is not None,
-        "yolo_model_path": YOLO_MODEL_PATH,
-        "yolo_class_available": DIAGNOSTIC_TOOL_CLASS is not None,
+        "csv_found": CSV_PATH.exists(),
+        "csv_path": CSV_PATH,
+        "yolo_path_configured": YOLO_MODEL_PATH,
+        "yolo_file_exists": Path(YOLO_MODEL_PATH).exists() if YOLO_MODEL_PATH else False,
+        # ... existing checks ...
     }
-    try:
-        if TRAINED_MODEL is not None:
-            # If wrapper has attribute 'loaded' we can use it
-            checks["trained_model_exists"] = getattr(TRAINED_MODEL, "loaded", True)
-    except Exception:
-        checks["trained_model_exists"] = False
     return checks
 
 @app.get("/multi_cloud_service_check")
