@@ -1,37 +1,70 @@
 version: "3.9"
 
 services:
+  # 1. C# API (The Controller)
   api:
     build:
       context: .
       dockerfile: OncoMind.Api/Dockerfile
+    container_name: oncomind_api
     ports:
       - "5001:8080"
+    environment:
+      # CRITICAL: This is how C# finds Python inside Docker!
+      - PythonServiceUrl=http://oncomind_ml:8000
+      # CRITICAL: This is how C# finds Mongo inside Docker!
+      - ConnectionStrings__Mongo=mongodb://mongo_db:27017
     networks:
       - onco
     depends_on:
       - ml
+      - mongo_db
 
+  # 2. Python ML (The Worker)
   ml:
     build:
       context: ./oncomind-ml
       dockerfile: Dockerfile
+    container_name: oncomind_ml
     ports:
       - "8000:8000"
+    volumes:
+      # MAP YOUR LOCAL FOLDERS TO DOCKER
+      # Format: ./local_path : /container_path
+      - ./oncomind-ml/datasets:/app/datasets
+      - ./oncomind-ml/models:/app/models
+    environment:
+      - YOLO_MODEL_PATH=/app/models/yolo_best.pt
+      - MONGO_URI=mongodb://mongo_db:27017
     networks:
       - onco
 
+  # 3. React Frontend
   frontend:
     build:
       context: ./oncomind-frontend
       dockerfile: Dockerfile
+    container_name: oncomind_frontend
     ports:
       - "5173:80"
     networks:
       - onco
     depends_on:
       - api
-      - ml
+
+  # 4. Database
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - onco
 
 networks:
   onco:
+
+volumes:
+  mongo_data:
