@@ -8,16 +8,14 @@ services:
       dockerfile: OncoMind.Api/Dockerfile
     container_name: oncomind_api
     ports:
-      - "5001:8080" # Http port
+      # Map host 5001 to container 80
+      # (Matches the "ENV ASPNETCORE_HTTP_PORTS=80" we added to Dockerfile earlier)
+      - "5001:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - PythonServiceUrl=http://oncomind_ml:8000
+      # This points to the Docker internal name "oncomind_ml"
+      - ServiceUrls__PythonML=http://oncomind_ml:8000
       - ConnectionStrings__Mongo=mongodb://mongo_db:27017
-    volumes:
-      # Syncs your local C# code to the container for hot reload
-      - ./OncoMind.Api:/app
-    # Uses 'dotnet watch' to auto-restart when you change C# code
-    entrypoint: ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080"]
     depends_on:
       - ml
       - mongo_db

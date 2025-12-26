@@ -55,7 +55,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     // Calls C# -> which calls Python -> which returns CSV
-    fetch("http://localhost:5001/api/analysis/dataset")
+    fetch("http://localhost:8080/api/analysis/dataset")
       .then((res) => res.text())
       .then((csvText) => {
         Papa.parse(csvText, {
