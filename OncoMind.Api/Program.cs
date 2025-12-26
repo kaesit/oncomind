@@ -11,17 +11,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
-// CORS policy for local development (vite default is http://localhost:5173)
-var frontendOrigins = new[] { "http://localhost:5173", "http://127.0.0.1:8000" };
+
+builder.Services.AddHttpClient<OncoMind.Api.Services.PythonMLService>();
+
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("DevCors", policy =>
-    {
-        policy.WithOrigins(frontendOrigins)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
+    options.AddPolicy("AllowReactApp",
+        policy => policy.WithOrigins("http://localhost:5173") // Your Frontend URL
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -34,7 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("DevCors");
+app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 

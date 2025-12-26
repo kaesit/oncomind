@@ -54,7 +54,8 @@ export default function AdminDashboard() {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/datasets/CHEMBL1978_nonredundant.csv")
+    // Calls C# -> which calls Python -> which returns CSV
+    fetch("http://localhost:5001/api/analysis/dataset")
       .then((res) => res.text())
       .then((csvText) => {
         Papa.parse(csvText, {
