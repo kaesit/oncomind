@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import "../css/About.css";
+import Footer from "../components/Footer";
 
 const About: React.FC = () => {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -142,10 +143,9 @@ const About: React.FC = () => {
           </div>
         </section>
 
-        <footer className="footer">
-          <p>© 2025 – OncoMind AI Interface Framework</p>
-        </footer>
+
       </div>
+      <Footer />
     </>
   );
 };

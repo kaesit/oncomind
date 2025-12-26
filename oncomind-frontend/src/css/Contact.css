@@ -1,202 +1,243 @@
-button,
-input {
-     font-family: 'Poiret One', sans-serif;
-     font-weight: 700;
-     letter-spacing: 1.4px;
+/* Contact.css */
+
+/* Reusing the base container from Research for consistency */
+.contact_container {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 4rem;
 }
 
+/* Reuse the noise texture */
+.contact_container::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/noise.png");
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    z-index: 0;
+}
 
+/* Main Title - Matches Research Page */
 .contact-page-title {
-     font-size: 5.4rem;
+    position: relative;
+    font-family: "VVDS Fifties Exp SBold", sans-serif;
+    font-size: clamp(3.2rem, 6vw, 5.4rem);
+    letter-spacing: 0.16em;
+    line-height: 1.1;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    font-weight: 700;
+    background: linear-gradient(120deg,
+            #00d4ff 0%,
+            #0ea5e9 30%,
+            #3b82f6 60%,
+            #6366f1 85%,
+            #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.15));
+    z-index: 1;
 }
 
-.container {
-     max-width: 1200px;
-     max-height: 75vh;
-     margin: auto;
+/* Main Layout Wrapper */
+.contact-content-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 90vw;
+    max-width: 1200px;
+    gap: 3rem;
+    z-index: 1;
 }
 
-.screen {
-     width: 70%;
-     height: 70%;
-     position: relative;
-     background: #3e3e3e;
-     border-radius: 15px;
+/* The Glassmorphic Card (Unified style with Research cards) */
+.contact-card {
+    position: relative;
+    background: linear-gradient(180deg,
+            rgba(18, 22, 36, 0.85),
+            rgba(10, 12, 20, 0.95));
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(92, 177, 246, 0.4);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Info left, Form right */
+    gap: 4rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.8s ease forwards;
 }
 
-.screen:after {
-     content: '';
-     display: block;
-     top: 0;
-     left: 20px;
-     right: 20px;
-     border-radius: 15px;
-     box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
-     z-index: -1;
+.contact-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right,
+            rgba(99, 102, 241, 0.08),
+            transparent 60%);
+    z-index: 0;
+    pointer-events: none;
 }
 
-.screen-header {
-     display: flex;
-     align-items: center;
-     padding: 10px 20px;
-     background: #4d4d4f;
-     border-top-left-radius: 15px;
-     border-top-right-radius: 15px;
+/* Left Column: Contact Info */
+.contact-info-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 2rem;
 }
 
-.screen-header-left {
-     margin-right: auto;
+.contact-section-subtitle {
+    font-family: "Poiret One", sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffffff, #a5b4fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
 }
 
-.screen-header-button {
-     display: inline-block;
-     width: 8px;
-     height: 8px;
-     margin-right: 3px;
-     border-radius: 8px;
-     background: white;
+.contact-text {
+    font-family: "Inter", sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.screen-header-button.close {
-     background: #ed1c6f;
+/* Info Items (Phone, Email) styled like Research Publications */
+.contact-details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.screen-header-button.maximize {
-     background: #e8e925;
+.contact-detail-item {
+    font-family: "Cascadia Code", "Fira Code", monospace;
+    font-size: 1rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid rgba(92, 182, 246, 0.7);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
 }
 
-.screen-header-button.minimize {
-     background: #74c54f;
+.contact-detail-item:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-left-color: rgba(92, 202, 246, 0.8);
+    transform: translateX(5px);
 }
 
-.screen-header-right {
-     display: flex;
+/* Right Column: The Form */
+.contact-form-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.screen-header-ellipsis {
-     width: 3px;
-     height: 3px;
-     margin-left: 2px;
-     border-radius: 8px;
-     background: #999;
+.form-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
 }
 
-.screen-body {
-     display: flex;
+.form-label {
+    font-family: "Poiret One", sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 700;
+    margin-left: 0.5rem;
 }
 
-.screen-body-item {
-     flex: 1;
-     padding: 50px;
+.form-input,
+.form-textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(92, 182, 246, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.screen-body-item.left {
-     display: flex;
-     flex-direction: column;
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
 }
 
-.app-title {
-     display: flex;
-     flex-direction: column;
-     position: relative;
-     color: var(--primary);
-     font-size: 4rem;
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #63c4f1;
+    background: rgba(99, 102, 241, 0.05);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
 }
 
-.app-title:after {
-     content: '';
-     display: block;
-     position: absolute;
-     left: 0;
-     bottom: -10px;
-     width: 65px;
-     height: 24px;
-     background: var(--primary);
+/* Submit Button */
+.submit-btn {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, rgba(99, 168, 241, 0.1), rgba(92, 107, 246, 0.1));
+    border: 1px solid rgba(99, 184, 241, 0.5);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: "Poiret One", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
 }
 
-.app-contact {
-     margin-top: auto;
-     font-size: 18px;
-     color: #888;
+.submit-btn:hover {
+    background: linear-gradient(135deg, #63bdf1, #162bec);
+    border-color: transparent;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    transform: translateY(-2px);
 }
 
-.app-form-group {
-     margin-bottom: 15px;
+/* Responsive */
+@media (max-width: 900px) {
+    .contact-card {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 2rem;
+    }
+
+    .contact-info-col {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 2rem;
+    }
 }
 
-.app-form-group.message {
-     margin-top: 10px;
-}
-
-.app-form-group.buttons {
-     margin-bottom: 0;
-     text-align: right;
-}
-
-.app-form-control {
-     width: 100%;
-     padding: 10px 0;
-     background: none;
-     border: none;
-     border-bottom: 1px solid #666;
-     color: #ddd;
-     font-size: 14px;
-     text-transform: uppercase;
-     outline: none;
-     transition: border-color .2s;
-}
-
-.app-form-control::placeholder {
-     color: #666;
-}
-
-.app-form-control:focus {
-     border-bottom-color: #ddd;
-}
-
-.app-form-button {
-     background: none;
-     border: none;
-     color: var(--primary);
-     font-size: 14px;
-     cursor: pointer;
-     outline: none;
-}
-
-.app-form-button:hover {
-     color: var(--secondary);
-}
-
-
-
-@media screen and (max-width: 520px) {
-     .screen-body {
-          flex-direction: column;
-     }
-
-     .screen-body-item.left {
-          margin-bottom: 30px;
-     }
-
-     .app-title {
-          flex-direction: row;
-     }
-
-     .app-title span {
-          margin-right: 12px;
-     }
-
-     .app-title:after {
-          display: none;
-     }
-}
-
-@media screen and (max-width: 600px) {
-     .screen-body {
-          padding: 40px;
-     }
-
-     .screen-body-item {
-          padding: 0;
-     }
+@media (max-width: 768px) {
+    .contact-page-title {
+        font-size: 2.8rem;
+        margin-top: 2rem;
+    }
+    
+    .contact-content-wrapper {
+        width: 95vw;
+    }
 }

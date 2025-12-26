@@ -95,7 +95,7 @@ export default function Research() {
                          </div>
                     </section>
 
-                    <Footer></Footer>
+                    <Footer />
                </center>
           </>
      );

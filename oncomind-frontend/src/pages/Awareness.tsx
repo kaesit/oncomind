@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/Awareness.css';
+import Footer from '../components/Footer';
 
 const AwarenessPage = () => {
      return (
@@ -141,7 +142,7 @@ const AwarenessPage = () => {
                          </div>
                     </div>
                </section>
-
+               <Footer />
           </div>
      );
 };

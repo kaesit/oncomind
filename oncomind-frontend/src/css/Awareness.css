@@ -249,6 +249,7 @@
 .myth-card {
      background: var(--bg-light);
      border: 1px solid var(--border-muted);
+     border-left: 3px solid rgba(99, 132, 241, 0.5);
      border-radius: 12px;
      overflow: hidden;
 }

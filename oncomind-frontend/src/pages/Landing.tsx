@@ -227,9 +227,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <center>
-         <Footer />
-      </center>
+      <Footer />
     </div>
   );
 }
