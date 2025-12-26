@@ -7,9 +7,9 @@ const Footer: React.FC = () => {
       <div className="footer-content">
         {/* Sol kısım */}
         <div className="footer-section">
-          <h4 className="footer-title">MBS Liberty Tech</h4>
+          <h4 className="footer-title">Oncomind</h4>
           <p className="footer-text">
-            Building innovative solutions with freedom, order, and creativity.
+            Building innovative solutions with science and passion for helping people.
           </p>
         </div>
 
@@ -18,10 +18,10 @@ const Footer: React.FC = () => {
           <h4 className="footer-title">Quick Links</h4>
           <ul className="footer-links">
             <li>
-              <a href="/projects">Projects</a>
+              <a href="/projects">About</a>
             </li>
             <li>
-              <a href="https://github.com/kaesit">Blogs</a>
+              <a href="/research">Research</a>
             </li>
             <li>
               <a href="https://github.com/kaesit">Contact</a>

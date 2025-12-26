@@ -46,7 +46,7 @@
   --bg-darkest: oklch(0.08 0 195);
   --bg-lightest: oklch(43.128% 0.00005 271.152 / 0.541);
 
-  --shadow-main: 4px 4px 0px var(--bg-dark);
+  --shadow-main: 2px 2px 0px var(--bg-dark);
   --shadow-sm: 1px 1px 1px var(--bg-lightest);
 }
 
