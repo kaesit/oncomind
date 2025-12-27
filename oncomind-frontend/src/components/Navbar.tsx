@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import BrutalistButton from './BrutalistButton'; // Import your button
 import '../css/Navbar.css';
-import cancer_icon from "../icons/forensic-science.png";
-import search_icon from "../icons/search_icon.png"
-import logo from "../icons/OncomindLogo3.svg"
+import cancer_icon from '../icons/forensic-science.png';
+import search_icon from '../icons/search_icon.png';
+import logo from '../icons/OncomindLogo3.svg'
 
 export const Navbar: React.FC = () => {
   // State to manage the mobile menu (open/closed)

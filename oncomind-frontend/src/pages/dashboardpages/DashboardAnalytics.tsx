@@ -34,25 +34,25 @@ const mostUsedGenes = [{
      val: 120,
 }];
 const complaintsData = [
-     { complaint: 'Cold pizza', count: 780 },
-     { complaint: 'Not enough cheese', count: 120 },
-     { complaint: 'Underbaked or Overbaked', count: 52 },
-     { complaint: 'Delayed delivery', count: 1123 },
-     { complaint: 'Damaged pizza', count: 321 },
-     { complaint: 'Incorrect billing', count: 89 },
-     { complaint: 'Wrong size delivered', count: 222 },
+     { complaint: 'Judie', emergency: 1 },
+     { complaint: 'Emily', emergency: 2 },
+     { complaint: 'Geraldo', emergency: 3 },
+     { complaint: 'Peter', emergency: 4 },
+     { complaint: 'Luv', emergency: 4 },
+     { complaint: 'Fredrich', emergency: 3 },
+     { complaint: 'Matt', emergency: 1 },
 ];
 
-const data = complaintsData.sort((a, b) => b.count - a.count);
-const totalCount = data.reduce((prevValue, item) => prevValue + item.count, 0);
+const data = complaintsData.sort((a, b) => b.emergency - a.emergency);
+const totalEmergency = data.reduce((prevValue, item) => prevValue + item.emergency, 0);
 let cumulativeCount = 0;
 
 const dataArray = data.map((item) => {
-     cumulativeCount += item.count;
+     cumulativeCount += item.emergency;
      return {
           complaint: item.complaint,
-          count: item.count,
-          cumulativePercentage: Math.round((cumulativeCount * 100) / totalCount),
+          emergency: item.emergency,
+          cumulativePercentage: Math.round((cumulativeCount * 100) / totalEmergency),
      };
 });
 
@@ -151,31 +151,24 @@ export const DashboardAnalytics: React.FC = () => {
                          </Tooltip>
                     </PieChart>
                     <Chart
-                         title="Pizza Shop Complaints"
+                         title="Patients Emergency Levels"
                          dataSource={dataArray}
                          palette="Harmony Light"
                          id="chart"
                     >
-                         <CommonSeriesSettings argumentField="complaint" type={"bar"} />
+                         <CommonSeriesSettings argumentField="complaint" type={"scatter"} />
                          <Series
-                              name="Complaint frequency"
-                              valueField="count"
-                              color="#fac29a"
-                         />
-                         <Series
-                              name="Cumulative percentage"
-                              valueField="cumulativePercentage"
-                              color="#6b71c3"
+                              name="Emergency Status"
+                              valueField="emergency"
+                              color="#f32f2fff"
                          />
 
                          <ArgumentAxis>
                               <Label />
                          </ArgumentAxis>
 
-                         <ValueAxis name="frequency" position="left" tickInterval={300} />
+                         <ValueAxis name="Status" position="left" tickInterval={300} />
                          <ValueAxis
-                              name="percentage"
-                              position="right"
                               tickInterval={20}
                               showZero={true}
                               valueMarginsEnabled={false}

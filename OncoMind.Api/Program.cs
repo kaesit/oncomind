@@ -1,7 +1,8 @@
-// OncoMind.Api/Program.cs
+﻿// OncoMind.Api/Program.cs
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OncoMind.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddScoped<PatientService>();
 
 builder.Services.AddHttpClient<OncoMind.Api.Services.PythonMLService>();
 

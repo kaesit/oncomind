@@ -8,16 +8,14 @@ services:
       dockerfile: OncoMind.Api/Dockerfile
     container_name: oncomind_api
     ports:
-    - "5001:80docker compose up -d api" # host 5001 → container 80
+      - "5001:8080" # ✅ CORRECT: Host 5001 -> Container 8080
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ServiceUrls__PythonML: http://oncomind_ml:8000
-      ConnectionStrings__Mongo: mongodb://mongo_db:27017
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceUrls__PythonML=http://oncomind_ml:8000
+      - ConnectionStrings__Mongo=mongodb://mongo_db:27017
     depends_on:
-      ml:
-        condition: service_healthy
-      mongo_db:
-        condition: service_started
+      - ml
+      - mongo_db
     networks:
       - onco
 
@@ -27,37 +25,29 @@ services:
       context: ./oncomind-ml
       dockerfile: Dockerfile
     container_name: oncomind_ml
-
-    # SADECE DEV için (host'tan erişmek istiyorsan)
     ports:
       - "8000:8000"
-
     volumes:
       - ./oncomind-ml:/app
       - ./oncomind-ml/datasets:/app/datasets
       - ./oncomind-ml/models:/app/models
-
     environment:
-      YOLO_MODEL_PATH: /app/models/yolo_best.pt
-      MONGO_URI: mongodb://mongo_db:27017
-      PYTHONUNBUFFERED: "1"
-
+      - YOLO_MODEL_PATH=/app/models/yolo_best.pt
+      - MONGO_URI=mongodb://mongo_db:27017
+      - PYTHONUNBUFFERED=1
     command:
       ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-
-    # curl yok → python ile healthcheck
     healthcheck:
       test:
         [
           "CMD",
           "python",
           "-c",
-          "import requests; requests.get('http://localhost:8000/health')",
+          "import requests; requests.get('http://localhost:8000/')",
         ]
       interval: 10s
       timeout: 5s
       retries: 5
-
     networks:
       - onco
 
@@ -73,7 +63,7 @@ services:
       - ./oncomind-frontend:/app
       - /app/node_modules
     environment:
-      CHOKIDAR_USEPOLLING: "true"
+      - CHOKIDAR_USEPOLLING=true
     command: ["npm", "run", "dev", "--", "--host"]
     networks:
       - onco
