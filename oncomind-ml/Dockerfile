@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.lock .
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.lock
+    pip install --no-cache-dir -r requirements.lock --extra-index-url https://download.pytorch.org/whl/cu121
 
 # ❌ KOD COPY ETME
 # Kod volume ile gelecek
