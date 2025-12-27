@@ -33,7 +33,7 @@
   transform: translateX(-50%);
   width: 800px;
   height: 600px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent 70%);
+  background: radial-gradient(circle, rgba(99, 151, 241, 0.08), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -57,12 +57,12 @@
 .lex-kicker {
   font-size: 0.8rem;
   color: var(--muted);
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  background: linear-gradient(135deg, rgba(99, 168, 241, 0.1), rgba(92, 120, 246, 0.1));
   padding: 8px 16px;
   border-radius: 999px;
   display: inline-block;
   align-self: flex-start;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 179, 241, 0.2);
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -73,7 +73,7 @@
   color: var(--text);
   margin: 0;
   line-height: 1.15;
-  background: linear-gradient(135deg, #ffffff, #a5b4fc, #ffffff);
+  background: linear-gradient(135deg, #ffffff, #a5e0fc, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
