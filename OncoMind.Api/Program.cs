@@ -15,7 +15,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<PatientService>();
 
-builder.Services.AddHttpClient<OncoMind.Api.Services.PythonMLService>();
+builder.Services.AddHttpClient<PythonMLService>();
 
 
 builder.Services.AddCors(options =>
