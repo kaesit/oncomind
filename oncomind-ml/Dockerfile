@@ -1,17 +1,18 @@
-# oncomind-ml/Dockerfile
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# avoid writing bytecode, keep stdout unbuffered
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# SADECE dependency bilgisi
+COPY requirements.lock .
 
-COPY . /app
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.lock
+
+# ❌ KOD COPY ETME
+# Kod volume ile gelecek
 
 EXPOSE 8000
 

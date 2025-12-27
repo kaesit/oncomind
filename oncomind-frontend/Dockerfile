@@ -1,8 +1,10 @@
-# oncomind-frontend/Dockerfile
-FROM node:18-alpine AS base
+FROM node:18-alpine
+
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm ci
-COPY . .
+RUN npm install
+
 EXPOSE 5173
+
 CMD ["npm", "run", "dev", "--", "--host"]

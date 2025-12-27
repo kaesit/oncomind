@@ -8,17 +8,16 @@ services:
       dockerfile: OncoMind.Api/Dockerfile
     container_name: oncomind_api
     ports:
-      # Map host 5001 to container 80
-      # (Matches the "ENV ASPNETCORE_HTTP_PORTS=80" we added to Dockerfile earlier)
-      - "5001:80"
+    - "5001:80" # host 5001 → container 80
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      # This points to the Docker internal name "oncomind_ml"
-      - ServiceUrls__PythonML=http://oncomind_ml:8000
-      - ConnectionStrings__Mongo=mongodb://mongo_db:27017
+      ASPNETCORE_ENVIRONMENT: Development
+      ServiceUrls__PythonML: http://oncomind_ml:8000
+      ConnectionStrings__Mongo: mongodb://mongo_db:27017
     depends_on:
-      - ml
-      - mongo_db
+      ml:
+        condition: service_healthy
+      mongo_db:
+        condition: service_started
     networks:
       - onco
 
@@ -28,21 +27,37 @@ services:
       context: ./oncomind-ml
       dockerfile: Dockerfile
     container_name: oncomind_ml
+
+    # SADECE DEV için (host'tan erişmek istiyorsan)
     ports:
       - "8000:8000"
+
     volumes:
-      # Syncs your local Python code so you don't need to rebuild
       - ./oncomind-ml:/app
       - ./oncomind-ml/datasets:/app/datasets
       - ./oncomind-ml/models:/app/models
+
     environment:
-      - YOLO_MODEL_PATH=/app/models/yolo_best.pt
-      - MONGO_URI=mongodb://mongo_db:27017
-      # This ensures Python prints logs to your terminal immediately
-      - PYTHONUNBUFFERED=1
-    # Overrides the Dockerfile to run in "Dev Mode" with reload
+      YOLO_MODEL_PATH: /app/models/yolo_best.pt
+      MONGO_URI: mongodb://mongo_db:27017
+      PYTHONUNBUFFERED: "1"
+
     command:
       ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+    # curl yok → python ile healthcheck
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
     networks:
       - onco
 
@@ -55,18 +70,15 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      # Syncs frontend code
       - ./oncomind-frontend:/app
-      # IMPORTANT: Keep node_modules inside container separate from host
       - /app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING=true # Helps Windows Docker see file changes
-    # Runs dev server with host flag so Docker can expose it
+      CHOKIDAR_USEPOLLING: "true"
     command: ["npm", "run", "dev", "--", "--host"]
     networks:
       - onco
 
-  # --- 4. Database ---
+  # --- 4. MongoDB ---
   mongo_db:
     image: mongo:latest
     container_name: mongo_db
@@ -79,6 +91,7 @@ services:
 
 networks:
   onco:
+    driver: bridge
 
 volumes:
   mongo_data:

@@ -8,6 +8,7 @@ obj/
 __pycache__/
 *.pyc
 .env
+.dockerignore
 .venv/
 yolov10n.pt
 my_model.onnx
