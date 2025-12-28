@@ -22,6 +22,7 @@ import PatientProfile from "./pages/dashboardpages/PatientInfo";
 import DrugCandidates from "./pages/dashboardpages/DrugCandidates";
 import Signin from "./pages/Signin";
 import { DashboardAnalytics } from "./pages/dashboardpages/DashboardAnalytics";
+import DashboardSignIn from "./pages/dashboardpages/DashboardSignIn";
 
 function AppRouter() {
   return (
@@ -51,6 +52,7 @@ function AppRouter() {
 
         </Route>
         <Route path="/signin" element={<Signin />} />
+        <Route path="/dashboard_signin" element={<DashboardSignIn />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
