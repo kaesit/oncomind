@@ -403,7 +403,7 @@ const PatientProfile: React.FC = () => {
                     </SectionTitle>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                         {p.examinations.map((exam) => (
+                         {p.examinations.map((exam:any) => (
                               <ExamCard key={exam.id}>
                                    {/* 1. Sol: Resim (Açılı Kesim) */}
                                    <ExamImage img={exam.imageUrl} />
