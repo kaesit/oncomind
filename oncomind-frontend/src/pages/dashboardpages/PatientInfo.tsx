@@ -371,7 +371,7 @@ const PatientProfile: React.FC = () => {
                                    </Typography>
                                    <Typography variant="h2" sx={{ fontFamily: "var(--ff)", fontWeight: "bold" }}>
                                         <GradientText gradient={THEME_COLORS.gradientSecondary}>
-                                             {p.examinations.length < 10 ? `0${p.examinations.length}` : p.examinations.length}
+                                             {p.examinations.length}
                                         </GradientText>
                                    </Typography>
                                    <Typography variant="caption" sx={{ color: "#64748b", display: "block", mt: 1 }}>

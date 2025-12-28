@@ -13,8 +13,8 @@ namespace OncoMind.Api.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? AssignedDoctorId { get; set; }
 
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public int Age { get; set; }
         
         [BsonRepresentation(BsonType.String)]

@@ -17,7 +17,7 @@ export interface PatientDto {
      age: number;
      gender: string; // The API sends "Male", "Female", or "0"/"1" as strings sometimes
      emergencyStatus: string;
-     isAdmitted: boolean; // 👈 This fixes the "does not exist" error
+     isAdmitted: boolean;
      admissionLocation: string;
      treatmentStartAt?: string;
      profilePicture: string;
