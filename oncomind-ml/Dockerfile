@@ -5,14 +5,10 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# SADECE dependency bilgisi
-COPY requirements.lock .
+COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.lock --extra-index-url https://download.pytorch.org/whl/cu121
-
-# ❌ KOD COPY ETME
-# Kod volume ile gelecek
+    pip install -r requirements.txt
 
 EXPOSE 8000
 

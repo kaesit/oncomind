@@ -1,22 +1,16 @@
 ﻿// OncoMind.Api/Program.cs
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using OncoMind.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
+// --- 1. Add Framework Services ---
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<PatientService>();
-
 builder.Services.AddHttpClient<PythonMLService>();
-
 
 builder.Services.AddCors(options =>
 {
@@ -28,14 +22,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Use middleware
+// --- 5. Middleware Pipeline ---
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+// ❌ Keep commented out for Docker compatibility
+// app.UseHttpsRedirection(); 
+
 app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();

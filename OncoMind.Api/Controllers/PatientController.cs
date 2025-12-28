@@ -31,5 +31,16 @@ namespace OncoMind.Api.Controllers
             var patient = await _patientService.GetByDoctorIdAsync(doctorId);
             return Ok(patient);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPatientDetails(string id)
+        {
+            var patientDto = await _patientService.GetPatientWithHistoryAsync(id);
+
+            if (patientDto == null)
+                return NotFound(new { Message = "Patient not found" });
+
+            return Ok(patientDto);
+        }
     }
 }

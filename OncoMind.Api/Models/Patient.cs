@@ -30,6 +30,8 @@ namespace OncoMind.Api.Models
 
         public string ProfilePicture { get; set; } = "";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime TreatmentStartAt { get; set; }
     }
 
     public enum Gender { Male, Female, Other }

@@ -44,7 +44,7 @@ function AppRouter() {
           <Route path="/admin/datasets" element={<DataSets />} />
           <Route path="/admin/patients" element={<Patients />} />
           <Route path="/admin/models" element={<Models />} />
-          <Route path="/admin/patients/patient_info" element={<PatientProfile />} />
+          <Route path="/admin/patients/:id" element={<PatientProfile />} />
           <Route path="/admin/drug_candidates" element={<DrugCandidates />} />
           <Route path="/admin/analytics" element={<DashboardAnalytics />} />
 

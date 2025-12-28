@@ -8,7 +8,7 @@ services:
       dockerfile: OncoMind.Api/Dockerfile
     container_name: oncomind_api
     ports:
-      - "5001:8080" # ✅ CORRECT: Host 5001 -> Container 8080
+      - "5001:80" # ✅ CORRECT: Host 5001 -> Container 8080
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ServiceUrls__PythonML=http://oncomind_ml:8000

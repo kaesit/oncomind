@@ -1,23 +1,17 @@
-import React from "react";
-// DevExtreme Imports
+import React, { useEffect, useState } from "react";
 import { Button } from "devextreme-react/button";
-
-// Material UI Imports
 import { styled, alpha } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid"; // Standart Grid Importu (v5 uyumlu)
-
-// CSS Import
+import Grid from "@mui/material/Grid";
+import { useParams } from "react-router-dom"; // 👈 IMPORT THIS
+import { patientService, PatientDto } from "../../services/patientService"; // 👈 IMPORT THIS
 import "../../css/DataSets.css";
-
-// Icons
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import RoomIcon from "@mui/icons-material/Room";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-
 /* ------------------------------------------------------
    TYPES
 ------------------------------------------------------ */
@@ -43,52 +37,6 @@ interface PatientProfileData {
      examinations: Examination[];
 }
 
-/* ------------------------------------------------------
-   MOCK DATA
------------------------------------------------------- */
-const mockPatientData: PatientProfileData = {
-     id: 1,
-     name: "Judie Carter",
-     age: 6,
-     gender: "Kadın",
-     status: "LOW",
-     room: "Blok A - 12",
-     admittedDate: "12 Eylül 2024",
-     // Daha "Retro" hissettiren bir avatar
-     avatarUrl: "https://images.unsplash.com/photo-1631201036602-c557ad26828e?w=500",
-     // Daha soyut/geometrik bir cover
-     coverUrl: "https://images.unsplash.com/photo-1732046801426-f32529468176?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-     examinations: [
-          {
-               id: 101,
-               date: "20.10.2024",
-               type: "Kardiyoloji Kontrolü",
-               doctor: "Dr. A. Yılmaz",
-               summary: "Rutin EKG taraması yapıldı. Sinüs ritmi normal, ancak hafif taşikardi gözlendi. İlaç dozajı güncellendi.",
-               imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300&h=300&fit=crop",
-          },
-          {
-               id: 102,
-               date: "15.09.2024",
-               type: "MR Görüntüleme",
-               doctor: "Dr. S. Kaya",
-               summary: "Lomber bölge MR çekimi. L4-L5 diskinde protrüzyon saptandı. Fizik tedavi önerildi.",
-               imageUrl: "https://images.unsplash.com/photo-1666214276389-393fb7dbc75c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          },
-          {
-               id: 103,
-               date: "02.08.2024",
-               type: "Kan Tahlili",
-               doctor: "Lab. Teknisyeni",
-               summary: "Hemogram ve biyokimya paneli. Demir eksikliği anemisi bulguları mevcut. Ferritin seviyesi düşük.",
-               imageUrl: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=300&h=300&fit=crop",
-          },
-     ],
-};
-
-/* ------------------------------------------------------
-   COLOR & STYLE UTILS
------------------------------------------------------- */
 // Retro-Future Renk Paleti (Hex)
 const THEME_COLORS = {
      gradientPrimary: "linear-gradient(90deg, #FF9966 0%, #FF5E62 100%)", // Sunset Orange
@@ -100,10 +48,10 @@ const THEME_COLORS = {
 };
 
 const STATUS_COLORS = {
-     URGENT: "#FF0055", // Neon Red
-     HIGH: "#FF9900",   // Neon Orange
-     NORMAL: "#00E5FF", // Neon Cyan
-     LOW: "#00FF99",    // Neon Green
+     Urgent: "#FF0055", // Neon Red
+     High: "#FF9900",   // Neon Orange
+     Normal: "#00E5FF", // Neon Cyan
+     Stable: "#00FF99",    // Neon Green
      DEFAULT: "#AAAAAA"
 };
 
@@ -328,9 +276,59 @@ const ExamAction = styled("div")({
    MAIN COMPONENT
 ------------------------------------------------------ */
 const PatientProfile: React.FC = () => {
-     const p = mockPatientData;
-     const statusColor = getStatusColor(p.status);
+     const { id } = useParams(); // 1. Get ID from URL (e.g., /admin/patients/659b...)
+     const [patient, setPatient] = useState<any>(null);
+     const [loading, setLoading] = useState(true);
 
+     useEffect(() => {
+          if (id) fetchPatientData(id);
+     }, [id]);
+
+     const fetchPatientData = async (patientId: string) => {
+          setLoading(true);
+          try {
+               // 1. Use getById (Calls the C# GetPatientWithHistoryAsync endpoint)
+               const p = await patientService.getById(patientId);
+
+               if (p) {
+                    setPatient({
+                         id: p.id,
+                         name: `${p.firstName} ${p.lastName}`,
+                         age: p.age,
+                         gender: p.gender,
+                         status: p.emergencyStatus || "Stable",
+                         room: p.admissionLocation || "Not Assigned",
+                         admittedDate: p.treatmentStartAt ? new Date(p.treatmentStartAt).toLocaleDateString() : "N/A",
+                         avatarUrl: p.profilePicture || "https://via.placeholder.com/150",
+                         coverUrl: "https://images.unsplash.com/photo-1732046801426-f32529468176?q=80&w=1632",
+
+                         // 2. Map the REAL examinations from the database
+                         // Note: We type 'exam' as 'any' or 'AnalysisDto' to fix the TS error
+                         examinations: p.examinations ? p.examinations.map((exam: any) => ({
+                              id: exam.id,
+                              date: new Date(exam.timestamp).toLocaleDateString(),
+                              type: exam.analysisType || "General Analysis",
+                              doctor: "System",
+                              // Safely handle the resultData JSON
+                              summary: exam.resultData?.Summary
+                                   ? exam.resultData.Summary
+                                   : "Detailed analysis data available.",
+                              imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300"
+                         })) : [] // If null, empty array
+                    });
+               }
+          } catch (error) {
+               console.error("Failed to load patient", error);
+          }
+          setLoading(false);
+     };
+
+     if (loading) return <div style={{ color: 'white', padding: 50 }}>Loading Profile...</div>;
+     if (!patient) return <div style={{ color: 'white', padding: 50 }}>Patient not found</div>;
+
+     const p = patient;
+     // @ts-ignore
+     const statusColor = getStatusColor(p.status);
      return (
           <FullPageWrapper>
                {/* --- HERO SECTION --- */}
@@ -338,29 +336,21 @@ const PatientProfile: React.FC = () => {
                     <ContainerFluid>
                          <ProfileOverlay>
                               <StyledAvatar src={p.avatarUrl} alt={p.name} />
-
                               <Box sx={{ pb: 2, flex: 1 }}>
-                                   {/* Gradient Text Kullanımı */}
                                    <NameTitle>
-                                        <GradientText gradient="linear-gradient(90deg, #ffffff 0%, #a5b4fc 100%)">
-                                             {p.name}
-                                        </GradientText>
+                                        <GradientText>{p.name}</GradientText>
                                    </NameTitle>
-
                                    <MetaRow>
-                                        {/* Status Badge (Neon Style) */}
                                         <RetroBadge borderColor={statusColor} glow>
                                              <MonitorHeartIcon fontSize="small" />
                                              {p.status}
                                         </RetroBadge>
-
                                         <RetroBadge>
                                              <RoomIcon fontSize="small" />
                                              {p.room}
                                         </RetroBadge>
-
-                                        <RetroBadge borderColor="#64748b">
-                                             {p.age} YIL • {p.gender.toUpperCase()}
+                                        <RetroBadge>
+                                             {p.age} - {p.gender}
                                         </RetroBadge>
                                    </MetaRow>
                               </Box>
