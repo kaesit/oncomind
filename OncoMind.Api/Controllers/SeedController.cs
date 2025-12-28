@@ -22,9 +22,10 @@ namespace OncoMind.Api.Controllers
                // 1. Create Doctor
                var drHouse = new Doctor
                {
-                    FirstName = "Gregory",
-                    LastName = "House",
-                    Email = "house@oncomind.com",
+                    FirstName = "Ahmet Can",
+                    LastName = "Küpeli",
+                    Email = "küpeli@oncomind.com", // Login Email
+                    Password = "123",             // Login Password
                     Specialization = "Diagnostician",
                     DateOfBirth = new DateTime(1959, 05, 15)
                };
@@ -33,8 +34,8 @@ namespace OncoMind.Api.Controllers
                // 2. Create Patient
                var patient = new Patient
                {
-                    FirstName = "John",
-                    LastName = "Doe",
+                    FirstName = "Ahad Emir",
+                    LastName = "Koç",
                     Age = 35,
                     Gender = Gender.Male,
                     AssignedDoctorId = drHouse.Id,
@@ -49,9 +50,9 @@ namespace OncoMind.Api.Controllers
                var analysis = new Analysis
                {
                     PatientId = patient.Id, // Link to Patient
-                    AnalysisType = "Blood Work",
+                    AnalysisType = "MRI",
                     Timestamp = DateTime.UtcNow.AddDays(-5),
-                    ResultData = new { Summary = "Hemoglobin low", Ferritin = 12 } // Dummy JSON result
+                    ResultData = new { Summary = "Tumor got bigger", Ferritin = 12 } // Dummy JSON result
                };
                await _context.Analyses.InsertOneAsync(analysis);
 
