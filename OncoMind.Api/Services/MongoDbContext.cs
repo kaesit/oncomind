@@ -18,8 +18,8 @@ namespace OncoMind.Api.Services
           }
 
           // Typed Collections
-          public IMongoCollection<Doctors> Doctors => _database.GetCollection<Doctors>("doctors");
-          public IMongoCollection<Patients> Patients => _database.GetCollection<Patients>("patients");
+          public IMongoCollection<Doctor> Doctors => _database.GetCollection<Doctor>("doctors");
+          public IMongoCollection<Patient> Patients => _database.GetCollection<Patient>("patients");
           public IMongoCollection<Analysis> Analyses => _database.GetCollection<Analysis>("analyses");
      }
 }

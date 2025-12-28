@@ -19,7 +19,7 @@ namespace OncoMind.Api.Controllers
         public async Task<IActionResult> GetAll() => Ok(await _patientService.GetAllAsync());
 
         [HttpPost]
-        public async Task<IActionResult> Create(Patients patient)
+        public async Task<IActionResult> Create(Patient patient)
         {
             await _patientService.CreateAsync(patient);
             return CreatedAtAction(nameof(GetAll), new { id = patient.Id }, patient);
@@ -28,8 +28,8 @@ namespace OncoMind.Api.Controllers
         [HttpGet("doctor/{doctorId}")]
         public async Task<IActionResult> GetMyPatients(string doctorId)
         {
-            var patients = await _patientService.GetByDoctorIdAsync(doctorId);
-            return Ok(patients);
+            var patient = await _patientService.GetByDoctorIdAsync(doctorId);
+            return Ok(patient);
         }
     }
 }

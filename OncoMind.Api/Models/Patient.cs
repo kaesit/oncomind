@@ -1,10 +1,9 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-
 namespace OncoMind.Api.Models
 {
-    public class Patients
+    public class Patient
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -17,13 +16,13 @@ namespace OncoMind.Api.Models
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public int Age { get; set; }
-
+        
         [BsonRepresentation(BsonType.String)]
         public Gender Gender { get; set; }
 
         public string EmergencyStatus { get; set; } = "Stable";
         public bool IsAdmitted { get; set; } = false;
-        public string AdmissionLocation { get; set; } = "";
+        public string AdmissionLocation { get; set; } = ""; 
 
         // --- REFERENCE: Link to Analysis Results ---
         [BsonRepresentation(BsonType.ObjectId)]
@@ -33,5 +32,5 @@ namespace OncoMind.Api.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 
-    public enum Gender { Male, Female }
+    public enum Gender { Male, Female, Other }
 }

@@ -12,16 +12,16 @@ namespace OncoMind.Api.Services
                _context = context;
           }
 
-          public async Task<List<Patients>> GetAllAsync() =>
+          public async Task<List<Patient>> GetAllAsync() =>
               await _context.Patients.Find(_ => true).ToListAsync();
 
-          public async Task<List<Patients>> GetByDoctorIdAsync(string doctorId) =>
+          public async Task<List<Patient>> GetByDoctorIdAsync(string doctorId) =>
               await _context.Patients.Find(p => p.AssignedDoctorId == doctorId).ToListAsync();
 
-          public async Task CreateAsync(Patients patient) =>
+          public async Task CreateAsync(Patient patient) =>
               await _context.Patients.InsertOneAsync(patient);
 
-          public async Task<Patients?> GetByIdAsync(string id) =>
+          public async Task<Patient?> GetByIdAsync(string id) =>
               await _context.Patients.Find(p => p.Id == id).FirstOrDefaultAsync();
      }
 }
