@@ -58,7 +58,8 @@ namespace OncoMind.Api.Controllers
                     message = "Login successful",
                     doctorId = doctor.Id,
                     name = $"{doctor.FirstName} {doctor.LastName}",
-                    specialization = doctor.Specialization
+                    specialization = doctor.Specialization,
+                    image = doctor.ProfilePicture
                });
           }
      }

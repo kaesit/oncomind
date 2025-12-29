@@ -127,6 +127,7 @@ const Login = () => {
                     localStorage.setItem("doctorId", data.doctorId);
                     localStorage.setItem("doctorName", data.name); // Optional: Save name for UI
                     localStorage.setItem("doctorSpecialization", data.specialization || "Doctor")
+                    localStorage.setItem("doctorImage", data.image)
                     navigate("/admin/patients");
                }
 

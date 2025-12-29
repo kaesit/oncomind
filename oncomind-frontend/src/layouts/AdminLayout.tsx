@@ -35,12 +35,16 @@ export default function AdminLayout() {
   const [doctorName, setDoctorName] = useState("Doctor");
   const [specialization, setSpecialization] = useState("Specialization");
   const [initials, setInitials] = useState("DR");
+  const [doctorImage, setDoctorImage] = useState("Image");
 
   useEffect(() => {
     const doctorId = localStorage.getItem("doctorId");
     const name = localStorage.getItem("doctorName");
     const specialization_branch = localStorage.getItem("doctorSpecialization");
+    const image = localStorage.getItem("doctorImage")
     setSpecialization(specialization_branch || "Doctor");
+    setDoctorImage(image || "");
+
 
     if (!doctorId) {
       navigate("/login");
@@ -50,7 +54,7 @@ export default function AdminLayout() {
       if (parts.length >= 2) {
         setInitials(`${parts[0][0]}${parts[1][0]}`.toUpperCase());
       } else {
-        setInitials(name.substring(0, 2).toLocaleUpperCase());
+        setInitials(name.substring(0, 2).toUpperCase());
       }
     }
   }, [navigate]);
@@ -107,8 +111,9 @@ export default function AdminLayout() {
         width: "38px",
         height: "38px",
         borderRadius: "20%", // Rounded square look
-        background: "linear-gradient(135deg, #2563eb 0%, #a855f7 100%)",
+        background: "linear-gradient(135deg, #2564eb25 0%, #a955f775 100%)",
         color: "white",
+        overflow: "hidden",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -117,7 +122,15 @@ export default function AdminLayout() {
         border: "2px solid rgba(255,255,255,0.2)",
         boxShadow: "0 4px 10px rgba(0,0,0,0.3)"
       }}>
-        <img src={""} alt="" />
+        {doctorImage ? (
+          <img style={{ objectFit: "cover", width: "100%", height: "100%" }} src={doctorImage} alt="Dr" />
+        ) : (
+          // Fallback to Initials if no image
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {initials}
+          </div>
+        )}
+
       </div>
 
       {/* 2. Text Section (Second) */}
@@ -129,7 +142,7 @@ export default function AdminLayout() {
           {specialization}
         </span>
       </div>
-    </div>
+    </div >
   );
 
   return (
