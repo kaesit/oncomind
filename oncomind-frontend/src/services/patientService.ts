@@ -31,6 +31,7 @@ export interface CreatePatientRequest {
      age: number;
      gender: string;
      emergencyStatus: string;
+     profilePicture: string;
      admissionLocation: string;
      assignedDoctorId: string;
 }
@@ -44,6 +45,14 @@ export const patientService = {
      getById: async (id: string): Promise<PatientDto> => {
           const response = await fetch(`${API_URL}/Patient/${id}`);
           if (!response.ok) throw new Error("Patient not found");
+          return await response.json();
+     },
+     getByDoctor: async (doctorId: string): Promise<PatientDto[]> => {
+          const response = await fetch(`${API_URL}/Patient/doctor/${doctorId}`);
+          if (!response.ok) {
+               console.error("Failed to fetch doctor's patients");
+               return [];
+          }
           return await response.json();
      },
      create: async (patient: CreatePatientRequest) => {

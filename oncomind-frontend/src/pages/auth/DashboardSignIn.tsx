@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form, { Item, Label, ButtonItem, RequiredRule, EmailRule } from "devextreme-react/form";
+import DateBox from 'devextreme-react/date-box';
+import notify from 'devextreme/ui/notify';
 import { styled } from "@mui/material/styles";
-import "../../css/DataSets.css"; // Ensure this imports your dark theme CSS
+import "../../css/DataSets.css";
 
-// --- STYLES ---
+// --- STYLES (Kept exactly as you had them) ---
+const dateBoxLabel = { 'aria-label': 'Date' };
 const AuthWrapper = styled("div")({
      height: "100vh",
      width: "100vw",
@@ -52,22 +55,83 @@ const LinkText = styled("span")({
 // --- COMPONENT ---
 const Login = () => {
      const navigate = useNavigate();
-     const [formData] = useState({ email: "", password: "" });
      const [isSignup, setIsSignup] = useState(false);
 
+     // 1. Fixed State Management
+     const [formData, setFormData] = useState({
+          email: "",
+          password: "",
+          firstName: "",
+          lastName: "",
+          specialization: "Oncologist",
+          profilePicture: ""
+     });
+
+     // Date state (allowed to be undefined initially)
+     const [birthDate, setBirthDate] = useState<Date | undefined>(new Date());
+
+     // 2. Handle Input Changes from DevExtreme Form
+     const handleFieldChange = (e: any) => {
+          setFormData({ ...formData, [e.dataField]: e.value });
+     };
+
+     // 3. Handle Date Change
+     const onDateChange = useCallback(({ value }: { value?: Date }) => {
+          setBirthDate(value);
+     }, []);
+
+     // 4. THE REAL SUBMIT LOGIC
      const handleSubmit = async (e: any) => {
           e.preventDefault();
 
-          
-          // For now, we simulate a successful login
-          console.log("Form Data:", formData);
+          const url = isSignup
+               ? "http://localhost:5001/api/Auth/register"
+               : "http://localhost:5001/api/Auth/login";
 
-          if (formData.email === "house@oncomind.com" && formData.password === "123") {
-               // Simulate storing the Doctor ID (Dr. House's ID from seed)
-               localStorage.setItem("doctorId", "69512e3ecf2f297c7d07f6ea");
-               navigate("/admin/patients");
-          } else {
-               alert("Invalid credentials (Try: house@oncomind.com / 123)");
+          // Prepare payload dynamically
+          const payload = isSignup ? {
+               firstName: formData.firstName,
+               lastName: formData.lastName,
+               email: formData.email,
+               password: formData.password,
+               specialization: formData.specialization,
+               dateOfBirth: birthDate,
+               profilePicture: formData.profilePicture
+          } : {
+               email: formData.email,
+               password: formData.password
+          };
+
+          try {
+               const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+               });
+
+               const data = await response.json();
+
+               if (!response.ok) {
+                    notify(data.message || "Authentication failed", "error", 3000);
+                    return;
+               }
+
+               // Success!
+               notify(isSignup ? "Account created! Please log in." : "Welcome back!", "success", 2000);
+
+               if (isSignup) {
+                    // If register success, switch to login mode automatically
+                    setIsSignup(false);
+               } else {
+                    // If login success, save ID and redirect
+                    localStorage.setItem("doctorId", data.doctorId);
+                    localStorage.setItem("doctorName", data.name); // Optional: Save name for UI
+                    navigate("/admin/patients");
+               }
+
+          } catch (error) {
+               console.error("Error:", error);
+               notify("Network error. Is the Backend running?", "error", 3000);
           }
      };
 
@@ -80,11 +144,21 @@ const Login = () => {
                     </SubTitle>
 
                     <form onSubmit={handleSubmit}>
-                         <Form formData={formData} labelMode="floating">
+                         <Form
+                              formData={formData}
+                              labelMode="floating"
+                              onFieldDataChanged={handleFieldChange} // 👈 Keeps state in sync
+                         >
 
                               {isSignup && (
-                                   <Item dataField="fullName" editorType="dxTextBox">
-                                        <Label text="Full Name" />
+                                   <Item dataField="firstName" editorType="dxTextBox">
+                                        <Label text="First Name" />
+                                        <RequiredRule message="Name is required" />
+                                   </Item>
+                              )}
+                              {isSignup && (
+                                   <Item dataField="lastName" editorType="dxTextBox">
+                                        <Label text="Last Name" />
                                         <RequiredRule message="Name is required" />
                                    </Item>
                               )}
@@ -103,6 +177,38 @@ const Login = () => {
                                    <Label text="Password" />
                                    <RequiredRule message="Password is required" />
                               </Item>
+
+                              {isSignup && (
+                                   <Item
+                                        dataField="specialization"
+                                        editorType="dxSelectBox"
+                                        editorOptions={{ items: ["Oncologist", "Bioinformatics", "Genetics", "Researcher"] }}
+                                   >
+                                        <Label text="Specialization" />
+                                   </Item>
+                              )}
+
+                              {/* Custom Item for DateBox because it's not a standard Form Item editorType */}
+                              {isSignup && (
+                                   <Item>
+                                        <div style={{ marginBottom: 15 }}>
+                                             <DateBox
+                                                  label="Date of Birth"
+                                                  labelMode="floating"
+                                                  value={birthDate}
+                                                  onValueChanged={onDateChange}
+                                                  inputAttr={dateBoxLabel}
+                                                  type="date"
+                                             />
+                                        </div>
+                                   </Item>
+                              )}
+
+                              {isSignup && (
+                                   <Item dataField="profilePicture" editorType="dxTextBox">
+                                        <Label text="Profile Picture URL" />
+                                   </Item>
+                              )}
 
                               <ButtonItem
                                    horizontalAlignment="center"

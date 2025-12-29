@@ -84,33 +84,52 @@ const Patients: React.FC = () => {
 
      // 2. EFFECT: Fetch data from C# API on load
      useEffect(() => {
+          const token = localStorage.getItem("doctorId");
+          if (!token) {
+               navigate("/login"); // Kick them out if not logged in
+               return;
+          }
           loadData();
      }, []);
 
      const loadData = async () => {
           setLoading(true);
-          const data = await patientService.getAll();
 
-          // 3. MAPConvert C# Data Structure to UI Structure
-          const mappedData = data.map((p: PatientDto) => {
-               // Helper to handle mixed types safely
+          // 1. Check who is logged in
+          const currentDoctorId = localStorage.getItem("doctorId");
+
+          let rawData: PatientDto[] = [];
+
+          if (currentDoctorId) {
+               // 2. Fetch ONLY this doctor's patients
+               console.log("Fetching patients for Doctor ID:", currentDoctorId);
+               rawData = await patientService.getByDoctor(currentDoctorId);
+          } else {
+               // Fallback: If no one is logged in, maybe redirect to login?
+               // For testing now, we can still fetch all or return empty
+               console.warn("No doctor logged in. Fetching all patients (Debug mode).");
+               rawData = await patientService.getAll();
+          }
+
+          // 3. Map the data (Your existing mapping logic)
+          const mappedData = rawData.map((p: PatientDto) => {
+               // ... copy your existing mapping logic here ...
+               // (The logic where you fix the gender/status strings)
                let genderDisplay = "Other";
-               const g = p.gender;
-
-               // Check as string ("0") or word ("Male")
+               const g = String(p.gender);
                if (g === "0" || g === "Male") genderDisplay = "Male";
                else if (g === "1" || g === "Female") genderDisplay = "Female";
-               else genderDisplay = g; // Fallback
+               else genderDisplay = g;
 
                return {
                     id: p.id,
                     name: `${p.firstName} ${p.lastName}`,
                     age: p.age,
-                    gender: genderDisplay, // ✅ Fixed
+                    gender: genderDisplay,
                     treatmentStart: p.treatmentStartAt ? new Date(p.treatmentStartAt).toLocaleDateString() : "N/A",
                     status: p.emergencyStatus || "Stable",
                     room: p.admissionLocation || "Not Assigned",
-                    admitted: p.isAdmitted, // ✅ Now valid (interface updated)
+                    admitted: p.isAdmitted,
                     preview: p.profilePicture || "https://via.placeholder.com/500?text=No+Image"
                };
           });
@@ -146,6 +165,7 @@ const Patients: React.FC = () => {
           age: 30,
           gender: "Male",
           emergencyStatus: "Stable",
+          profilePicture: "",
           admissionLocation: ""
      });
 
@@ -153,11 +173,17 @@ const Patients: React.FC = () => {
      const handleSavePatient = async () => {
           try {
                // Get logged in Doctor ID (from our Login step earlier)
-               const doctorId = localStorage.getItem("doctorId") || "";
+               const currentDoctorId = localStorage.getItem("doctorId");
+
+               // Safety Check: Ensure they are actually logged in
+               if (!currentDoctorId) {
+                    notify("Session expired. Please log in again.", "error", 3000);
+                    return;
+               }
 
                await patientService.create({
                     ...newPatient,
-                    assignedDoctorId: doctorId
+                    assignedDoctorId: currentDoctorId
                });
 
                notify("Patient added successfully!", "success", 2000);
@@ -216,6 +242,9 @@ const Patients: React.FC = () => {
                                    editorOptions={{ items: ["Stable", "Normal", "High", "Urgent"] }}
                               >
                                    <Label text="Initial Status" />
+                              </Item>
+                              <Item dataField="profilePicture">
+                                   <Label text="Picture" />
                               </Item>
                               <Item dataField="admissionLocation">
                                    <Label text="Room / Bed (Optional)" />

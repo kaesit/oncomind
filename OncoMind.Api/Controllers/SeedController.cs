@@ -39,9 +39,10 @@ namespace OncoMind.Api.Controllers
                     Age = 35,
                     Gender = Gender.Male,
                     AssignedDoctorId = drHouse.Id,
-                    EmergencyStatus = "Stable",
+                    EmergencyStatus = "Normal",
                     AdmissionLocation = "Room 221B",
-                    TreatmentStartAt = DateTime.UtcNow.AddDays(-10)
+                    TreatmentStartAt = DateTime.UtcNow.AddDays(-10),
+                    ProfilePicture = "https://plus.unsplash.com/premium_photo-1682141106314-d471655e316b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                };
                // Note: We insert patient FIRST to get an ID
                await _context.Patients.InsertOneAsync(patient);

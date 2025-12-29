@@ -52,7 +52,7 @@ function AppRouter() {
 
         </Route>
         <Route path="/signin" element={<Signin />} />
-        <Route path="/dashboard_signin" element={<DashboardSignIn />} />
+        <Route path="/login" element={<DashboardSignIn />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

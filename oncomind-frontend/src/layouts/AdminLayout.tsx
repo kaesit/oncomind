@@ -16,16 +16,18 @@ const navItems: NavItem[] = [
     text: "Data",
     icon: "folder",
     items: [
-      { id: "datasets", text: "Datasets", icon:"doc", path: "/admin/datasets" },
+      { id: "datasets", text: "Datasets", icon: "doc", path: "/admin/datasets" },
       { id: "models", text: "Models", icon: "chart", path: "/admin/models" },
 
     ],
   },
   { id: "patients", text: "Patients", icon: "user", path: "/admin/patients" },
-  { id: "analytics", text:"Analytics", icon: "event", path: "/admin/analytics"},
+  { id: "analytics", text: "Analytics", icon: "event", path: "/admin/analytics" },
   { id: "drug_candidates", text: "Drug Candidates", icon: "formula", path: "/admin/drug_candidates" },
   { id: "settings", text: "Settings", icon: "preferences", path: "/admin/settings" },
 ];
+
+
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -35,20 +37,13 @@ export default function AdminLayout() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   useEffect(() => {
-    // select nav item by path
-    const p = location.pathname;
-    const find = (items: NavItem[]): string | null => {
-      for (const it of items) {
-        if (it.path === p) return it.id;
-        if (it.items) {
-          const r = find(it.items);
-          if (r) return r;
-        }
-      }
-      return null;
-    };
-    setSelectedItem(find(navItems));
-  }, [location.pathname]);
+    // THE GUARD LOGIC
+    const doctorId = localStorage.getItem("doctorId");
+    if (!doctorId) {
+      // If no ID found, kick them back to login
+      navigate("/login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const onResize = () => {
@@ -77,7 +72,17 @@ export default function AdminLayout() {
     { text: "Sign out", onClick: () => alert("Sign out (demo)") },
   ];
 
+  const handleLogout = () => {
+    // 1. Clear the stored data
+    localStorage.removeItem("doctorId");
+    localStorage.removeItem("doctorName");
+
+    // 2. Redirect to Login
+    navigate("/login");
+  };
+
   return (
+
     <>
       <body className="dx-viewport">
         <div className="admin-root">
@@ -109,6 +114,8 @@ export default function AdminLayout() {
                     </div>
                   )}
                 />
+                <Button text="Logout" type="danger" icon="runner" onClick={handleLogout} />
+
 
                 <div style={{ flex: 1 }} />
                 <div className="nav-footer small">v0.1 • Presentation demo</div>

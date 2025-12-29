@@ -16,6 +16,8 @@ namespace OncoMind.Api.Models
         public string Gender { get; set; } = "Male"; // "Male" or "Female" string from Frontend
         
         public string EmergencyStatus { get; set; } = "Stable";
+
+        public string ProfilePicture { get; set; } = "";
         public string AdmissionLocation { get; set; } = "";
         
         // We will grab DoctorID from the logged-in session/token ideally, 

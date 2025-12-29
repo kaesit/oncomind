@@ -29,6 +29,7 @@ namespace OncoMind.Api.Services
                 // Convert string "Male"/"Female" to Enum safely
                 Gender = Enum.TryParse<Gender>(dto.Gender, true, out var g) ? g : Gender.Other,
                 EmergencyStatus = dto.EmergencyStatus,
+                ProfilePicture = dto.ProfilePicture,
                 AdmissionLocation = dto.AdmissionLocation,
                 AssignedDoctorId = dto.AssignedDoctorId,
                 IsAdmitted = !string.IsNullOrEmpty(dto.AdmissionLocation), // Auto-logic
