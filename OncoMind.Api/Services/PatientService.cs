@@ -18,6 +18,27 @@ namespace OncoMind.Api.Services
         public async Task<List<Patient>> GetByDoctorIdAsync(string doctorId) =>
             await _context.Patients.Find(p => p.AssignedDoctorId == doctorId).ToListAsync();
 
+        public async Task CreateAsync(CreatePatientDto dto)
+        {
+            // Map DTO -> Database Entity
+            var patient = new Patient
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Age = dto.Age,
+                // Convert string "Male"/"Female" to Enum safely
+                Gender = Enum.TryParse<Gender>(dto.Gender, true, out var g) ? g : Gender.Other,
+                EmergencyStatus = dto.EmergencyStatus,
+                AdmissionLocation = dto.AdmissionLocation,
+                AssignedDoctorId = dto.AssignedDoctorId,
+                IsAdmitted = !string.IsNullOrEmpty(dto.AdmissionLocation), // Auto-logic
+                CreatedAt = DateTime.UtcNow,
+                TreatmentStartAt = DateTime.UtcNow
+            };
+
+            await _context.Patients.InsertOneAsync(patient);
+        }
+
         public async Task CreateAsync(Patient patient) =>
             await _context.Patients.InsertOneAsync(patient);
 

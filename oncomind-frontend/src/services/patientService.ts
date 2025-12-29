@@ -25,6 +25,16 @@ export interface PatientDto {
      examinations?: AnalysisDto[]; // For the detail view
 }
 
+export interface CreatePatientRequest {
+     firstName: string;
+     lastName: string;
+     age: number;
+     gender: string;
+     emergencyStatus: string;
+     admissionLocation: string;
+     assignedDoctorId: string;
+}
+
 export const patientService = {
      getAll: async (): Promise<PatientDto[]> => {
           const response = await fetch(`${API_URL}/Patient`);
@@ -34,6 +44,18 @@ export const patientService = {
      getById: async (id: string): Promise<PatientDto> => {
           const response = await fetch(`${API_URL}/Patient/${id}`);
           if (!response.ok) throw new Error("Patient not found");
+          return await response.json();
+     },
+     create: async (patient: CreatePatientRequest) => {
+          const response = await fetch(`${API_URL}/Patient/add`, {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify(patient),
+          });
+          if (!response.ok) {
+               const error = await response.json();
+               throw new Error(error.title || "Failed to create patient");
+          }
           return await response.json();
      }
 };

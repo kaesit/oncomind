@@ -6,8 +6,10 @@ import { styled } from "@mui/material/styles";
 import { Popup } from "devextreme-react/popup";
 import { SelectBox } from "devextreme-react/select-box";
 import { useNavigate } from "react-router-dom"; // For navigation
-import { patientService, PatientDto } from "../../services/patientService"; // Import service
+import { patientService, PatientDto } from "../../services/patientService";
 import "../../css/DataSets.css";
+import Form, { Item, Label, RequiredRule, RangeRule } from "devextreme-react/form";
+import notify from "devextreme/ui/notify"; // Nice toast notifications
 
 /* ------------------------------------------------------
    UI STYLING (Kept exactly as you had it)
@@ -137,14 +139,95 @@ const Patients: React.FC = () => {
           });
      }, [patients, search, filterGender, filterStatus, filterAdmitted]);
 
+     const [addPopupVisible, setAddPopupVisible] = useState(false);
+     const [newPatient, setNewPatient] = useState({
+          firstName: "",
+          lastName: "",
+          age: 30,
+          gender: "Male",
+          emergencyStatus: "Stable",
+          admissionLocation: ""
+     });
+
+     // 2. Handle the "Save" Button click
+     const handleSavePatient = async () => {
+          try {
+               // Get logged in Doctor ID (from our Login step earlier)
+               const doctorId = localStorage.getItem("doctorId") || "";
+
+               await patientService.create({
+                    ...newPatient,
+                    assignedDoctorId: doctorId
+               });
+
+               notify("Patient added successfully!", "success", 2000);
+               setAddPopupVisible(false); // Close popup
+               loadData(); // Refresh the list automatically!
+          } catch (error) {
+               console.error(error);
+               notify("Error adding patient", "error", 2000);
+          }
+     };
+
      return (
           <div className="datasets-wrapper">
                <div className="datasets-actions">
-                    <Button text="Add New" icon="add" type="default" />
+                    <Button text="Add New" icon="add" type="default" onClick={() => setAddPopupVisible(true)} />
                     <Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} />
                     <TextBox placeholder="Search patient..." value={search} onValueChanged={(e) => setSearch(e.value)} width={260} />
                     <Button text="Filter" icon="filter" stylingMode="outlined" onClick={() => setFilterPopup(true)} />
                </div>
+
+               <Popup
+                    visible={addPopupVisible}
+                    onHiding={() => setAddPopupVisible(false)}
+                    dragEnabled={false}
+                    hideOnOutsideClick={true}
+                    showCloseButton={true}
+                    showTitle={true}
+                    title="Register New Patient"
+                    width={500}
+                    height={550}
+               >
+                    <div style={{ padding: 20 }}>
+                         <Form formData={newPatient}>
+                              <Item dataField="firstName">
+                                   <RequiredRule message="First Name is required" />
+                                   <Label text="First Name" />
+                              </Item>
+                              <Item dataField="lastName">
+                                   <RequiredRule message="Last Name is required" />
+                                   <Label text="Last Name" />
+                              </Item>
+                              <Item dataField="age" editorType="dxNumberBox">
+                                   <RangeRule min={0} max={120} message="Age must be valid" />
+                                   <Label text="Age" />
+                              </Item>
+                              <Item
+                                   dataField="gender"
+                                   editorType="dxSelectBox"
+                                   editorOptions={{ items: ["Male", "Female"] }}
+                              >
+                                   <Label text="Gender" />
+                              </Item>
+                              <Item
+                                   dataField="emergencyStatus"
+                                   editorType="dxSelectBox"
+                                   editorOptions={{ items: ["Stable", "Normal", "High", "Urgent"] }}
+                              >
+                                   <Label text="Initial Status" />
+                              </Item>
+                              <Item dataField="admissionLocation">
+                                   <Label text="Room / Bed (Optional)" />
+                              </Item>
+                         </Form>
+
+                         <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end", gap: 10 }}>
+                              <Button text="Cancel" onClick={() => setAddPopupVisible(false)} />
+                              <Button text="Save Patient" type="default" onClick={handleSavePatient} />
+                         </div>
+                    </div>
+               </Popup>
 
                <Popup visible={filterPopup} onHiding={() => setFilterPopup(false)} showCloseButton={true} width={380} title="Filter Patients">
                     <div className="filter-popup-body">
