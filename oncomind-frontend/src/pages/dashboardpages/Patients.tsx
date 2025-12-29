@@ -199,7 +199,7 @@ const Patients: React.FC = () => {
           <div className="datasets-wrapper">
                <div className="datasets-actions">
                     <Button text="Add New" icon="add" type="default" onClick={() => setAddPopupVisible(true)} />
-                    <Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} />
+                    {/*<Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} /> */}
                     <TextBox placeholder="Search patient..." value={search} onValueChanged={(e) => setSearch(e.value)} width={260} />
                     <Button text="Filter" icon="filter" stylingMode="outlined" onClick={() => setFilterPopup(true)} />
                </div>
@@ -269,7 +269,7 @@ const Patients: React.FC = () => {
                <div className="datasets-grid">
                     {loading ? <p style={{ color: 'white' }}>Loading patients...</p> : filteredPatients.map((p) => (
                          // 4. NAVIGATION: Pass ID to the details page
-                         <div key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)} style={{ textDecoration: "none", color: "white" }}>
+                         <div  style={{ textDecoration: "none", color: "white" }}>
                               <CardContainer>
                                    <Checkbox checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} sx={{ position: "absolute", top: "10px", left: "10px", zIndex: 5, color: "var(--dx-theme-secondary-color)", "&.Mui-checked": { color: "var(--dx-theme-accent-color)" } }} />
                                    <PreviewImg src={p.preview} alt={p.name} />
@@ -277,6 +277,7 @@ const Patients: React.FC = () => {
                                    <StatusBadge status={p.status}>{p.status}</StatusBadge>
                                    <p style={{ margin: 0, opacity: 0.85 }}>Age: {p.age} | Gender: {p.gender}</p>
                                    <p style={{ margin: 0, opacity: 0.85 }}>{p.admitted ? p.room : "Not admitted"}</p>
+                                   <button className="patientButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Go Page</button>
                               </CardContainer>
                          </div>
                     ))}

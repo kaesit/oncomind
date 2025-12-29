@@ -126,6 +126,7 @@ const Login = () => {
                     // If login success, save ID and redirect
                     localStorage.setItem("doctorId", data.doctorId);
                     localStorage.setItem("doctorName", data.name); // Optional: Save name for UI
+                    localStorage.setItem("doctorSpecialization", data.specialization)
                     navigate("/admin/patients");
                }
 

@@ -17,6 +17,28 @@
   border-radius: 12px;
 }
 
+.patientButton
+{
+  position: relative;
+  width: 100px;
+  height: 40px;
+  border-radius: var(--border-radius-xl);
+  background-color: var(--primary);
+  border: none;
+  color: var(--text);
+  right: 0px;
+  font-size: 16px;
+  margin-left: 11rem;
+  transition: 1.4s ease-in-out;
+
+}
+.patientButton:hover
+{
+  background-color: var(--secondary);
+  cursor: pointer;
+  transition: 0.4s ease-in-out;
+}
+
 .datasets-grid {
   margin-top: 16px;
   display: grid;
