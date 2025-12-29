@@ -46,7 +46,7 @@ const complaintsData = [
 const data = complaintsData.sort((a, b) => b.emergency - a.emergency);
 const totalEmergency = data.reduce((prevValue, item) => prevValue + item.emergency, 0);
 let cumulativeCount = 0;
-
+let secondProtein = 0;
 const dataArray = data.map((item) => {
      cumulativeCount += item.emergency;
      return {
@@ -117,7 +117,7 @@ export const DashboardAnalytics: React.FC = () => {
                     <PieChart
                          id="pie"
                          type="doughnut"
-                         title="The Population of Continents and Regions"
+                         title="The Kinase Genes Most Used in Models"
                          palette="Soft Pastel"
                          dataSource={mostUsedGenes}
                     >
@@ -132,10 +132,10 @@ export const DashboardAnalytics: React.FC = () => {
                               <Format type="" />
                          </Tooltip>
                     </PieChart>
-                    <PieChart
+                    {/*<PieChart
                          id="pie"
                          type="doughnut"
-                         title="The Population of Continents and Regions"
+                         title="The Kinase Genes Most Used in Models"
                          palette="Soft Pastel"
                          dataSource={mostUsedGenes}
                     >
@@ -149,7 +149,7 @@ export const DashboardAnalytics: React.FC = () => {
                          <Tooltip enabled={true} customizeTooltip={customizeTooltip}>
                               <Format type="" />
                          </Tooltip>
-                    </PieChart>
+                    </PieChart> */}
                     <Chart
                          title="Patients Emergency Levels"
                          dataSource={dataArray}
@@ -161,6 +161,11 @@ export const DashboardAnalytics: React.FC = () => {
                               name="Emergency Status"
                               valueField="emergency"
                               color="#f32f2fff"
+                         />
+                         <Series
+                              name="Second Protein"
+                              valueField="secondProtein"
+                              color="#6bc36fff"
                          />
 
                          <ArgumentAxis>
