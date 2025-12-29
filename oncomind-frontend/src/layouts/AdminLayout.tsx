@@ -40,7 +40,7 @@ export default function AdminLayout() {
     const doctorId = localStorage.getItem("doctorId");
     const name = localStorage.getItem("doctorName");
     const specialization_branch = localStorage.getItem("doctorSpecialization");
-    setSpecialization(specialization_branch.toString());
+    setSpecialization(specialization_branch || "Doctor");
 
     if (!doctorId) {
       navigate("/login");
@@ -50,7 +50,7 @@ export default function AdminLayout() {
       if (parts.length >= 2) {
         setInitials(`${parts[0][0]}${parts[1][0]}`.toUpperCase());
       } else {
-        setInitials(name.substring(0, 3).toLocaleUpperCase());
+        setInitials(name.substring(0, 2).toLocaleUpperCase());
       }
     }
   }, [navigate]);
@@ -79,7 +79,7 @@ export default function AdminLayout() {
   const handleLogout = () => {
     localStorage.removeItem("doctorId");
     localStorage.removeItem("doctorName");
-    localStorage.removeItem("specialization");
+    localStorage.removeItem("doctorSpecialization");
     navigate("/login");
   };
 
