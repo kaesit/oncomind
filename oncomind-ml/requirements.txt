@@ -12,12 +12,7 @@ tifffile
 openslide-python
 biopython
 py3Dmol
-<<<<<<< Updated upstream
 rdkit
-rdkit-pypi
-=======
-redkit-pypi
->>>>>>> Stashed changes
 pyvista
 python-multipart
 pytest
