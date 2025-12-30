@@ -17,6 +17,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
+import torch
+import torch.nn as nn
+from rdkit import Chem
+from rdkit.Chem import Descriptors, QED, Draw
 
 
 load_dotenv()
@@ -397,6 +401,125 @@ async def plot(x: int, y: int):
 
     return Response(content=image_bytes, media_type="image/png")
 
+
+
+# --- SENİN SABİT DEĞİŞKENLERİN (Aynı kalacak) ---
+VOCAB_LIST = ['<PAD>', '<SOS>', '<EOS>', '#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '6', '7', '8', '=', 'B', 'C', 'F', 'I', 'N', 'O', 'P', 'S', '[C-]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[N+]', '[O-]', '[O]', '[S+]', '[Si]', '[n+]', '[nH]', '\\', 'c', 'l', 'n', 'o', 'r', 's']
+EMBED_SIZE = 128
+HIDDEN_SIZE = 256
+NUM_LAYERS = 2
+VOCAB_SIZE = len(VOCAB_LIST)
+stoi = { token:i for i, token in enumerate(VOCAB_LIST) }
+itos = { i:token for i, token in enumerate(VOCAB_LIST) }
+
+class MoleculeGenerator(nn.Module):
+    def __init__(self, vocab_size, embed_size, hidden_size, num_layers):
+        super(MoleculeGenerator, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, vocab_size)
+
+    def forward(self, x, hidden=None):
+        embed = self.embedding(x)
+        out, (ht, ct) = self.lstm(embed, hidden)
+        output = self.fc(out)
+        return output, (ht, ct)
+
+class OncoMind:
+    def __init__(self, model_path):
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        print(f"Cihaz: {self.device}")
+        self.model = MoleculeGenerator(VOCAB_SIZE, EMBED_SIZE, HIDDEN_SIZE, NUM_LAYERS).to(self.device)
+        try:
+            self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+            self.model.eval()
+            print("Model başarıyla yüklendi!")
+        except Exception as e:
+            print(f"Model yüklenirken hata oluştu: {e}")
+
+    def generate(self, start_atom="C", max_length=100, temperature=1.0):
+        if start_atom not in stoi: return "Hata"
+        input_seq = [stoi['<SOS>'], stoi[start_atom]]
+        input_tensor = torch.tensor(input_seq, dtype=torch.long).unsqueeze(0).to(self.device)
+        generated_str = start_atom
+        hidden = None
+        with torch.no_grad():
+            for _ in range(max_length):
+                output, hidden = self.model(input_tensor, hidden)
+                last_token_logits = output[0, -1, :] / temperature
+                probs = torch.nn.functional.softmax(last_token_logits, dim=0)
+                next_token_idx = torch.multinomial(probs, 1).item()
+                if next_token_idx == stoi['<EOS>']: break
+                next_char = itos[next_token_idx]
+                generated_str += next_char
+                input_tensor = torch.tensor([[next_token_idx]], dtype=torch.long).to(self.device)
+        return generated_str
+
+# ---------------------------------------------------------------------------
+# YENİ EKLENEN KISIM: ZORLU FİLTRELEME VE RESİM KAYDETME
+# ---------------------------------------------------------------------------
+
+def analyze_and_save(ai_model, start_atom="C", min_qed=0.7, max_mw=500, max_attempts=1000):
+    """
+    Belirtilen kriterlere (QED >= 0.7 ve MW < 500) uyan bir molekül bulana kadar dener.
+    Bulunca resmini kaydeder.
+    """
+    print(f"\n--- {start_atom} atomu ile Yüksek Kaliteli İlaç Adayı Aranıyor ---")
+    print(f"Hedef: QED >= {min_qed} ve MW < {max_mw}")
+    
+    best_qed = 0.0 # Şimdiye kadar bulunan en iyi skoru takip edelim
+    
+    for i in range(1, max_attempts + 1):
+        # 1. Molekül Üret
+        smiles = ai_model.generate(start_atom, temperature=0.8) # Temperature ile oynayabilirsin
+        
+        # 2. RDKit ile Analiz Et
+        mol = Chem.MolFromSmiles(smiles)
+        
+        if mol is None:
+            continue # Geçersiz molekülse pas geç
+            
+        # Özellikleri Hesapla
+        try:
+            current_qed = QED.qed(mol)
+            current_mw = Descriptors.MolWt(mol)
+            
+            # En iyisini logla (Gelişimi görmek için)
+            if current_qed > best_qed:
+                best_qed = current_qed
+                print(f"Deneme {i}: Yeni en iyi QED: {best_qed:.2f} (MW: {current_mw:.1f}) -> {smiles}")
+
+            # 3. Kriter Kontrolü (Senin istediğin katı kurallar)
+            if current_qed >= min_qed and current_mw < max_mw:
+                print(f"\n[BAŞARILI] {i}. denemede uygun aday bulundu!")
+                print(f"SMILES: {smiles}")
+                print(f"Skorlar -> QED: {current_qed:.3f} | MW: {current_mw:.2f}")
+                
+                # 4. Resmi Kaydet
+                file_name = f"drug_candidate_{i}_QED{current_qed:.2f}.png"
+                Draw.MolToImage(mol, size=(300, 300)).save(file_name)
+                print(f"Molekül resmi '{file_name}' olarak kaydedildi.")
+                
+                return smiles, file_name # Fonksiyondan çık
+                
+        except Exception as e:
+            continue # Hesaplama hatası olursa devam et
+
+    print("\n[BAŞARISIZ] Maksimum deneme sayısına ulaşıldı, uygun aday bulunamadı.")
+    return None, None
+
+# --- ÇALIŞTIRMA ---
+"""if __name__ == "__main__":
+    # 1. Modeli Başlat
+    ai_chemist = OncoMind("oncomind_model.pth")
+    
+    # 2. Üretimi Başlat (Döngüye girer ve bulana kadar dener)
+    # C ile başlayan, QED'si 0.7'den yüksek bir ilaç ara
+    final_smiles, saved_image = analyze_and_save(ai_chemist, start_atom="C", min_qed=0.7, max_mw=500)
+    
+    if final_smiles:
+        print("\nİşlem Tamamlandı. Şimdi 'drug_candidate_...' isimli PNG dosyasına bakabilirsin.")
+"""
 
 @app.post("/admin/reload_diagnostic")
 async def reload_diagnostic(force: bool = True):
