@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using OncoMind.Api.Models;
+using MongoDB.Bson;
 
 namespace OncoMind.Api.Services
 {
@@ -43,6 +44,26 @@ namespace OncoMind.Api.Services
         public async Task CreateAsync(Patient patient) =>
             await _context.Patients.InsertOneAsync(patient);
 
+        public async Task CreateAnalysisAsync(CreateAnalysisDto dto)
+        {
+            string summaryValue = dto.ResultData?.Summary ?? "No summary provided";
+
+            var analysis = new Analysis
+            {
+                PatientId = dto.PatientId,
+                DoctorId = dto.DoctorId,
+                AnalysisType = dto.AnalysisType,
+                ResultData = new BsonDocument
+                {
+                    { "Summary", summaryValue }
+                },
+
+                Timestamp = DateTime.UtcNow
+            };
+
+            // 2. Save
+            await _context.Analyses.InsertOneAsync(analysis);
+        }
         public async Task<Patient?> GetByIdAsync(string id) =>
             await _context.Patients.Find(p => p.Id == id).FirstOrDefaultAsync();
 
@@ -54,9 +75,9 @@ namespace OncoMind.Api.Services
 
             // 2. Get all Analyses belonging to this Patient
             var analyses = await _context.Analyses
-                                         .Find(a => a.PatientId == id)
-                                         .SortByDescending(a => a.Timestamp) // Newest first
-                                         .ToListAsync();
+            .Find(a => a.PatientId == id)
+            .SortByDescending(a => a.Timestamp)
+            .ToListAsync();
 
             // 3. Combine them into the DTO
             return new PatientDetailDto
@@ -70,7 +91,31 @@ namespace OncoMind.Api.Services
                 AdmissionLocation = patient.AdmissionLocation,
                 TreatmentStartAt = patient.TreatmentStartAt,
                 ProfilePicture = patient.ProfilePicture,
-                Examinations = analyses // <--- The Real Data
+                Examinations = analyses.Select(a =>
+                {
+                    // Helper to extract the summary safely whether it's JSON or BSON
+                    string summaryText = "No details";
+
+                    // If it was saved as our DTO, it might be deserialized as a BsonDocument
+                    if (a.ResultData is MongoDB.Bson.BsonDocument doc && doc.Contains("Summary"))
+                    {
+                        summaryText = doc["Summary"].AsString;
+                    }
+                    else
+                    {
+                        // Fallback: Just dump it to string (e.g. "{ 'Summary': '...' }")
+                        summaryText = a.ResultData?.ToString() ?? "";
+                    }
+
+                    return new AnalysisDto
+                    {
+                        Id = a.Id,
+                        Date = a.Timestamp,
+                        Type = a.AnalysisType,
+                        Doctor = a.DoctorId ?? "System/Legacy",
+                        Summary = summaryText
+                    };
+                }).ToList()
             };
         }
     }

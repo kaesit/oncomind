@@ -66,5 +66,25 @@ export const patientService = {
                throw new Error(error.title || "Failed to create patient");
           }
           return await response.json();
+     },
+     addAnalysis: async (data: { patientId: string; doctorId: string; analysisType: string; summary: string }) => {
+          const payload = {
+               patientId: data.patientId,
+               doctorId: data.doctorId,
+               analysisType: data.analysisType,
+               // This matches the class AnalysisResultDto { Summary: ... }
+               resultData: {
+                    summary: data.summary
+               }
+          };
+
+          const response = await fetch(`${API_URL}/Analysis/add`, {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) throw new Error("Failed to add analysis");
+          return await response.json();
      }
 };

@@ -14,6 +14,6 @@ namespace OncoMind.Api.Models
         public string ProfilePicture { get; set; } = null!;
 
         // The Magic Part: The actual list of objects, not just IDs
-        public List<Analysis> Examinations { get; set; } = new();
+        public List<AnalysisDto> Examinations { get; set; } = new();
     }
 }

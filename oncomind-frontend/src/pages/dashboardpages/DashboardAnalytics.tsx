@@ -51,7 +51,11 @@ export const DashboardAnalytics: React.FC = () => {
 
      // 1. Fetch Real Data on Load
      useEffect(() => {
-          fetch("http://localhost:5001/api/Dashboard/stats")
+          // Get the logged-in ID
+          const currentDoctorId = localStorage.getItem("doctorId") || "";
+
+          // Append it to the URL
+          fetch(`http://localhost:5001/api/Dashboard/stats?doctorId=${currentDoctorId}`)
                .then(res => res.json())
                .then(fetchedData => {
                     setData(fetchedData);
@@ -103,7 +107,7 @@ export const DashboardAnalytics: React.FC = () => {
                               dataSource={data.charts.statusDistribution}
                          >
                               <PieSeries argumentField="status" valueField="count">
-                                   <PieLabel visible={true} customizeText={(arg:any) => `${arg.argumentText} (${arg.valueText})`}>
+                                   <PieLabel visible={true} customizeText={(arg: any) => `${arg.argumentText} (${arg.valueText})`}>
                                         <Connector visible={true} />
                                    </PieLabel>
                               </PieSeries>

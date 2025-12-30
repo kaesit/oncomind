@@ -17,24 +17,39 @@ namespace OncoMind.Api.Controllers
           }
 
           [HttpGet("stats")]
-          public async Task<IActionResult> GetDashboardStats()
+          public async Task<IActionResult> GetDashboardStats([FromQuery] string? doctorId)
           {
-               // 1. Fetch Raw Data
-               var patients = await _context.Patients.Find(_ => true).ToListAsync();
+               // 1. Define Filter: Start with "Select All"
+               var filterBuilder = Builders<Patient>.Filter;
+               var filter = filterBuilder.Empty;
+
+               // If a specific Doctor ID is passed, restrict the query
+               if (!string.IsNullOrEmpty(doctorId))
+               {
+                    filter = filterBuilder.Eq(p => p.AssignedDoctorId, doctorId);
+               }
+
+               // 2. Fetch Data using the Filter
+               var patients = await _context.Patients.Find(filter).ToListAsync();
+
+               // Global stats (e.g. Total Doctors) usually stay global, 
+               // but you can filter this too if you want "Doctors in my department"
                var doctors = await _context.Doctors.Find(_ => true).ToListAsync();
 
-               // 2. Calculate KPIs
+               // ... (The rest of your calculation logic stays exactly the same) ...
+
                var totalPatients = patients.Count;
                var urgentCases = patients.Count(p => p.EmergencyStatus == "Urgent" || p.EmergencyStatus == "High");
-               var newPatients24h = patients.Count(p => p.CreatedAt > DateTime.UtcNow.AddHours(-24));
 
-               // 3. Prepare Chart Data: Patients by Status
+               // Note: Ensure you are using ToUniversalTime() if your server is UTC but data is saved as Local
+               var cutoffDate = DateTime.UtcNow.AddHours(-72);
+               var newPatients24h = patients.Count(p => p.CreatedAt.ToUniversalTime() > cutoffDate);
+
                var statusDistribution = patients
                    .GroupBy(p => p.EmergencyStatus)
                    .Select(g => new { Status = g.Key, Count = g.Count() })
                    .ToList();
 
-               // 4. Prepare List: 5 Most Recent Patients
                var recentPatients = patients
                    .OrderByDescending(p => p.CreatedAt)
                    .Take(5)
@@ -43,12 +58,8 @@ namespace OncoMind.Api.Controllers
                         Id = p.Id,
                         Name = $"{p.FirstName} {p.LastName}",
                         Status = p.EmergencyStatus,
-                        Time = p.CreatedAt.ToString("HH:mm"), // Format time
-                        Date = p.CreatedAt.ToString("MMM dd"),
-                        RawCreated = p.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
-
-                        // 👇 DEBUG LINE: Check if it matches your filter
-                        IsNew = p.CreatedAt > DateTime.UtcNow.AddHours(-72)
+                        Time = p.CreatedAt.ToString("HH:mm"),
+                        Date = p.CreatedAt.ToString("MMM dd")
                    })
                    .ToList();
 

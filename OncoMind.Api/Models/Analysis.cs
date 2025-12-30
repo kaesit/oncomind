@@ -12,10 +12,12 @@ namespace OncoMind.Api.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string PatientId { get; set; } = null!;
 
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? DoctorId { get; set; }
         public string AnalysisType { get; set; } = "CSV_DrugResponse"; // or "YOLO_Image"
-        
+
         // Flexible field for ML results (JSON)
-        public object ResultData { get; set; } = null!; 
+        public object ResultData { get; set; } = null!;
 
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     }

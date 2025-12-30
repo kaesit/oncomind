@@ -12,6 +12,10 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import RoomIcon from "@mui/icons-material/Room";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Popup } from "devextreme-react/popup";
+import TextArea from "devextreme-react/text-area";
+import SelectBox from "devextreme-react/select-box";
+import notify from "devextreme/ui/notify";
 /* ------------------------------------------------------
    TYPES
 ------------------------------------------------------ */
@@ -279,7 +283,36 @@ const PatientProfile: React.FC = () => {
      const { id } = useParams(); // 1. Get ID from URL (e.g., /admin/patients/659b...)
      const [patient, setPatient] = useState<any>(null);
      const [loading, setLoading] = useState(true);
+     const [isPopupVisible, setPopupVisible] = useState(false);
+     const [newAnalysis, setNewAnalysis] = useState({
+          type: "Blood Test",
+          summary: ""
+     });
 
+     // 2. Handle Save
+     const handleSaveAnalysis = async () => {
+          try {
+               const doctorId = localStorage.getItem("doctorId");
+               if (!doctorId || !patient) return;
+
+               await patientService.addAnalysis({
+                    patientId: patient.id,
+                    doctorId: doctorId,
+                    analysisType: newAnalysis.type,
+                    summary: newAnalysis.summary
+               });
+
+               notify("Analysis added successfully!", "success", 2000);
+               setPopupVisible(false);
+
+               // Refresh Data to see new item
+               if (id) fetchPatientData(id);
+
+          } catch (error) {
+               console.error(error);
+               notify("Error saving analysis", "error", 2000);
+          }
+     };
      useEffect(() => {
           if (id) fetchPatientData(id);
      }, [id]);
@@ -287,7 +320,6 @@ const PatientProfile: React.FC = () => {
      const fetchPatientData = async (patientId: string) => {
           setLoading(true);
           try {
-               // 1. Use getById (Calls the C# GetPatientWithHistoryAsync endpoint)
                const p = await patientService.getById(patientId);
 
                if (p) {
@@ -302,19 +334,24 @@ const PatientProfile: React.FC = () => {
                          avatarUrl: p.profilePicture || "https://via.placeholder.com/150",
                          coverUrl: "https://images.unsplash.com/photo-1732046801426-f32529468176?q=80&w=1632",
 
-                         // 2. Map the REAL examinations from the database
-                         // Note: We type 'exam' as 'any' or 'AnalysisDto' to fix the TS error
+                         // 👇 FIX THE MAPPING HERE
                          examinations: p.examinations ? p.examinations.map((exam: any) => ({
                               id: exam.id,
-                              date: new Date(exam.timestamp).toLocaleDateString(),
-                              type: exam.analysisType || "General Analysis",
-                              doctor: "System",
-                              // Safely handle the resultData JSON
-                              summary: exam.resultData?.Summary
-                                   ? exam.resultData.Summary
-                                   : "Detailed analysis data available.",
+
+                              // Backend sends 'date', not 'timestamp'
+                              date: new Date(exam.date).toLocaleDateString(),
+
+                              // Backend sends 'type', not 'analysisType'
+                              type: exam.type || "General Analysis",
+
+                              // Backend sends 'doctor' (ID or Name), use it!
+                              doctor: exam.doctor || "System",
+
+                              // Backend sends a clean 'summary' string now, not 'resultData' object
+                              summary: exam.summary || "No details provided.",
+
                               imageUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300"
-                         })) : [] // If null, empty array
+                         })) : []
                     });
                }
           } catch (error) {
@@ -401,9 +438,15 @@ const PatientProfile: React.FC = () => {
                               MUAYENE GEÇMİŞİ
                          </GradientText>
                     </SectionTitle>
-
+                    <Button
+                         icon="plus"
+                         type="default"
+                         text="New Analysis"
+                         onClick={() => setPopupVisible(true)}
+                         elementAttr={{ style: { marginBottom: 20 } }}
+                    >New Analysis</Button>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                         {p.examinations.map((exam:any) => (
+                         {p.examinations.map((exam: any) => (
                               <ExamCard key={exam.id}>
                                    {/* 1. Sol: Resim (Açılı Kesim) */}
                                    <ExamImage img={exam.imageUrl} />
@@ -439,7 +482,7 @@ const PatientProfile: React.FC = () => {
                                    </ExamContent>
 
                                    {/* 3. Sağ: Buton */}
-                                   <ExamAction>
+                                   {/*<ExamAction>
                                         <Button
                                              icon="arrowright"
                                              type="default"
@@ -455,12 +498,51 @@ const PatientProfile: React.FC = () => {
                                                   }
                                              }}
                                         />
-                                   </ExamAction>
+                                   </ExamAction>*/}
                               </ExamCard>
                          ))}
                     </Box>
 
                </ContainerFluid>
+               <Popup
+                    visible={isPopupVisible}
+                    onHiding={() => setPopupVisible(false)}
+                    dragEnabled={false}
+                    showTitle={true}
+                    title="Add New Medical Analysis"
+                    width={500}
+                    height={400}
+                    showCloseButton={true}
+               >
+                    <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
+
+                         <div>
+                              <label style={{ display: 'block', marginBottom: 5, color: '#333' }}>Analysis Type</label>
+                              <SelectBox
+                                   items={["Blood Test", "MRI Scan", "CT Scan", "X-Ray", "Genetic Sequencing", "Biopsy"]}
+                                   value={newAnalysis.type}
+                                   onValueChanged={(e) => setNewAnalysis({ ...newAnalysis, type: e.value })}
+                              />
+                         </div>
+
+                         <div>
+                              <label style={{ display: 'block', marginBottom: 5, color: '#333' }}>Clinical Summary</label>
+                              <TextArea
+                                   height={100}
+                                   placeholder="Enter findings..."
+                                   value={newAnalysis.summary}
+                                   onValueChanged={(e) => setNewAnalysis({ ...newAnalysis, summary: e.value })}
+                              />
+                         </div>
+
+                         <Button
+                              text="Save Record"
+                              type="default"
+                              icon="save"
+                              onClick={handleSaveAnalysis}
+                         />
+                    </div>
+               </Popup>
           </FullPageWrapper>
      );
 };

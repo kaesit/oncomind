@@ -1,5 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Mvc;
 using OncoMind.Api.Services;
+using OncoMind.Api.Models;
 
 namespace OncoMind.Api.Controllers
 {
@@ -8,10 +10,12 @@ namespace OncoMind.Api.Controllers
     public class AnalysisController : ControllerBase
     {
         private readonly PythonMLService _mlService;
+        private readonly PatientService _patientService;
 
-        public AnalysisController(PythonMLService mlService)
+        public AnalysisController(PythonMLService mlService, PatientService patientService)
         {
             _mlService = mlService;
+            _patientService = patientService;
         }
 
         [HttpGet("dataset")]
@@ -40,6 +44,16 @@ namespace OncoMind.Api.Controllers
         {
             var imageStream = await _mlService.GetScatterLineAsync(x, y);
             return File(imageStream, "image/png");
+        }
+        [HttpPost("add")]
+        public async Task<IActionResult> AddNewAnalysis([FromBody] CreateAnalysisDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            // Call the Service
+            await _patientService.CreateAnalysisAsync(dto);
+
+            return Ok(new { Message = "Analysis record added successfully!" });
         }
     }
 }
