@@ -12,7 +12,7 @@ COPY OncoMind.Api/OncoMind.Api.csproj OncoMind.Api/
 RUN dotnet restore OncoMind.Api/OncoMind.Api.csproj
 COPY OncoMind.Api/ OncoMind.Api/
 WORKDIR /src/OncoMind.Api
-RUN dotnet publish -c Release -o /app/publish --no-restore
+RUN dotnet publish -c Release -o /app/publish
 
 # 3. Final Stage
 FROM base AS final

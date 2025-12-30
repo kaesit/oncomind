@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -16,7 +16,17 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
+<<<<<<< HEAD
 # 3. Copy Application Code (Changes Frequently)
 COPY . .
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+=======
+
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+>>>>>>> 903f78c (Mac desktop: docker and ml local adjustments)
