@@ -26,6 +26,7 @@
   background-color: var(--primary);
   border: none;
   color: var(--text);
+  font-weight: 700;
   right: 0px;
   font-size: 16px;
   margin-left: 11rem;

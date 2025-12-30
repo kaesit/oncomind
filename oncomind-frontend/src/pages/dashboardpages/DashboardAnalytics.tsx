@@ -1,211 +1,175 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import PieChart, {
-     Legend,
-     Series,
-     Tooltip,
-     Format,
-     Label,
+     Series as PieSeries,
+     Label as PieLabel,
      Connector,
-     Export,
+     Legend,
+     Export
 } from 'devextreme-react/pie-chart';
 import Chart, {
-     ArgumentAxis,
      CommonSeriesSettings,
+     Series as ChartSeries,
      ValueAxis,
-     ConstantLine,
+     Tooltip,
+     Grid,
+     Legend as ChartLegend
 } from 'devextreme-react/chart';
+import DataGrid, { Column, Paging, Scrolling } from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import "../../css/DashboardAnalytics.css";
 
-const mostUsedGenes = [{
-     region: 'ABL1',
-     val: 500,
-}, {
-     region: 'FLT3',
-     val: 12,
-}, {
-     region: 'KIT',
-     val: 245,
-}, {
-     region: 'BCL2',
-     val: 400,
-}, {
-     region: 'JAK2',
-     val: 120,
-}];
-const complaintsData = [
-     { complaint: 'Judie', emergency: 1 },
-     { complaint: 'Emily', emergency: 2 },
-     { complaint: 'Geraldo', emergency: 3 },
-     { complaint: 'Peter', emergency: 4 },
-     { complaint: 'Luv', emergency: 4 },
-     { complaint: 'Fredrich', emergency: 3 },
-     { complaint: 'Matt', emergency: 1 },
-];
-
-const data = complaintsData.sort((a, b) => b.emergency - a.emergency);
-const totalEmergency = data.reduce((prevValue, item) => prevValue + item.emergency, 0);
-let cumulativeCount = 0;
-
-const dataArray = data.map((item) => {
-     cumulativeCount += item.emergency;
-     return {
-          complaint: item.complaint,
-          emergency: item.emergency,
-          cumulativePercentage: Math.round((cumulativeCount * 100) / totalEmergency),
+// --- INTERFACES FOR OUR API DATA ---
+interface DashboardData {
+     kpis: {
+          totalPatients: number;
+          urgentCases: number;
+          newPatients24h: number;
+          totalDoctors: number;
      };
-});
-
-interface Image {
-     id: number;
-     name: string;
-     url: string;
-}
-export const images = [
-     {
-          id: 1,
-          name: "image_1",
-          url: "http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3"
-     },
-     {
-          id: 2,
-          name: "image_2",
-          url: "http://localhost:8000/hystogram"
-     },
-     {
-          id: 3,
-          name: "image_3",
-          url: "http://localhost:8000/parabol?x=1&x=2&x=3&y=2&y=5&y=3"
-     }
-];
-
-
-function customizeTooltip(arg: { valueText: string; percent: number; }) {
-     return {
-          text: `${arg.valueText} - ${(arg.percent * 100).toFixed(2)}%`,
+     charts: {
+          statusDistribution: { status: string; count: number }[];
      };
+     recentActivity: {
+          id: string;
+          name: string;
+          status: string;
+          time: string;
+          date: string;
+     }[];
 }
+
+// Initial Empty State
+const initialData: DashboardData = {
+     kpis: { totalPatients: 0, urgentCases: 0, newPatients24h: 0, totalDoctors: 0 },
+     charts: { statusDistribution: [] },
+     recentActivity: []
+};
 
 export const DashboardAnalytics: React.FC = () => {
-     const kpis = useMemo(() => [
-          { id: 1, title: "Patients scanned (24h)", value: 58 },
-          { id: 2, title: "AI classifications", value: 342 },
-          { id: 3, title: "Model anomalies", value: 1 },
-     ], []);
-     const [selectedId, setSelectdId] = useState<number>(1);
-     const prevImage = () => {
-          setSelectdId((prev) => (prev <= 1 ? images.length : prev - 1));
-     };
-     const nextImage = () => {
-          setSelectdId((prev) => (prev >= images.length ? 1 : prev + 1));
-     };
+     const [data, setData] = useState<DashboardData>(initialData);
+     const [loading, setLoading] = useState(true);
+
+     // 1. Fetch Real Data on Load
+     useEffect(() => {
+          fetch("http://localhost:5001/api/Dashboard/stats")
+               .then(res => res.json())
+               .then(fetchedData => {
+                    setData(fetchedData);
+                    setLoading(false);
+               })
+               .catch(err => console.error("Dashboard API Error:", err));
+     }, []);
+
+     // 2. Mock Image Logic (Still mock because we don't have an Image Database yet)
+     const images = [
+          { id: 1, name: "Scatter Analysis", url: "http://localhost:8000/scatter_line?x=1&x=2&x=3&y=2&y=5&y=3" },
+          { id: 2, name: "Histogram View", url: "http://localhost:8000/hystogram" }
+     ];
+     const [imgIndex, setImgIndex] = useState(0);
+
      return (
-          <>
-               <div id="top_infos">
-                    {kpis.map(k => (
-                         <div className="kpi-card" key={k.id}>
-                              <div className="kpi-title">{k.title}</div>
-                              <div className="kpi-value">{k.value}</div>
-                         </div>
-                    ))}
+          <div className="dashboard-container">
 
-                    <div style={{ marginLeft: "auto" }}>
-                         <Button className="reload_button" text="Reload model" icon="refresh" />
+               {/* --- ROW 1: KPI CARDS --- */}
+               <div className="kpi-section">
+                    <div className="kpi-card" style={{ borderLeftColor: "#4facfe" }}>
+                         <div className="kpi-title" style={{ color: "#4facfe" }}>Total Patients</div>
+                         <div className="kpi-value">{data.kpis.totalPatients}</div>
+                    </div>
+                    <div className="kpi-card" style={{ borderLeftColor: "#ff5858" }}>
+                         <div className="kpi-title" style={{ color: "#ff5858" }}>Urgent Cases</div>
+                         <div className="kpi-value">{data.kpis.urgentCases}</div>
+                    </div>
+                    <div className="kpi-card" style={{ borderLeftColor: "#00f2fe" }}>
+                         <div className="kpi-title" style={{ color: "#00f2fe" }}>New (24h)</div>
+                         <div className="kpi-value">{data.kpis.newPatients24h}</div>
+                    </div>
+                    <div className="kpi-card" style={{ borderLeftColor: "#ffcc00" }}>
+                         <div className="kpi-title" style={{ color: "#ffcc00" }}>Active Doctors</div>
+                         <div className="kpi-value">{data.kpis.totalDoctors}</div>
                     </div>
                </div>
-               <div className="charts">
-                    <PieChart
-                         id="pie"
-                         type="doughnut"
-                         title="The Population of Continents and Regions"
-                         palette="Soft Pastel"
-                         dataSource={mostUsedGenes}
-                    >
-                         <Series argumentField="region">
-                              <Label visible={true} format="">
-                                   <Connector visible={true} />
-                              </Label>
-                         </Series>
-                         <Export enabled={true} />
-                         <Legend margin={0} horizontalAlignment="right" verticalAlignment="top" />
-                         <Tooltip enabled={true} customizeTooltip={customizeTooltip}>
-                              <Format type="" />
-                         </Tooltip>
-                    </PieChart>
-                    <PieChart
-                         id="pie"
-                         type="doughnut"
-                         title="The Population of Continents and Regions"
-                         palette="Soft Pastel"
-                         dataSource={mostUsedGenes}
-                    >
-                         <Series argumentField="region">
-                              <Label visible={true} format="">
-                                   <Connector visible={true} />
-                              </Label>
-                         </Series>
-                         <Export enabled={true} />
-                         <Legend margin={0} horizontalAlignment="right" verticalAlignment="top" />
-                         <Tooltip enabled={true} customizeTooltip={customizeTooltip}>
-                              <Format type="" />
-                         </Tooltip>
-                    </PieChart>
-                    <Chart
-                         title="Patients Emergency Levels"
-                         dataSource={dataArray}
-                         palette="Harmony Light"
-                         id="chart"
-                    >
-                         <CommonSeriesSettings argumentField="complaint" type={"scatter"} />
-                         <Series
-                              name="Emergency Status"
-                              valueField="emergency"
-                              color="#f32f2fff"
-                         />
 
-                         <ArgumentAxis>
-                              <Label />
-                         </ArgumentAxis>
+               {/* --- ROW 2: CHARTS --- */}
 
-                         <ValueAxis name="Status" position="left" tickInterval={300} />
-                         <ValueAxis
-                              tickInterval={20}
-                              showZero={true}
-                              valueMarginsEnabled={false}
+               {/* Chart 1: Real Data (Patient Status) */}
+               <div className="chart-card">
+                    <div className="card-header">Patient Status Distribution</div>
+                    <div className="chart-container-fill">
+                         <PieChart
+                              id="status-pie"
+                              type="doughnut"
+                              palette="Ocean"
+                              dataSource={data.charts.statusDistribution}
                          >
-                              <Label />
-                              <ConstantLine value={80} width={2} color="#fc3535" dashStyle="dash">
-                                   <Label visible={false} />
-                              </ConstantLine>
-                         </ValueAxis>
-
-                         <Tooltip enabled={true} shared={true} customizeTooltip={customizeTooltip} />
-
-                         <Legend verticalAlignment="top" horizontalAlignment="center" />
-                    </Chart>
-
-               </div>
-               <div className="plots">
-                    <div className="image">
-                         <div className="image_slider">
-                              <div className="images">
-                                   {images
-                                        .filter((image) => image.id === selectedId)
-                                        .map((image) => {
-                                             return <img key={image.id} src={image.url} alt={image.name} />;
-                                        })}
-                              </div>
-                              <button className="button_prev" onClick={prevImage}>
-                                   {" "}
-                                   Prev{" "}
-                              </button>
-                              <button className="button_next" onClick={nextImage}>
-                                   {" "}
-                                   Next{" "}
-                              </button>
-                         </div>
+                              <PieSeries argumentField="status" valueField="count">
+                                   <PieLabel visible={true} customizeText={(arg:any) => `${arg.argumentText} (${arg.valueText})`}>
+                                        <Connector visible={true} />
+                                   </PieLabel>
+                              </PieSeries>
+                              <Legend horizontalAlignment="center" verticalAlignment="bottom" />
+                              <Export enabled={false} />
+                         </PieChart>
                     </div>
                </div>
-          </>
+
+               {/* Chart 2: Mock Gene Data (Placeholder for AI Models) */}
+               <div className="chart-card">
+                    <div className="card-header">AI Model Confidence (Mock)</div>
+                    <div className="chart-container-fill">
+                         <Chart rotated={true} dataSource={[{ model: 'C-Net', acc: 94 }, { model: 'ResNet', acc: 88 }, { model: 'VGG16', acc: 82 }]}>
+                              <CommonSeriesSettings type="bar" argumentField="model" valueField="acc" />
+                              <ChartSeries name="Accuracy %" color="#00f2fe" />
+                              <ValueAxis><Grid visible={true} opacity={0.1} /></ValueAxis>
+                              <ChartLegend visible={false} />
+                         </Chart>
+                    </div>
+               </div>
+
+               {/* --- ROW 3: TOOLS & LISTS --- */}
+
+               {/* Image Viewer */}
+               <div className="image-section">
+                    <div className="card-header">Analysis Viewer</div>
+                    <div style={{ flex: 1, background: "black", borderRadius: "8px", overflow: "hidden", position: "relative" }}>
+                         <img
+                              src={images[imgIndex].url}
+                              alt="Analysis"
+                              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                              onError={(e) => e.currentTarget.src = "https://via.placeholder.com/500x300?text=Analysis+Server+Offline"}
+                         />
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
+                         <Button icon="chevronleft" onClick={() => setImgIndex(i => i === 0 ? 1 : 0)} />
+                         <span style={{ color: "#aaa", alignSelf: "center" }}>{images[imgIndex].name}</span>
+                         <Button icon="chevronright" onClick={() => setImgIndex(i => i === 0 ? 1 : 0)} />
+                    </div>
+               </div>
+
+               {/* Recent Patients List */}
+               <div className="list-section">
+                    <div className="card-header">Recent Patient Admissions</div>
+                    <DataGrid
+                         dataSource={data.recentActivity}
+                         showBorders={false}
+                         height="100%"
+                         rowAlternationEnabled={true}
+                    >
+                         <Scrolling mode="virtual" />
+                         <Column dataField="time" caption="Time" width={70} />
+                         <Column dataField="name" caption="Patient Name" />
+                         <Column
+                              dataField="status"
+                              caption="Status"
+                              width={90}
+                              cellRender={(e) => {
+                                   const c = e.value === 'Urgent' ? '#ff5858' : '#4facfe';
+                                   return <span style={{ color: c, fontWeight: 'bold' }}>{e.value}</span>
+                              }}
+                         />
+                    </DataGrid>
+               </div>
+
+          </div>
      );
 }
