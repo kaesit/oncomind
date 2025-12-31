@@ -31,5 +31,7 @@ namespace OncoMind.Api.Services
           public IMongoCollection<Doctor> Doctors => _database.GetCollection<Doctor>("doctors");
           public IMongoCollection<Patient> Patients => _database.GetCollection<Patient>("patients");
           public IMongoCollection<Analysis> Analyses => _database.GetCollection<Analysis>("analyses");
+          public IMongoCollection<DrugCandidates> DrugCandidates => _database.GetCollection<DrugCandidates>("drug_candidates");
+
      }
 }

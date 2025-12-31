@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace OncoMind.Api.Models
 {
-     class DrugCandidates
+     public class DrugCandidates
      {
           [BsonId]
           [BsonRepresentation(BsonType.ObjectId)]
@@ -13,10 +13,9 @@ namespace OncoMind.Api.Models
 
           public double QedScore { get; set; }
 
-          public double MwScore { get; set;} 
+          public double MwScore { get; set; }
 
-          public string MoleculeImage { get; set; }
-
+          public string MoleculeImage { get; set; } = string.Empty;
 
           public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
      }

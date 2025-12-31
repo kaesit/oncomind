@@ -1,168 +1,167 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Added useEffect
 import { Button } from "devextreme-react/button";
 import { TextBox } from "devextreme-react/text-box";
 import { SelectBox } from "devextreme-react/select-box";
 import { Popup } from "devextreme-react/popup";
 import CheckBox from "devextreme-react/check-box";
-import candidateMoleculeImage from "../../img/molecules/Cc1c(F)cncc1-c1ccc2nc(NC(=O)[C@@H]3C[C@@H]3F)c(Cl)n2c1.png";
-import candidateMoleculeImage2 from "../../img/molecules/CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21.png";
-import candidateMoleculeImage3 from "../../img/molecules/CC(C)(C)C(=O)N1Cc2c(NC(=O)c3cc(F)cc(F)c3)n[nH]c2C1(C)C.png";
+import TextArea from "devextreme-react/text-area";
+import FileUploader from 'devextreme-react/file-uploader';
+import notify from 'devextreme/ui/notify'; // Added for notifications
 
-import "../../css/DataSets.css"; // Optional stylesheet for layout
+import "../../css/DataSets.css";
 
-// Example datasets (mock)
-const initialMolecules = [
-     {
-          id: 1,
-          name: "Drug Candidate",
-          smiles: "Cc1c(F)cncc1-c1ccc2nc(NC(=O)[C@@H]3C[C@@H]3F)c(Cl)n2c1",
-          downloaded: "2025-11-20",
-          QED: 0.77,
-          MW: 362.8,
-          preview: candidateMoleculeImage
-     },
-     {
-          id: 2,
-          name: "Drug Candidate",
-          smiles: "CC(C)n1nc(-c2ccc(C(N)=O)c(Cl)c2)c2c(N)ncnc21",
-          downloaded: "2025-11-20",
-          QED: 0.77,
-          MW: 330.8,
-          preview: candidateMoleculeImage2
-     },
-     {
-          id: 3,
-          name: "Drug Candidate",
-          smiles: "CC(C)(C)C(=O)N1Cc2c(NC(=O)c3cc(F)cc(F)c3)n[nH]c2C1(C)C",
-          downloaded: "2025-11-20",
-          QED: 0.84,
-          MW: 376.4,
-          preview: candidateMoleculeImage3
-     }
-];
+// 👇 FIX: REMOVED BROKEN IMAGE IMPORTS
+// We will use a placeholder for now, or just let the database provide images.
 
 export default function DrugCandidates() {
-     const [datasets, setDatasets] = useState(initialMolecules);
+     // Start with empty array, data comes from API
+     const [datasets, setDatasets] = useState<any[]>([]);
      const [selected, setSelected] = useState<number[]>([]);
      const [search, setSearch] = useState("");
+     const [loading, setLoading] = useState(false); // Added loading state
 
      const [filterPopup, setFilterPopup] = useState(false);
-     const [filterType, setFilterType] = useState(null);
-     const [filterSize, setFilterSize] = useState(null);
+     const [filterType, setFilterType] = useState<string | null>(null);
+     const [filterSize, setFilterSize] = useState<string | null>(null);
 
-     // -------------------------
-     // Checkbox selection logic
-     // -------------------------
+     const [isPopupVisible, setPopupVisible] = useState(false);
+     const [newAnalysis, setNewAnalysis] = useState({
+          type: "Blood Test",
+          summary: ""
+     });
+
+     // 1. Load Data on Mount
+     useEffect(() => {
+          loadCandidates();
+     }, []);
+
+     const loadCandidates = async () => {
+          try {
+               const res = await fetch("http://localhost:5001/api/DrugCandidate");
+               const data = await res.json();
+               // Map backend data to frontend structure if necessary, 
+               // assuming backend sends { id, smiles, qedScore, mwScore, moleculeImage, createdAt }
+               const formattedData = data.map((d: any) => ({
+                    id: d.id,
+                    name: "Drug Candidate", // You can customize this
+                    smiles: d.smiles,
+                    QED: d.qedScore,
+                    MW: d.mwScore,
+                    downloaded: new Date(d.createdAt).toLocaleDateString(),
+                    preview: d.moleculeImage // Base64 string from DB
+               }));
+               setDatasets(formattedData);
+          } catch (err) {
+               console.error("Failed to load candidates", err);
+          }
+     };
+
+     // 2. The AI Generation Handler
+     const handleGenerateAI = async () => {
+          setLoading(true);
+          notify("AI is dreaming up a new molecule...", "info", 3000);
+
+          try {
+               const res = await fetch("http://localhost:5001/api/DrugCandidate/generate", {
+                    method: "POST"
+               });
+
+               if (!res.ok) throw new Error("Generation failed");
+
+               const newMolecule = await res.json();
+
+               // Format the new molecule to match our grid structure
+               const formattedMolecule = {
+                    id: newMolecule.id,
+                    name: "New AI Candidate",
+                    smiles: newMolecule.smiles,
+                    QED: newMolecule.qedScore,
+                    MW: newMolecule.mwScore,
+                    downloaded: new Date().toLocaleDateString(),
+                    preview: newMolecule.moleculeImage
+               };
+
+               setDatasets(prev => [formattedMolecule, ...prev]);
+               notify("New Drug Candidate Discovered!", "success", 3000);
+
+          } catch (error) {
+               console.error(error);
+               notify("AI Generation failed. Check backend logs.", "error", 3000);
+          } finally {
+               setLoading(false);
+          }
+     };
+
      const toggleSelection = (id: number) => {
           setSelected((prev) =>
                prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
           );
      };
 
-     // -------------------------
-     // Button handlers (hook API)
-     // -------------------------
      const handleAdd = () => {
-          console.log("RUN PYTHON: Download Kaggle / Roboflow dataset");
+          setPopupVisible(true);
      };
 
      const handleDelete = () => {
-          console.log("DELETE DATASETS:", selected);
           setDatasets(datasets.filter((d) => !selected.includes(d.id)));
           setSelected([]);
      };
 
-     const handleTrain = () => {
-          console.log("TRAIN ON SELECTED DATASETS:", selected);
-          console.log("Model selected, image type, etc...");
-     };
-
-     // -------------------------
-     // Search filtering
-     // -------------------------
      const filtered = datasets.filter((ds) => {
           const matchSearch =
                search.trim().length === 0 ||
                ds.name.toLowerCase().includes(search.toLowerCase());
 
           const matchType = !filterType || ds.name.toLowerCase() === filterType.toLowerCase();
-
           const matchSize = !filterSize || ds.downloaded.includes(filterSize);
 
           return matchSearch && matchType && matchSize;
      });
 
+     const fileUploaderLabel = { 'aria-label': 'Select Model' };
+
      return (
           <div className="datasets-wrapper">
-               {/* TITLE */}
                <h1 className="page-title">Drug Candidates</h1>
 
-               {/* TOP ACTION BAR */}
                <div className="datasets-actions dx-card">
+                    {/* 👇 AI GENERATE BUTTON */}
                     <Button
-                         text="Add New"
-                         icon="add"
+                         text={loading ? "Generating..." : "Generate AI Candidate"}
+                         icon={loading ? "spinup" : "box"}
                          type="default"
-                         onClick={handleAdd}
+                         onClick={handleGenerateAI}
+                         disabled={loading}
                     />
 
-                    <Button
-                         text="Delete"
-                         icon="trash"
-                         type="danger"
-                         disabled={selected.length === 0}
-                         onClick={handleDelete}
-                    />
-                    {/* Spacer */}
+                    <Button text="Add Manually" icon="add" stylingMode="outlined" onClick={handleAdd} />
+
+                    <Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} onClick={handleDelete} />
+
                     <div style={{ flex: 1 }} />
 
-                    <TextBox
-                         placeholder="Search molecule..."
-                         value={search}
-                         onValueChanged={(e) => setSearch(e.value)}
-                         mode="search"
-                         width={220}
-                    />
-
-                    <Button
-                         text="Filters"
-                         icon="filter"
-                         stylingMode="contained"
-                         onClick={() => setFilterPopup(true)}
-                    />
+                    <TextBox placeholder="Search molecule..." value={search} onValueChanged={(e) => setSearch(e.value)} mode="search" width={220} />
+                    <Button text="Filters" icon="filter" stylingMode="contained" onClick={() => setFilterPopup(true)} />
                </div>
 
-               {/* FILTER POPUP */}
-               <Popup
-                    visible={filterPopup}
-                    dragEnabled={false}
-                    hideOnOutsideClick={true}
-                    onHiding={() => setFilterPopup(false)}
-                    showCloseButton={true}
-                    width={360}
-                    height="auto"
-                    title="Filter Molecules"
-               >
-                    <div className="filter-popup-body">
-                         <SelectBox
-                              label="Image Type"
-                              placeholder="Select Type"
-                              items={["PNG", "JPG", "TIFF"]}
-                              onValueChanged={(e) => setFilterType(e.value)}
-                         />
+               {/* ... (Keep your Popups same as before) ... */}
 
-                         <SelectBox
-                              label="Dataset Size"
-                              placeholder="Select Size"
-                              items={["<100MB", "100-500MB", ">500MB", "1GB+"]}
-                              onValueChanged={(e) => setFilterSize(e.value)}
-                         />
-                    </div>
+               {/* ADD NEW POPUP */}
+               <Popup
+                    visible={isPopupVisible}
+                    onHiding={() => setPopupVisible(false)}
+                    dragEnabled={false}
+                    showTitle={true}
+                    title="Add New Medical Analysis"
+                    width={500}
+                    height={400}
+                    showCloseButton={true}
+               >
+                    {/* ... your popup content ... */}
                </Popup>
 
-               {/* DATASET GRID */}
                <div className="datasets-grid">
                     {filtered.map((ds) => (
                          <div className="dataset-card dx-card" key={ds.id}>
@@ -174,13 +173,14 @@ export default function DrugCandidates() {
                                    <h3 className="dataset-name">{ds.name}</h3>
                               </div>
 
-                              <img src={ds.preview} className="dataset-preview" />
+                              {/* Preview Image */}
+                              <img src={ds.preview} className="dataset-preview" alt="molecule" />
 
                               <div className="dataset-details">
-                                   <div><b>Smiles:</b> {ds.smiles}</div>
+                                   <div><b>Smiles:</b> {ds.smiles ? ds.smiles.substring(0, 15) + "..." : "N/A"}</div>
                                    <div><b>QED:</b> {ds.QED}</div>
                                    <div><b>MW:</b> {ds.MW}</div>
-                                   <div><b>Downloaded:</b> {ds.downloaded}</div>
+                                   <div><b>Date:</b> {ds.downloaded}</div>
                               </div>
                          </div>
                     ))}

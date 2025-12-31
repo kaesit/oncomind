@@ -1,7 +1,16 @@
 using System.Web;
-
+using System.Text.Json.Serialization;
+using System.Net.Http.Json;
 namespace OncoMind.Api.Services
 {
+     public class GeneratedMoleculeResult
+     {
+          public string Smiles { get; set; } = String.Empty;
+          public double Qed { get; set; }
+          public double Mw { get; set; }
+          [JsonPropertyName("image_base64")]
+          public string ImageBase64 { get; set; } = String.Empty;
+     }
      public class PythonMLService
      {
           private readonly HttpClient _httpClient;
@@ -53,6 +62,16 @@ namespace OncoMind.Api.Services
                var response = await _httpClient.GetAsync($"/scatter_line?{query}");
                response.EnsureSuccessStatusCode();
                return await response.Content.ReadAsStreamAsync();
+          }
+
+          public async Task<GeneratedMoleculeResult> GenerateMoleculeAsync(string startAtom)
+          {
+               var payload = new { start_atom = startAtom, min_qed = 0.7 };
+               var response = await _httpClient.PostAsJsonAsync("http://oncomind_ml:8000/generate_candidate", payload);
+
+               response.EnsureSuccessStatusCode();
+
+               return await response.Content.ReadFromJsonAsync<GeneratedMoleculeResult>();
           }
      }
 }

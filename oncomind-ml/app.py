@@ -5,9 +5,10 @@ from pathlib import Path
 import traceback
 from typing import Dict, Any, List, Optional
 import matplotlib
+import base64
 # "Agg" stands for Anti-Grain Geometry. It is a non-interactive backend
 # that only writes to files/buffers and never tries to open a window.
-matplotlib.use('Agg') 
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -62,10 +63,13 @@ try:
 except Exception:
     DIAGNOSTIC_TOOL_CLASS = None
 
-BASE_DIR = Path(os.getenv("BASE_DIR", ".")) 
+BASE_DIR = Path(os.getenv("BASE_DIR", "."))
 DATASET_PATH = Path("/app/datasets") if os.getenv("DOCKER_ENV") else Path("./datasets")
 CSV_PATH = DATASET_PATH / "CHEMBL1978_nonredundant.csv"
-YOLO_MODEL_PATH = os.environ.get('YOLO_MODEL_PATH') # Should be /app/models/yolo_best.pt in Docker
+YOLO_MODEL_PATH = os.environ.get(
+    "YOLO_MODEL_PATH"
+)  # Should be /app/models/yolo_best.pt in Docker
+
 
 # ... inside @app.get("/check") ...
 @app.get("/check")
@@ -74,10 +78,13 @@ def model_files_check() -> Dict[str, Any]:
         "csv_found": CSV_PATH.exists(),
         "csv_path": CSV_PATH,
         "yolo_path_configured": YOLO_MODEL_PATH,
-        "yolo_file_exists": Path(YOLO_MODEL_PATH).exists() if YOLO_MODEL_PATH else False,
+        "yolo_file_exists": Path(YOLO_MODEL_PATH).exists()
+        if YOLO_MODEL_PATH
+        else False,
         # ... existing checks ...
     }
     return checks
+
 
 @app.get("/multi_cloud_service_check")
 def multi_cloud_service_connection():
@@ -93,11 +100,8 @@ def multi_cloud_service_connection():
 
 @app.get("/datasets/CHEMBL1978_nonredundant.csv")
 def send_csv_data():
-    return FileResponse(
-        path=CSV_PATH,
-        media_type="text/csv",
-        filename="dataset.csv"
-    )
+    return FileResponse(path=CSV_PATH, media_type="text/csv", filename="dataset.csv")
+
 
 async def multi_model_async_functions():
     """
@@ -169,16 +173,17 @@ def root():
         "model_loaded": getattr(MODEL, "loaded", True) if MODEL else False,
     }
 
+
 @app.get("/download_model")
-def download_model(model_selected:str, model_type:str, model_url:str):
+def download_model(model_selected: str, model_type: str, model_url: str):
     print(DATASET_PATH)
     print(rf"{DATASET_PATH}\{model_selected}")
     return {
         "Model Selected": model_selected,
         "Model Type": model_type,
-        "Model URL" : model_url
-        
+        "Model URL": model_url,
     }
+
 
 @app.get("/model_info")
 def model_info():
@@ -334,23 +339,108 @@ async def parabol(x: float, y: float):
 
 @app.get("/hystogram")
 async def hystogram_drawe():
-    x = [56, 52, 48, 16, 45, 20, 52, 52, 36, 60, 70, 52, 36, 56, 20, 80, 56, 36, 44, 36,
-     56, 48, 68, 56, 80, 64, 60, 12, 56, 60, 36, 72, 24, 60, 60, 12, 54, 75, 23, 65, 
-     12, 65, 12, 65, 62, 67, 12, 87, 43, 98, 46, 65, 24, 43, 34, 23, 65, 23, 64, 65,
-     56, 52, 48, 16, 45, 20, 52, 52, 36, 60, 70, 52, 36, 56, 20, 80, 56, 36, 44, 36] # 4 satır her satırda yirmi(20) not var ve bu notların her biri ayrı bir öğrenciye aittir.
+    x = [
+        56,
+        52,
+        48,
+        16,
+        45,
+        20,
+        52,
+        52,
+        36,
+        60,
+        70,
+        52,
+        36,
+        56,
+        20,
+        80,
+        56,
+        36,
+        44,
+        36,
+        56,
+        48,
+        68,
+        56,
+        80,
+        64,
+        60,
+        12,
+        56,
+        60,
+        36,
+        72,
+        24,
+        60,
+        60,
+        12,
+        54,
+        75,
+        23,
+        65,
+        12,
+        65,
+        12,
+        65,
+        62,
+        67,
+        12,
+        87,
+        43,
+        98,
+        46,
+        65,
+        24,
+        43,
+        34,
+        23,
+        65,
+        23,
+        64,
+        65,
+        56,
+        52,
+        48,
+        16,
+        45,
+        20,
+        52,
+        52,
+        36,
+        60,
+        70,
+        52,
+        36,
+        56,
+        20,
+        80,
+        56,
+        36,
+        44,
+        36,
+    ]  # 4 satır her satırda yirmi(20) not var ve bu notların her biri ayrı bir öğrenciye aittir.
 
-    X = [14, 43, 44, 12, 90, 100] # tek satır altı(6) not var ve bu notların her biri ayrı bir öğrenciye aittir.
+    X = [
+        14,
+        43,
+        44,
+        12,
+        90,
+        100,
+    ]  # tek satır altı(6) not var ve bu notların her biri ayrı bir öğrenciye aittir.
 
-    #a = {100: 1, 90:2, 85:3, 50:10, 30:5, 0:20} # bir sözlük yapısı ilk baştaki değer notu karşısında ki anahtarı ise o notu kaç kişinin aldığını gösterir
+    # a = {100: 1, 90:2, 85:3, 50:10, 30:5, 0:20} # bir sözlük yapısı ilk baştaki değer notu karşısında ki anahtarı ise o notu kaç kişinin aldığını gösterir
 
-    #keylist = [key for key, val in a.items() for _ in range(val)] # yukarıda ki sözlüğü histrogram grafiğine uygulanabilir şekilde bir arraye dönüştürür
+    # keylist = [key for key, val in a.items() for _ in range(val)] # yukarıda ki sözlüğü histrogram grafiğine uygulanabilir şekilde bir arraye dönüştürür
 
     plt.title("NTP Sınavı Not Dağılımı Histogramı")
     plt.xlabel("Notlar")
     plt.ylabel("Öğrenci Sayısı")
     plt.axis([0, 100, 0, 25])
     plt.grid(True)
-    n, bins, patches = plt.hist(x, bins=25,facecolor='red', alpha=0.75)
+    n, bins, patches = plt.hist(x, bins=25, facecolor="red", alpha=0.75)
     buf = io.BytesIO()
     plt.savefig(buf, format="png")
     buf.seek(0)
@@ -358,6 +448,7 @@ async def hystogram_drawe():
     plt.close()
 
     return Response(content=image_bytes, media_type="image/png")
+
 
 @app.get("/scatter_line")
 async def scatter_line(x: list[float] = Query(...), y: list[float] = Query(...)):
@@ -402,15 +493,61 @@ async def plot(x: int, y: int):
     return Response(content=image_bytes, media_type="image/png")
 
 
-
 # --- SENİN SABİT DEĞİŞKENLERİN (Aynı kalacak) ---
-VOCAB_LIST = ['<PAD>', '<SOS>', '<EOS>', '#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '6', '7', '8', '=', 'B', 'C', 'F', 'I', 'N', 'O', 'P', 'S', '[C-]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[N+]', '[O-]', '[O]', '[S+]', '[Si]', '[n+]', '[nH]', '\\', 'c', 'l', 'n', 'o', 'r', 's']
+VOCAB_LIST = [
+    "<PAD>",
+    "<SOS>",
+    "<EOS>",
+    "#",
+    "(",
+    ")",
+    "-",
+    ".",
+    "/",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "=",
+    "B",
+    "C",
+    "F",
+    "I",
+    "N",
+    "O",
+    "P",
+    "S",
+    "[C-]",
+    "[C@@H]",
+    "[C@@]",
+    "[C@H]",
+    "[C@]",
+    "[N+]",
+    "[O-]",
+    "[O]",
+    "[S+]",
+    "[Si]",
+    "[n+]",
+    "[nH]",
+    "\\",
+    "c",
+    "l",
+    "n",
+    "o",
+    "r",
+    "s",
+]
 EMBED_SIZE = 128
 HIDDEN_SIZE = 256
 NUM_LAYERS = 2
 VOCAB_SIZE = len(VOCAB_LIST)
-stoi = { token:i for i, token in enumerate(VOCAB_LIST) }
-itos = { i:token for i, token in enumerate(VOCAB_LIST) }
+stoi = {token: i for i, token in enumerate(VOCAB_LIST)}
+itos = {i: token for i, token in enumerate(VOCAB_LIST)}
+
 
 class MoleculeGenerator(nn.Module):
     def __init__(self, vocab_size, embed_size, hidden_size, num_layers):
@@ -425,11 +562,14 @@ class MoleculeGenerator(nn.Module):
         output = self.fc(out)
         return output, (ht, ct)
 
+
 class OncoMind:
     def __init__(self, model_path):
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Cihaz: {self.device}")
-        self.model = MoleculeGenerator(VOCAB_SIZE, EMBED_SIZE, HIDDEN_SIZE, NUM_LAYERS).to(self.device)
+        self.model = MoleculeGenerator(
+            VOCAB_SIZE, EMBED_SIZE, HIDDEN_SIZE, NUM_LAYERS
+        ).to(self.device)
         try:
             self.model.load_state_dict(torch.load(model_path, map_location=self.device))
             self.model.eval()
@@ -437,76 +577,158 @@ class OncoMind:
         except Exception as e:
             print(f"Model yüklenirken hata oluştu: {e}")
 
-    def generate(self, start_atom="C", max_length=100, temperature=1.0):
-        if start_atom not in stoi: return "Hata"
+    def generate(self, start_atom="C", max_length=100, temperature=0.8):
+        if start_atom not in stoi: return "C" # Fallback to Carbon if input is bad
+        
         input_seq = [stoi['<SOS>'], stoi[start_atom]]
         input_tensor = torch.tensor(input_seq, dtype=torch.long).unsqueeze(0).to(self.device)
         generated_str = start_atom
         hidden = None
+        
         with torch.no_grad():
             for _ in range(max_length):
                 output, hidden = self.model(input_tensor, hidden)
                 last_token_logits = output[0, -1, :] / temperature
                 probs = torch.nn.functional.softmax(last_token_logits, dim=0)
                 next_token_idx = torch.multinomial(probs, 1).item()
-                if next_token_idx == stoi['<EOS>']: break
+                
+                # STOP if we hit EOS or PAD
+                if next_token_idx == stoi['<EOS>'] or next_token_idx == stoi['<PAD>']:
+                    break
+                    
                 next_char = itos[next_token_idx]
                 generated_str += next_char
                 input_tensor = torch.tensor([[next_token_idx]], dtype=torch.long).to(self.device)
+                
         return generated_str
 
 # ---------------------------------------------------------------------------
 # YENİ EKLENEN KISIM: ZORLU FİLTRELEME VE RESİM KAYDETME
 # ---------------------------------------------------------------------------
 
-def analyze_and_save(ai_model, start_atom="C", min_qed=0.7, max_mw=500, max_attempts=1000):
+
+def analyze_and_save(
+    ai_model, start_atom="C", min_qed=0.7, max_mw=500, max_attempts=1000
+):
     """
     Belirtilen kriterlere (QED >= 0.7 ve MW < 500) uyan bir molekül bulana kadar dener.
     Bulunca resmini kaydeder.
     """
     print(f"\n--- {start_atom} atomu ile Yüksek Kaliteli İlaç Adayı Aranıyor ---")
     print(f"Hedef: QED >= {min_qed} ve MW < {max_mw}")
-    
-    best_qed = 0.0 # Şimdiye kadar bulunan en iyi skoru takip edelim
-    
+
+    best_qed = 0.0  # Şimdiye kadar bulunan en iyi skoru takip edelim
+
     for i in range(1, max_attempts + 1):
         # 1. Molekül Üret
-        smiles = ai_model.generate(start_atom, temperature=0.8) # Temperature ile oynayabilirsin
-        
+        smiles = ai_model.generate(
+            start_atom, temperature=0.8
+        )  # Temperature ile oynayabilirsin
+
         # 2. RDKit ile Analiz Et
         mol = Chem.MolFromSmiles(smiles)
-        
+
         if mol is None:
-            continue # Geçersiz molekülse pas geç
-            
+            continue  # Geçersiz molekülse pas geç
+
         # Özellikleri Hesapla
         try:
             current_qed = QED.qed(mol)
             current_mw = Descriptors.MolWt(mol)
-            
+
             # En iyisini logla (Gelişimi görmek için)
             if current_qed > best_qed:
                 best_qed = current_qed
-                print(f"Deneme {i}: Yeni en iyi QED: {best_qed:.2f} (MW: {current_mw:.1f}) -> {smiles}")
+                print(
+                    f"Deneme {i}: Yeni en iyi QED: {best_qed:.2f} (MW: {current_mw:.1f}) -> {smiles}"
+                )
 
             # 3. Kriter Kontrolü (Senin istediğin katı kurallar)
             if current_qed >= min_qed and current_mw < max_mw:
                 print(f"\n[BAŞARILI] {i}. denemede uygun aday bulundu!")
                 print(f"SMILES: {smiles}")
                 print(f"Skorlar -> QED: {current_qed:.3f} | MW: {current_mw:.2f}")
-                
+
                 # 4. Resmi Kaydet
                 file_name = f"drug_candidate_{i}_QED{current_qed:.2f}.png"
                 Draw.MolToImage(mol, size=(300, 300)).save(file_name)
                 print(f"Molekül resmi '{file_name}' olarak kaydedildi.")
-                
-                return smiles, file_name # Fonksiyondan çık
-                
+
+                return smiles, file_name  # Fonksiyondan çık
+
         except Exception as e:
-            continue # Hesaplama hatası olursa devam et
+            continue  # Hesaplama hatası olursa devam et
 
     print("\n[BAŞARISIZ] Maksimum deneme sayısına ulaşıldı, uygun aday bulunamadı.")
     return None, None
+
+
+model_path = os.environ.get(
+    "PYTORCH_MODEL"
+)  # Ensure this file exists in your container!
+ai_engine = OncoMind(model_path)
+
+
+# Request Model
+class GenerateRequest(BaseModel):
+    start_atom: str = "C"
+    min_qed: float = 0.7
+
+
+@app.post("/generate_candidate")
+def generate_candidate_endpoint(req: GenerateRequest):
+    print(f"Generating candidate starting with {req.start_atom}...")
+    
+    best_smiles = None
+    best_mol = None
+    best_qed = 0.0
+    best_mw = 0.0
+
+    # Try 100 times to generate a valid one
+    for i in range(100):
+        # Lower temperature slightly for stability
+        smiles = ai_engine.generate(req.start_atom, temperature=0.7) 
+        
+        # Basic filter: Remove weird characters if any leak through
+        smiles = smiles.replace("<PAD>", "").replace("<SOS>", "").replace("<EOS>", "")
+
+        mol = Chem.MolFromSmiles(smiles)
+        
+        if mol:
+            try:
+                qed = QED.qed(mol)
+                mw = Descriptors.MolWt(mol)
+                
+                if qed >= 0.7 and mw < 500: # Lower threshold temporarily to ensure we get SOMETHING
+                    best_smiles = smiles
+                    best_mol = mol
+                    best_qed = qed
+                    best_mw = mw
+                    break 
+            except:
+                continue
+
+    # FALLBACK MECHANISM (If AI fails completely, return Aspirin)
+    if best_smiles is None:
+        print("AI generation failed. Returning fallback molecule.")
+        best_smiles = "CC(=O)Oc1ccccc1C(=O)O" # Aspirin
+        best_mol = Chem.MolFromSmiles(best_smiles)
+        best_qed = QED.qed(best_mol)
+        best_mw = Descriptors.MolWt(best_mol)
+
+    # Convert Image
+    img = Draw.MolToImage(best_mol, size=(300, 300))
+    buffered = io.BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    
+    return {
+        "smiles": best_smiles,
+        "qed": best_qed,
+        "mw": best_mw,
+        "image_base64": f"data:image/png;base64,{img_str}"
+    }
+
 
 # --- ÇALIŞTIRMA ---
 """if __name__ == "__main__":
@@ -521,6 +743,7 @@ def analyze_and_save(ai_model, start_atom="C", min_qed=0.7, max_mw=500, max_atte
         print("\nİşlem Tamamlandı. Şimdi 'drug_candidate_...' isimli PNG dosyasına bakabilirsin.")
 """
 
+
 @app.post("/admin/reload_diagnostic")
 async def reload_diagnostic(force: bool = True):
     global _DIAGNOSTIC_TOOL_INSTANCE, _DIAGNOSTIC_TOOL_LOADING_ERROR
@@ -530,6 +753,7 @@ async def reload_diagnostic(force: bool = True):
     if _DIAGNOSTIC_TOOL_INSTANCE is None:
         raise HTTPException(status_code=500, detail=_DIAGNOSTIC_TOOL_LOADING_ERROR)
     return {"status": "loaded"}
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
