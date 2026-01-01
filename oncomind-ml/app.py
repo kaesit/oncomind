@@ -6,6 +6,9 @@ import traceback
 from typing import Dict, Any, List, Optional
 import matplotlib
 import base64
+import random
+import time
+
 # "Agg" stands for Anti-Grain Geometry. It is a non-interactive backend
 # that only writes to files/buffers and never tries to open a window.
 matplotlib.use("Agg")
@@ -24,6 +27,10 @@ from rdkit import Chem
 from rdkit.Chem import Descriptors, QED, Draw
 
 
+seed = int(time.time() * 1000) % 2**32
+random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
 load_dotenv()
 app = FastAPI(title="OncoMind ML Service")
 
@@ -563,6 +570,15 @@ class MoleculeGenerator(nn.Module):
         return output, (ht, ct)
 
 
+def top_k_sampling(logits, k=15):
+    logits = logits.clone()
+    values, indices = torch.topk(logits, k)
+    probs = torch.softmax(values, dim=0)
+    choice = torch.multinomial(probs, 1).item()
+
+    return indices[choice].item()
+
+
 class OncoMind:
     def __init__(self, model_path):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -577,30 +593,30 @@ class OncoMind:
         except Exception as e:
             print(f"Model yüklenirken hata oluştu: {e}")
 
-    def generate(self, start_atom="C", max_length=100, temperature=0.8):
-        if start_atom not in stoi: return "C" # Fallback to Carbon if input is bad
-        
-        input_seq = [stoi['<SOS>'], stoi[start_atom]]
-        input_tensor = torch.tensor(input_seq, dtype=torch.long).unsqueeze(0).to(self.device)
+    def generate(self, start_atom="C", max_length=100, temperature=1.0):
+        if start_atom not in stoi:
+            return "Hata"
+        input_seq = [stoi["<SOS>"], stoi[start_atom]]
+        input_tensor = (
+            torch.tensor(input_seq, dtype=torch.long).unsqueeze(0).to(self.device)
+        )
         generated_str = start_atom
         hidden = None
-        
         with torch.no_grad():
             for _ in range(max_length):
                 output, hidden = self.model(input_tensor, hidden)
                 last_token_logits = output[0, -1, :] / temperature
                 probs = torch.nn.functional.softmax(last_token_logits, dim=0)
                 next_token_idx = torch.multinomial(probs, 1).item()
-                
-                # STOP if we hit EOS or PAD
-                if next_token_idx == stoi['<EOS>'] or next_token_idx == stoi['<PAD>']:
+                if next_token_idx == stoi["<EOS>"]:
                     break
-                    
                 next_char = itos[next_token_idx]
                 generated_str += next_char
-                input_tensor = torch.tensor([[next_token_idx]], dtype=torch.long).to(self.device)
-                
+                input_tensor = torch.tensor([[next_token_idx]], dtype=torch.long).to(
+                    self.device
+                )
         return generated_str
+
 
 # ---------------------------------------------------------------------------
 # YENİ EKLENEN KISIM: ZORLU FİLTRELEME VE RESİM KAYDETME
@@ -620,9 +636,9 @@ def analyze_and_save(
     best_qed = 0.0  # Şimdiye kadar bulunan en iyi skoru takip edelim
 
     for i in range(1, max_attempts + 1):
-        # 1. Molekül Üret
+        temp = random.uniform(0.7, 1.1)
         smiles = ai_model.generate(
-            start_atom, temperature=0.8
+            start_atom, temperature=temp
         )  # Temperature ile oynayabilirsin
 
         # 2. RDKit ile Analiz Et
@@ -669,7 +685,6 @@ model_path = os.environ.get(
 ai_engine = OncoMind(model_path)
 
 
-# Request Model
 class GenerateRequest(BaseModel):
     start_atom: str = "C"
     min_qed: float = 0.7
@@ -678,7 +693,7 @@ class GenerateRequest(BaseModel):
 @app.post("/generate_candidate")
 def generate_candidate_endpoint(req: GenerateRequest):
     print(f"Generating candidate starting with {req.start_atom}...")
-    
+
     best_smiles = None
     best_mol = None
     best_qed = 0.0
@@ -687,31 +702,33 @@ def generate_candidate_endpoint(req: GenerateRequest):
     # Try 100 times to generate a valid one
     for i in range(100):
         # Lower temperature slightly for stability
-        smiles = ai_engine.generate(req.start_atom, temperature=0.7) 
-        
+        smiles = ai_engine.generate(req.start_atom, temperature=0.7)
+
         # Basic filter: Remove weird characters if any leak through
         smiles = smiles.replace("<PAD>", "").replace("<SOS>", "").replace("<EOS>", "")
 
         mol = Chem.MolFromSmiles(smiles)
-        
+
         if mol:
             try:
                 qed = QED.qed(mol)
                 mw = Descriptors.MolWt(mol)
-                
-                if qed >= 0.7 and mw < 500: # Lower threshold temporarily to ensure we get SOMETHING
+
+                if (
+                    qed >= 0.7 and mw < 500
+                ):  # Lower threshold temporarily to ensure we get SOMETHING
                     best_smiles = smiles
                     best_mol = mol
                     best_qed = qed
                     best_mw = mw
-                    break 
+                    break
             except:
                 continue
 
     # FALLBACK MECHANISM (If AI fails completely, return Aspirin)
     if best_smiles is None:
         print("AI generation failed. Returning fallback molecule.")
-        best_smiles = "CC(=O)Oc1ccccc1C(=O)O" # Aspirin
+        best_smiles = "CC(=O)Oc1ccccc1C(=O)O"  # Aspirin
         best_mol = Chem.MolFromSmiles(best_smiles)
         best_qed = QED.qed(best_mol)
         best_mw = Descriptors.MolWt(best_mol)
@@ -721,12 +738,12 @@ def generate_candidate_endpoint(req: GenerateRequest):
     buffered = io.BytesIO()
     img.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
-    
+
     return {
         "smiles": best_smiles,
         "qed": best_qed,
         "mw": best_mw,
-        "image_base64": f"data:image/png;base64,{img_str}"
+        "image_base64": f"data:image/png;base64,{img_str}",
     }
 
 
