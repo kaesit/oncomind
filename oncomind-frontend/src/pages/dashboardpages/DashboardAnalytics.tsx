@@ -4,6 +4,7 @@ import PieChart, {
      Label as PieLabel,
      Connector,
      Legend,
+     Font,
      Export
 } from 'devextreme-react/pie-chart';
 import Chart, {
@@ -44,7 +45,12 @@ const initialData: DashboardData = {
      charts: { statusDistribution: [] },
      recentActivity: []
 };
-
+var myPalette = {
+     Stable: '#4CAF50',
+     Normal: '#2196F3',
+     High: '#FF9800',
+     Urgent: '#F44336'
+};
 export const DashboardAnalytics: React.FC = () => {
      const [data, setData] = useState<DashboardData>(initialData);
      const [loading, setLoading] = useState(true);
@@ -106,9 +112,11 @@ export const DashboardAnalytics: React.FC = () => {
                               palette="Ocean"
                               dataSource={data.charts.statusDistribution}
                          >
+
                               <PieSeries argumentField="status" valueField="count">
                                    <PieLabel visible={true} customizeText={(arg: any) => `${arg.argumentText} (${arg.valueText})`}>
                                         <Connector visible={true} />
+                                        <Font size={16} />
                                    </PieLabel>
                               </PieSeries>
                               <Legend horizontalAlignment="center" verticalAlignment="bottom" />
