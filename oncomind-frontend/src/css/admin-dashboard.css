@@ -9,7 +9,7 @@
 
 .kpi-card {
   /* Use DevExtreme base background color instead of custom gradients */
-  background-color: #1e1e1e;
+  background-color: #1e1e2f0d;
   /* Add a subtle border or shadow consistent with the theme */
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 16px;

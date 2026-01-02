@@ -19,7 +19,7 @@
 
 .kpi-card {
      flex: 1;
-     background: #1e1e2f;
+     background: #1e1e2f0d;
      border-radius: 12px;
      padding: 20px;
      border-left: 5px solid #4facfe;
@@ -44,7 +44,7 @@
 /* --- CHARTS & CONTENT --- */
 .chart-card {
      position: relative;
-     background: #1e1e2f;
+     background: #1e1e2f0d;
      border-radius: 12px;
      height: 50vh;
      padding: 15px;
@@ -60,7 +60,7 @@
 .list-section,
 .image-section {
      position: relative;
-     background: #1e1e2f;
+     background: #1e1e2f0d;
      top: 150px;
      border-radius: 12px;
      padding: 15px;
@@ -106,7 +106,7 @@
 
 /* --- IMAGE VIEWER (Bottom Left) --- */
 .image-section {
-     background: #1e1e2f;
+     background: #1e1e2f0d;
      border-radius: 12px;
      padding: 20px;
      height: 55vh;
@@ -143,7 +143,7 @@
 
 /* --- DATA GRID (Bottom Right) --- */
 .list-section {
-     background: #1e1e2f;
+     background: #1e1e2f0d;
      border-radius: 12px;
      padding: 20px;
      height: 55vh;

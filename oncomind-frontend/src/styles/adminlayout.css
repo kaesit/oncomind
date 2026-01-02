@@ -5,7 +5,7 @@
   flex-direction: column;
   font-family: "Inter", "Helvetica Neue", "Segoe UI", Helvetica, Verdana, sans-serif;
   /* Use the theme background color so there are no white flashes */
-  background-color: var(--dx-theme-base-background-color);
+  background-color: var(--bg-light);
   color: var(--dx-theme-text-color, #fff);
 }
 
