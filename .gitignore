@@ -10,6 +10,7 @@ __pycache__/
 .env
 .dockerignore
 .venv/
+old_app.py
 yolov10n.pt
 my_model.onnx
 simple-exploration-notebook-personalized-medicine.ipynb
