@@ -2,7 +2,15 @@
 
 ![title](Images/oncomind2.png)
 ## What it does?
-OncoMind is an AI driven cancer analysis platform, it's purpose is complex but meaningfull
+OncoMind is an AI driven cancer analysis platform, it's purpose is complex but meaningful
+
+- 🧬 Cancer data analysis using ML models trained on public research datasets
+
+- 🧠 Decision-support experimentation for treatment optimization workflows (for research only)
+
+- 📊 Clinical analytics dashboards for exploratory insights
+
+- 📘 Patient awareness & educational guides (non-diagnostic)
 
 In this project, we will use scientific research data on cancer and AI models fine tuned or specifically trained with this research in an integrated way to perform many tasks such as the production of personalized cancer drugs in a highly experimental way, modules that optimize the treatment process on behalf of doctors, and visualizing tumor and CT images in 3D and using them in the treatment process.
 And lastly we will provide awareness guides for our precious patients 
@@ -22,7 +30,7 @@ Will be in live soon[oncomind.ai]
 # from repo root
 docker compose up --build
 # open frontend: http://localhost:5173
-# API: http://localhost:5000/api/predict?sample=1
+# API: http://localhost:5001/api/predict?sample=1
 # ML service: http://localhost:8000/predict?sample=1
 ````
 
