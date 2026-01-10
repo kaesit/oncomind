@@ -21,7 +21,7 @@ Will be in live soon[oncomind.ai]
 
 ### Home
 
-![home page][Images/home_page.png]
+![home page](Images/home_page.png)
 
 
 ```bash
