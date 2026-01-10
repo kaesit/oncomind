@@ -2,7 +2,7 @@
 
 ![title](Images/oncomind2.png)
 ## What it does?
-OncoMind is a AI driven cancer anlysis platform, it's purpose is complex but meaningfull
+OncoMind is an AI driven cancer analysis platform, it's purpose is complex but meaningfull
 
 In this project, we will use scientific research data on cancer and AI models fine tuned or specifically trained with this research in an integrated way to perform many tasks such as the production of personalized cancer drugs in a highly experimental way, modules that optimize the treatment process on behalf of doctors, and visualizing tumor and CT images in 3D and using them in the treatment process.
 And lastly we will provide awareness guides for our precious patients 
