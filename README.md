@@ -27,13 +27,7 @@ docker compose up --build
 ````
 
 ---
-## Pages
 
-### Home
-
-![home page](Images/home_page.png)
-
----
 
 ## ⬇️ Requirements
 #### Packages
@@ -101,6 +95,35 @@ python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --v
 
 ---
 
+## Pages
+
+
+### Sign In Page
+![sign in page](Images/signin_page.png)
+
+### Sign Up Page
+![sign up page](Images/signup_page.png)
+
+### Home
+
+![home page](Images/home_page.png)
+
+### Menu
+![menu page](Images/menu.png)
+
+### Model Page
+![ page](Images/model_page.png)
+
+### Patient Page
+![home page](Images/patient_page.png)
+
+### Patient Info Page
+![patient info page](Images/patient_info_page.png)
+![patient info page 2](Images/patient_info_page2.png)
+
+
+
+---
 
 ## 🔄 Converters
 
