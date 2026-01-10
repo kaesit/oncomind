@@ -3,6 +3,8 @@
 ![title](Images/oncomind2.png)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
+![React](https://img.shields.io/badge/React-18.x-61DAFB)
+![DevExtreme](https://img.shields.io/badge/DevExtreme-UI-FF2D20)
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-009688)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-ML-FF6F00)
 ![CPU](https://img.shields.io/badge/CPU-x64-0078D4)
