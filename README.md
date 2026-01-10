@@ -17,12 +17,6 @@ And lastly we will provide awareness guides for our precious patients
 
 Will be in live soon[oncomind.ai]
 
-## Pages
-
-### Home
-
-![home page](Images/home_page.png)
-
 
 ```bash
 # from repo root
@@ -33,7 +27,13 @@ docker compose up --build
 ````
 
 ---
+## Pages
 
+### Home
+
+![home page](Images/home_page.png)
+
+---
 
 ## ⬇️ Requirements
 #### Packages
