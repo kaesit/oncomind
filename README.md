@@ -1,6 +1,18 @@
 # OncoMind — AI-driven Cancer Analysis Starter
 
 ![title](Images/oncomind2.png)
+![Python](https://img.shields.io/badge/Python-3.11-3776AB)
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-009688)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-ML-FF6F00)
+![CPU](https://img.shields.io/badge/CPU-x64-0078D4)
+![GPU](https://img.shields.io/badge/GPU-NVIDIA-76B900)
+![CUDA](https://img.shields.io/badge/CUDA-optional-yellow)
+![OS](https://img.shields.io/badge/OS-Linux%20%7C%20Windows%20%7C%20macOS-0078D4)
+![Docker](https://img.shields.io/badge/Docker-supported-2496ED)
+![Status](https://img.shields.io/badge/status-experimental-orange)
+![Use](https://img.shields.io/badge/use-research%20only-red)
+
 ## What it does?
 OncoMind is an AI driven cancer analysis platform, it's purpose is complex but meaningful
 
