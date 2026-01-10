@@ -115,7 +115,7 @@ python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --v
 ![ page](Images/model_page.png)
 
 ### Patient Page
-![home page](Images/patient_page.png)
+![home page](Images/patients_page.png)
 
 ### Patient Info Page
 ![patient info page](Images/patient_info_page.png)
