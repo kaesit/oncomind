@@ -25,6 +25,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  opacity: 0.2;
   background-image: var(--card-bg-image);
   background-size: cover;
   background-position: center;
@@ -44,11 +45,10 @@
   bottom: 0;
   background-color: var(--bg-dark);
   /* Use the card bg as overlay */
-  opacity: 0.85;
   /* Dark overlay to keep text readable */
   z-index: -1;
   /* Sits behind content */
-  transition: opacity 0.25s ease-out;
+  transition: transform 0.25s ease-out;
 }
 
 /* --- Minimal hover effect (for all cards) --- */
@@ -67,7 +67,7 @@
 
 /* 2. Fade the overlay */
 .brutalist-card-wrapper.has-bg-image:hover::after {
-  opacity: 0.7;
+  opacity: 0.9;
   /* Make the image more visible */
 }
 
@@ -93,7 +93,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background-color: var(--accent-cyan);
+  background-color: var(--accent-cyan-dark);
   color: var(--text-primary);
   padding: 4px 8px;
   font-size: 0.8rem;
