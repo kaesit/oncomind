@@ -9,6 +9,7 @@ import CheckBox from "devextreme-react/check-box";
 import TextArea from "devextreme-react/text-area";
 import FileUploader from 'devextreme-react/file-uploader';
 import notify from 'devextreme/ui/notify'; // Added for notifications
+import Form, { Item, Label, RequiredRule, RangeRule } from "devextreme-react/form";
 
 import "../../css/DataSets.css";
 
@@ -27,9 +28,11 @@ export default function DrugCandidates() {
      const [filterSize, setFilterSize] = useState<string | null>(null);
 
      const [isPopupVisible, setPopupVisible] = useState(false);
-     const [newAnalysis, setNewAnalysis] = useState({
-          type: "Blood Test",
-          summary: ""
+     const [newCandidates, setNewCandidates] = useState({
+          smiles: "CC(C)CC(=O)Nc1n...",
+          qed: 0.8,
+          mw: 361,
+          date_of_generation: ""
      });
 
      // 1. Load Data on Mount
@@ -159,7 +162,33 @@ export default function DrugCandidates() {
                     height={400}
                     showCloseButton={true}
                >
-                    {/* ... your popup content ... */}
+                    <h3>Manually Add</h3>
+                    <div style={{ padding: 20 }}>
+                         <Form formData={newCandidates}>
+                              <Item dataField="firstName">
+                                   <RequiredRule message="Smiles is required" />
+                                   <Label text="Smiles" />
+                              </Item>
+                              <Item dataField="lastName">
+                                   <RequiredRule message="QED is required and must be valid" />
+                                   <RangeRule min={0.5} max={1} message="QED ust be valid" />
+                                   <Label text="QED" />
+                              </Item>
+                              <Item dataField="age" editorType="dxNumberBox">
+                                   <RequiredRule message="QED is required" />
+                                   <RangeRule min={0} max={500} message="MW must be valid" />
+                                   <Label text="Age" />
+                              </Item>
+                              <Item dataField="admissionLocation">
+                                   <Label text="Date of generation" />
+                              </Item>
+                         </Form>
+
+                         <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end", gap: 10 }}>
+                              <Button text="Cancel" onClick={() => setPopupVisible(false)} />
+                              <Button text="Save Candidate" type="default" onClick={handleAdd} />
+                         </div>
+                    </div>
                </Popup>
 
                <div className="datasets-grid">
