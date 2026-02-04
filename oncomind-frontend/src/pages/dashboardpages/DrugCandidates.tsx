@@ -29,10 +29,15 @@ export default function DrugCandidates() {
 
      const [isPopupVisible, setPopupVisible] = useState(false);
      const [newCandidates, setNewCandidates] = useState({
+          id: 12345,
+          name: "New AI Candidate",
           smiles: "CC(C)CC(=O)Nc1n...",
           qed: 0.8,
           mw: 361,
-          date_of_generation: ""
+          date_of_generation: "",
+          downloaded: new Date().toLocaleDateString(),
+          preview: ""
+
      });
 
      // 1. Load Data on Mount
@@ -86,7 +91,7 @@ export default function DrugCandidates() {
                     preview: newMolecule.moleculeImage
                };
 
-               setDatasets(prev => [formattedMolecule, ...prev]);
+               /*setNewCandidates({...formattedMolecule});*/ // Will be fixed soon 
                notify("New Drug Candidate Discovered!", "success", 3000);
 
           } catch (error) {
@@ -103,8 +108,33 @@ export default function DrugCandidates() {
           );
      };
 
-     const handleAdd = () => {
+     const handleAdd = async () => {
           setPopupVisible(true);
+          try {
+
+               const res = await fetch("", {
+                    method: "POST"
+               });
+               const newMolecule = await res.json();
+
+               // Format the new molecule to match our grid structure
+               const formattedMolecule = {
+                    id: newMolecule.id,
+                    name: "New AI Candidate",
+                    smiles: newMolecule.smiles,
+                    QED: newMolecule.qedScore,
+                    MW: newMolecule.mwScore,
+                    downloaded: new Date().toLocaleDateString(),
+                    preview: newMolecule.moleculeImage
+               };
+
+               notify("Candidate Molecule added succesfully", "success", 2000);
+               setPopupVisible(false);
+               loadCandidates();
+          }catch(error){
+               console.error(error);
+               notify("Error adding candidate molecule", "error", 2000);
+          }
      };
 
      const handleDelete = () => {
