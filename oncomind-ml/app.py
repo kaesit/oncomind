@@ -271,9 +271,9 @@ def generate_candidate(req: GenerateRequest):
         if mol:
             try:
                 qed = QED.qed(mol)
-                if qed >= 0.4:
+                if qed >= 0.6:
                     best_smiles, best_mol, best_qed, best_mw = (
-                        smiles,
+                            smiles,
                         mol,
                         qed,
                         Descriptors.MolWt(mol),
