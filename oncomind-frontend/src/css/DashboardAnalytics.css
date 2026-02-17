@@ -19,8 +19,6 @@
      box-sizing: border-box;
      display: flex;
      flex-direction: column;
-     overflow-y: auto;
-     /* Scroll if content gets too tall */
      font-family: "Poppins", sans-serif;
 }
 
