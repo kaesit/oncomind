@@ -91,7 +91,7 @@ export default function DrugCandidates() {
                     preview: newMolecule.moleculeImage
                };
 
-               /*setNewCandidates({...formattedMolecule});*/ // Will be fixed soon 
+               setDatasets(prev => [formattedMolecule, ...prev]);
                notify("New Drug Candidate Discovered!", "success", 3000);
 
           } catch (error) {
@@ -127,6 +127,8 @@ export default function DrugCandidates() {
                     downloaded: new Date().toLocaleDateString(),
                     preview: newMolecule.moleculeImage
                };
+
+               /*setNewCandidates([...formattedMolecule]);*/ // Will be fixed soon
 
                notify("Candidate Molecule added succesfully", "success", 2000);
                setPopupVisible(false);
