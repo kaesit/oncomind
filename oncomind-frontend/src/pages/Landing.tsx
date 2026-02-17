@@ -219,9 +219,7 @@ export default function Landing() {
               </p>
             </div>
             <div>
-              <a className="btn-primary" href="#demo">
-                Run live demo
-              </a>
+              <a className="btn-ghost" href="#demo">Run a Demo</a>
             </div>
           </div>
         </div>
