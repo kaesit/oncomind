@@ -27,7 +27,7 @@ const initialDatasets = [
           size: "1.2GB",
           type: "JPG",
           downloaded: "2025-12-01",
-          preview: "https://storage.googleapis.com/kagglesdsdata/datasets/7415/10564/10253/1/10253_idx5_x651_y301_class1.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20251209%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20251209T081011Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=832a2694535a70043a8ce8b774a7325afd693bb8ed6c1f9b3573d46a87ea89622c63a9501fb14508c89ea5006bebff25ab9e79dc380f1696a3bbc9f12b9885595e7fc4f2071a6a357c3c59431684e38aa56c4326e6b08db28261771c237adc16880b307c386f878deb1c2ad58feb876dec125919b15735e51baa6795158173b5b1f8c77fe481cef5fd563fb3056b0b382bd9c28accacb2fbebab1ca575ce26d7958bcfe4aab590dec1d3e44fa180cd2c2240b453949d4a4ccd8fac88a946edae4d27c37d22d2b250382fc1de1b1187d20ebcdb47fbe97fc767f2d443cff1039641f93290291b404b03d90800b8ce1fda8df042d6699050b8ec61e6b55501eff7"
+          preview: "https://upload.wikimedia.org/wikipedia/commons/6/6b/MI_with_contraction_bands_very_high_mag.jpg"
      }
 ];
 
