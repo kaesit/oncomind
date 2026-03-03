@@ -1,6 +1,6 @@
 # OncoMind — AI-driven Cancer Analysis Starter
 
-![title](Images/oncomind2.png)
+![title](Images/oncomind3.png)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![React](https://img.shields.io/badge/React-18.x-61DAFB)
