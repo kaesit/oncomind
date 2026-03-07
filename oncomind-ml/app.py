@@ -258,7 +258,7 @@ def generate_candidate(req: GenerateRequest):
 
     best_smiles, best_mol, best_qed, best_mw = None, None, 0.0, 0.0
 
-    for _ in range(50):
+    for _ in range(200):
         smiles = engine.generate(req.start_atom)
 
         if "ERROR" in smiles:
