@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
 
           {/* Social Media */}
           <div className="footer-section">
-            <h4 className="footer-title">Connect</h4>
+            <h4 className="footer-title">Contact</h4>
             <div className="footer-socials">
               <a
                 href="https://github.com/kaesit/oncomind"
