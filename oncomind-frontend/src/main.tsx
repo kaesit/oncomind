@@ -23,6 +23,7 @@ import DrugCandidates from "./pages/dashboardpages/DrugCandidates";
 import Signin from "./pages/Signin";
 import { DashboardAnalytics } from "./pages/dashboardpages/DashboardAnalytics";
 import DashboardSignIn from "./pages/auth/DashboardSignIn";
+import PersonalizedTreatment from "./pages/dashboardpages/PersonalizedTreatment";
 
 function AppRouter() {
   return (
@@ -48,6 +49,8 @@ function AppRouter() {
           <Route path="/admin/patients/:id" element={<PatientProfile />} />
           <Route path="/admin/drug_candidates" element={<DrugCandidates />} />
           <Route path="/admin/analytics" element={<DashboardAnalytics />} />
+          <Route path="/admin/personalized_treatment" element={<PersonalizedTreatment />} />
+
 
 
         </Route>
