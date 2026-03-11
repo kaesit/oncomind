@@ -277,7 +277,10 @@ const Patients: React.FC = () => {
                                    <StatusBadge status={p.status}>{p.status}</StatusBadge>
                                    <p style={{ margin: 0, opacity: 0.85 }}>Age: {p.age} | Gender: {p.gender}</p>
                                    <p style={{ margin: 0, opacity: 0.85 }}>{p.admitted ? p.room : "Not admitted"}</p>
-                                   <button className="patientButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Go Page</button>
+                                   <div className="button_div">
+                                        <button className="patientButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Go Page</button>
+                                        <button className="patientTEButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Register for T.E.</button>
+                                   </div>
                               </CardContainer>
                          </div>
                     ))}
