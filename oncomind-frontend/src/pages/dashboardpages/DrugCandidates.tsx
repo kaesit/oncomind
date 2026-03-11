@@ -243,6 +243,9 @@ export default function DrugCandidates() {
                                    <div><b>MW:</b> {ds.MW}</div>
                                    <div><b>Date:</b> {ds.downloaded}</div>
                               </div>
+                              <div className="button_div">
+                                   <button className="patientButton" onClick={() => setPopupVisible(true)}>Toxicity</button>
+                              </div>
                          </div>
                     ))}
                </div>
