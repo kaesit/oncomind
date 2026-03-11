@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
       { id: "models", text: "Models", icon: "chart", path: "/admin/models" },
     ],
   },
+  {id: "personalized_treatment", text: "Personalized Treatment", icon: "like", path: "/admin/personalized_treatment"},
   { id: "patients", text: "Patients", icon: "user", path: "/admin/patients" },
   { id: "analytics", text: "Analytics", icon: "event", path: "/admin/analytics" },
   { id: "drug_candidates", text: "Drug Candidates", icon: "formula", path: "/admin/drug_candidates" },
