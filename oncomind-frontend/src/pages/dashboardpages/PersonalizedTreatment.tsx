@@ -24,9 +24,18 @@ const Patients: React.FC = () => {
             <p>This page is under construction</p>
             <p>this page will provide very first experimental features of future personalized treatment options</p>
             <div className="pt_container">
-               <div className="pt_box"><h2>Drugs</h2></div>
-               <div className="pt_box"><h2>Patients</h2></div>
-               <div className="pt_box"><h2>Test</h2></div>
+               <div className="pt_box">
+                  <h2>Drugs</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
+               <div className="pt_box">
+                  <h2>Patients</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
+               <div className="pt_box">
+                  <h2>Test</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
             </div>
             
 
