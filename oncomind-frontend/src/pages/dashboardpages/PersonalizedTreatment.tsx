@@ -23,6 +23,7 @@ const Patients: React.FC = () => {
             <h1>Personalized Treatment</h1>
             <p>This page is under construction</p>
             <p>this page will provide very first experimental features of future personalized treatment options</p>
+            <h2>Main</h2>
             <div className="pt_container">
                <div className="pt_box">
                   <h2>Drugs</h2>
@@ -37,7 +38,23 @@ const Patients: React.FC = () => {
                   <a className="linker" href="">Search</a>
                </div>
             </div>
-            
+            <pre></pre>
+            <h2>Experimental Features</h2>
+            <div className="pt_container experimental">
+               <div className="pt_box">
+                  <h2>Particle Based Drug Simulation</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
+               <div className="pt_box">
+                  <h2>Toxicity</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
+               <div className="pt_box">
+                  <h2>Lab</h2>
+                  <a className="linker" href="">Search</a>
+               </div>
+            </div>
+            <pre></pre>
 
           </div>
      );
