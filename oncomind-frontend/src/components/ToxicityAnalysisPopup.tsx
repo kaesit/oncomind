@@ -40,19 +40,20 @@ const BODY_REGIONS: BodyRegion[] = [
    MOCK API
 ------------------------------------------------------- */
 async function runToxicityAnalysis(smiles: string): Promise<AdmetPrediction[]> {
-  await new Promise(r => setTimeout(r, 1400));
-  return [
-    { property: "hERG", category: "toxicity", value: 0.82, toxic: true },
-    { property: "BBB_Martini", category: "distribution", value: 0.61, toxic: false },
-    { property: "CYP3A4_Inhibitor", category: "metabolism", value: 0.77, toxic: true },
-    { property: "CYP2D6_Inhibitor", category: "metabolism", value: 0.29, toxic: false },
-    { property: "CYP2C9_Inhibitor", category: "metabolism", value: 0.55, toxic: true },
-    { property: "HIA_Hou", category: "absorption", value: 0.95, toxic: false },
-    { property: "PPBR_AZ", category: "distribution", value: 87.4, toxic: false },
-    { property: "Caco2_Wang", category: "absorption", value: 0.88, toxic: false },
-    { property: "Clearance_Hepatocyte", category: "excretion", value: 0.44, toxic: false },
-    { property: "Solubility_AqSolDB", category: "absorption", value: 0.38, toxic: false },
-  ];
+  // ML Servisinizin çalıştığı portu (genelde 8000'dir) kontrol edin.
+  const response = await fetch("http://localhost:8000/analyze_toxicity", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ smiles }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch ADMET data");
+  }
+
+  return response.json();
 }
 
 function regionStatus(r: BodyRegion, preds: AdmetPrediction[]): "toxic" | "safe" | "neutral" {

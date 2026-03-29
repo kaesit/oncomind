@@ -22,6 +22,44 @@ import torch.nn as nn
 from rdkit import Chem
 from rdkit.Chem import Descriptors, QED, Draw
 
+import math
+from fastapi import HTTPException
+from pydantic import BaseModel
+import pandas as pd
+
+# ADMET Modelini Global olarak yükle (Uygulama başlarken 1 kere yüklenir)
+try:
+    from admet_ai import ADMETModel
+    print("⏳ Loading ADMET-AI Model into memory...")
+    admet_model = ADMETModel()
+    print("✅ ADMET-AI Model loaded successfully!")
+except ImportError:
+    admet_model = None
+    print("⚠️ admet_ai not installed. Using fallback/mock data.")
+
+# Frontend'in beklediği özellikler, kategoriler ve tehlike eşikleri (Thresholds)
+ADMET_PROPERTIES = [
+    # TOXICITY (Yüksek değer tehlikelidir)
+    {"key": "hERG", "category": "toxicity", "is_toxic_if": lambda v: v > 0.5, "default": 0.12},
+    
+    # METABOLISM (İnhibitör olması tehlikelidir)
+    {"key": "CYP3A4_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.30},
+    {"key": "CYP2D6_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.20},
+    {"key": "CYP2C9_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.25},
+    
+    # DISTRIBUTION
+    {"key": "BBB_Martini", "category": "distribution", "is_toxic_if": lambda v: v > 0.8, "default": 0.45}, # 0.8 üstü aşırı geçirgen
+    {"key": "PPBR_AZ", "category": "distribution", "is_toxic_if": lambda v: v > 95.0, "default": 75.0}, # Plazma proteinine %95'ten fazla bağlanması riskli
+    
+    # ABSORPTION (Düşük değer tehlikelidir)
+    {"key": "HIA_Hou", "category": "absorption", "is_toxic_if": lambda v: v < 0.3, "default": 0.85}, # Bağırsak emilimi düşükse kötü
+    {"key": "Caco2_Wang", "category": "absorption", "is_toxic_if": lambda v: v < -5.0, "default": -4.2},
+    {"key": "Solubility_AqSolDB", "category": "absorption", "is_toxic_if": lambda v: v < -4.5, "default": -3.5},
+    
+    # EXCRETION
+    {"key": "Clearance_Hepatocyte", "category": "excretion", "is_toxic_if": lambda v: v > 50.0, "default": 15.0},
+]
+
 load_dotenv()
 app = FastAPI(title="OncoMind ML Service")
 
@@ -273,7 +311,7 @@ def generate_candidate(req: GenerateRequest):
                 qed = QED.qed(mol)
                 if qed >= 0.6:
                     best_smiles, best_mol, best_qed, best_mw = (
-                            smiles,
+                        smiles,
                         mol,
                         qed,
                         Descriptors.MolWt(mol),
@@ -358,6 +396,67 @@ async def activation_map(model_name: str = "Default"):
     buf.seek(0)
     plt.close()
     return Response(content=buf.getvalue(), media_type="image/png")
+
+
+class AdmetRequest(BaseModel):
+    smiles: str
+
+
+@app.post("/analyze_toxicity")
+def analyze_toxicity(req: AdmetRequest):
+    smiles = req.smiles.strip()
+
+    # Eğer kütüphane yüklü değilse hata fırlatmak yerine Frontend çökmesin diye fallback gönderiyoruz
+    if not admet_model:
+        raise HTTPException(
+            status_code=500, detail="ADMET model is not loaded on the server."
+        )
+
+    try:
+        # ADMET-AI'ye tahmini yaptır (Pandas DataFrame döner)
+        preds_df = admet_model.predict([smiles])
+
+        if preds_df is None or preds_df.empty:
+            raise ValueError("Prediction generated an empty result.")
+
+        # İlk satırı (bizim molekülü) Dictionary'ye çevir
+        raw_preds = preds_df.iloc[0].to_dict()
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=400, detail=f"Failed to analyze SMILES: {str(e)}"
+        )
+
+    # Frontend'in beklediği JSON formatını oluştur
+    formatted_results = []
+
+    for prop in ADMET_PROPERTIES:
+        key = prop["key"]
+
+        # Eğer ADMET-AI güncellenip key ismini değiştirirse kod çökmesin diye güvenli çekim (get) yapıyoruz
+        val = raw_preds.get(key, prop["default"])
+
+        # NaN (Not a Number) kontrolü
+        try:
+            val = float(val)
+            if math.isnan(val):
+                val = prop["default"]
+        except:
+            val = prop["default"]
+
+        # Lambda fonksiyonumuzu çalıştırarak bu değerin toxic olup olmadığını bul
+        is_toxic = prop["is_toxic_if"](val)
+
+        formatted_results.append(
+            {
+                "property": key,
+                "category": prop["category"],
+                "value": round(val, 3),  # Virgülden sonra 3 basamak
+                "toxic": is_toxic,
+            }
+        )
+
+    return formatted_results
 
 
 @app.get("/model_heatmap")
