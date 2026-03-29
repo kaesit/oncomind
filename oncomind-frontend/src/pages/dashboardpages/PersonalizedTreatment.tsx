@@ -16,7 +16,7 @@ import ToxicityAnalysisPopup from "../../components/ToxicityAnalysisPopup";
 /* ------------------------------------------------------
    MAIN COMPONENT
 ------------------------------------------------------ */
-const Patients: React.FC = () => {
+const PersonalizedTreatment: React.FC = () => {
    const navigate = useNavigate(); // Hook for navigation
    const [isPopupVisible, setPopupVisible] = useState(false);
 
@@ -59,13 +59,15 @@ const Patients: React.FC = () => {
             </div>
          </div>
          <pre></pre>
+         
          <ToxicityAnalysisPopup
             visible={isPopupVisible}
             onHide={() => setPopupVisible(false)}
          />
+         
       </div>
 
    );
 };
 
-export default Patients;
+export default PersonalizedTreatment;
