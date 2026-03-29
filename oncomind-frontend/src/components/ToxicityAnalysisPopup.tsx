@@ -624,7 +624,8 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
           <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
             <div>
               <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>COMPOUND NAME (optional)</div>
-              <input value={drugName} onChange={e => setDrugName(e.target.value)} placeholder="e.g. Imatinib" style={inputStyle} />
+              { /* <input value={drugName} onChange={e => setDrugName(e.target.value)} placeholder="e.g. Imatinib" style={inputStyle} /> */}
+              <button style={inputStyle}>Search</button>
             </div>
             <div>
               <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SMILES STRING *</div>
