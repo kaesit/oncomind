@@ -18,3 +18,4 @@ pyvista
 python-multipart
 pytest
 entrezpy
+admet_ai
