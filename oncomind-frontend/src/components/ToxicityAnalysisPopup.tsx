@@ -679,7 +679,35 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
           />
 
           {/* İLAÇ LİSTESİ */}
-          <div style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: "16px", marginTop: "10px", paddingRight: "8px" }}>
+          <div style={{
+            flex: 1,
+            minHeight: 0,
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            marginTop: "10px",
+            paddingRight: "8px",
+            // SCROLLBAR TASARIMI (Chrome, Safari ve Edge için)
+            scrollbarWidth: "thin",          // Firefox
+            scrollbarColor: "rgba(0,200,255,0.3) transparent"
+          }}>
+            <style>{`
+            div::-webkit-scrollbar {
+            width: 6px;
+            }
+        div::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        div::-webkit-scrollbar-thumb {
+            background: rgba(0, 200, 255, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        div::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 170, 0.4);
+        }
+    `}</style>
             {filtered.map((ds) => (
               <div
                 key={ds.id}
