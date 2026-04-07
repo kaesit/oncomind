@@ -12,6 +12,8 @@ import "../../css/PersonalizedTreatment.css";
 import Form, { Item, Label, RequiredRule, RangeRule } from "devextreme-react/form";
 import notify from "devextreme/ui/notify"; // Nice toast notifications
 import ToxicityAnalysisPopup from "../../components/ToxicityAnalysisPopup";
+import CTImagePopup from "../../components/CTImagePopup";
+
 
 /* ------------------------------------------------------
    MAIN COMPONENT
@@ -19,6 +21,8 @@ import ToxicityAnalysisPopup from "../../components/ToxicityAnalysisPopup";
 const PersonalizedTreatment: React.FC = () => {
    const navigate = useNavigate(); // Hook for navigation
    const [isPopupVisible, setPopupVisible] = useState(false);
+   const [isPopupVisible2, setPopupVisible2] = useState(false);
+
 
    return (
 
@@ -63,6 +67,10 @@ const PersonalizedTreatment: React.FC = () => {
          <ToxicityAnalysisPopup
             visible={isPopupVisible}
             onHide={() => setPopupVisible(false)}
+         />
+         <CTImagePopup
+            visible={isPopupVisible2}
+            onHide={() => setPopupVisible2(false)}
          />
          
       </div>
