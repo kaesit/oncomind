@@ -178,10 +178,9 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                          background: "#030d1a", color: "#b0e8ff", padding: "16px 16px 12px",
                          borderRadius: 6, fontFamily: "monospace"
                     }}>
-
+                         {/*}
                          <div style={{ display: "flex", gap: 18, flex: 1, overflow: "hidden" }}>
 
-                              {/* SOL BÖLÜM: KONTROLLER */}
                               <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
                                    <div>
                                         <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT DRUG CANDIDATE</div>
@@ -236,7 +235,7 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                                    )}
                               </div>
 
-                              {/* SAĞ BÖLÜM: DETAYLI RAPOR */}
+                              
                               {step === 2 && (
                                    <div style={{ width: 280, overflowY: "auto", border: "1px solid rgba(0,200,255,0.14)", borderRadius: 6, padding: "12px 14px", background: "rgba(0,10,28,0.6)" }}>
                                         <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 12, borderBottom: "1px solid rgba(0,200,255,0.1)", paddingBottom: 6 }}>
@@ -270,7 +269,7 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                                         }}>[ EXPORT PDF ]</button>
                                    </div>
                               )}
-                         </div>
+                         </div> */}
 
                          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
                               <button onClick={handleClose} style={{
