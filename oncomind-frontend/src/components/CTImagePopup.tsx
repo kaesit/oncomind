@@ -181,59 +181,7 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                          {/*}
                          <div style={{ display: "flex", gap: 18, flex: 1, overflow: "hidden" }}>
 
-                              <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
-                                   <div>
-                                        <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT DRUG CANDIDATE</div>
-                                        <button onClick={() => setPopupVisible(true)} style={inputStyle}>[ BROWSE DATABASE ]</button>
-                                   </div>
-                                   <div>
-                                        <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SMILES STRING *</div>
-                                        <textarea value={smiles} onChange={e => setSmiles(e.target.value)}
-                                             placeholder="CC(C)n1nc(-c2ccc(F)..."
-                                             rows={4} style={{ ...inputStyle, color: "#00ffaa", resize: "vertical", lineHeight: 1.5, fontSize: 11, cursor: "text" }} />
-                                   </div>
-                                   <button onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} style={{
-                                        background: "rgba(0,200,255,0.10)", border: "1px solid rgba(0,200,255,0.45)",
-                                        borderRadius: 4, color: analyzing ? "rgba(0,200,255,0.35)" : "#00ccff",
-                                        fontFamily: "monospace", fontSize: 11, letterSpacing: "0.1em",
-                                        padding: "10px 0", cursor: analyzing ? "not-allowed" : "pointer", transition: "all .2s",
-                                   }}>{analyzing ? "[ SCANNING... ]" : "[ RUN ADMET ANALYSIS ]"}</button>
-
-                                   {step === 2 && (
-                                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7 }}>
-                                             {[
-                                                  { label: "TOTAL", val: predictions.length, color: "#00ccff" },
-                                                  { label: "FLAGS", val: toxicCount, color: toxicCount > 0 ? "#ff5555" : "#00ff88" },
-                                                  { label: "CLEAR", val: predictions.length - toxicCount, color: "#00ff88" },
-                                                  { label: "REGIONS", val: BODY_REGIONS.length, color: "#88aaff" },
-                                             ].map(({ label, val, color }) => (
-                                                  <div key={label} style={{ background: "rgba(0,150,255,0.07)", border: "1px solid rgba(0,200,255,0.13)", borderRadius: 4, padding: "8px 10px" }}>
-                                                       <div style={{ fontSize: 8, color: "rgba(0,200,255,0.4)", letterSpacing: "0.1em" }}>{label}</div>
-                                                       <div style={{ fontSize: 20, fontWeight: 700, color }}>{val}</div>
-                                                  </div>
-                                             ))}
-                                        </div>
-                                   )}
-
-                                   {activeReg && step === 2 && (
-                                        <div style={{ background: "rgba(0,150,255,0.07)", border: "1px solid rgba(0,200,255,0.3)", borderRadius: 4, padding: "10px 12px" }}>
-                                             <div style={{ fontSize: 10, color: "#00ccff", fontWeight: 700, marginBottom: 3 }}>{activeReg.label.toUpperCase()}</div>
-                                             <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", marginBottom: 8 }}>{activeReg.description}</div>
-                                             {regionPreds.length === 0
-                                                  ? <div style={{ fontSize: 9, color: "rgba(0,200,255,0.3)" }}>No mapped properties.</div>
-                                                  : regionPreds.map(p => (
-                                                       <div key={p.property} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0", borderBottom: "1px solid rgba(0,200,255,0.08)", fontSize: 10 }}>
-                                                            <span style={{ color: "rgba(0,200,255,0.65)" }}>{p.property}</span>
-                                                            <span style={{
-                                                                 background: p.toxic ? "rgba(255,50,50,0.15)" : "rgba(0,255,136,0.12)",
-                                                                 border: `1px solid ${p.toxic ? "rgba(255,80,80,0.3)" : "rgba(0,255,136,0.25)"}`,
-                                                                 color: p.toxic ? "#ff6666" : "#00ff88", padding: "0 6px", borderRadius: 3, fontSize: 9, fontWeight: 700,
-                                                            }}>{p.value < 2 ? p.value.toFixed(2) : p.value.toFixed(1)} {p.toxic ? "!" : "✓"}</span>
-                                                       </div>
-                                                  ))}
-                                        </div>
-                                   )}
-                              </div>
+                              
 
                               
                               {step === 2 && (
@@ -270,8 +218,30 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                                    </div>
                               )}
                          </div> */}
+                         <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
+                              <div>
+                                   <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT CT IMAGES</div>
+                                   <button onClick={() => setPopupVisible(true)} style={inputStyle}>[ BROWSE DATABASE ]</button>
+                              </div>
+                              <button onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} style={{
+                                   background: "rgba(0,200,255,0.10)", border: "1px solid rgba(0,200,255,0.45)",
+                                   borderRadius: 4, color: analyzing ? "rgba(0,200,255,0.35)" : "#00ccff",
+                                   fontFamily: "monospace", fontSize: 11, letterSpacing: "0.1em",
+                                   padding: "10px 0", cursor: analyzing ? "not-allowed" : "pointer", transition: "all .2s",
+                              }}>DRAW BOUNDING BOXES</button>
+                              <div>
+                                   <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT OR ADD YOUR TOOL</div>
+                                   <button onClick={() => setPopupVisible(true)} style={inputStyle}>[ BROWSE DATABASE ]</button>
+                              </div>
+                              <button onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} style={{
+                                   background: "rgba(0,200,255,0.10)", border: "1px solid rgba(0,200,255,0.45)",
+                                   borderRadius: 4, color: analyzing ? "rgba(0,200,255,0.35)" : "#00ccff",
+                                   fontFamily: "monospace", fontSize: 11, letterSpacing: "0.1em",
+                                   padding: "10px 0", cursor: analyzing ? "not-allowed" : "pointer", transition: "all .2s",
+                              }}>DRAW BOUNDING BOXES</button>
 
-                         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+                         </div>
+                         <div style={{ position: "absolute", display: "flex", justifyContent: "flex-end", marginTop: 0, bottom: "50px", right: "50px" }}>
                               <button onClick={handleClose} style={{
                                    background: "transparent", border: "1px solid rgba(0,200,255,0.22)", borderRadius: 4,
                                    color: "rgba(0,200,255,0.45)", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.08em",

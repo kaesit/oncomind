@@ -39,7 +39,7 @@ const PersonalizedTreatment: React.FC = () => {
             </div>
             <div className="pt_box">
                <h2>CT Images</h2>
-               <a className="linker" onClick={() => setPopupVisible(true)}>Search</a>
+               <a className="linker" onClick={() => setPopupVisible2(true)}>Search</a>
             </div>
             <div className="pt_box">
                <h2>Test</h2>
