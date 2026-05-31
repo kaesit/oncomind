@@ -57,12 +57,12 @@ const Footer: React.FC = () => {
                 LinkedIn
               </a>
               <a
-                href="https://twitter.com/your-handle"
+                href="https://instagram.com/your-handle"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Follow on Twitter"
+                aria-label="Follow on Instagram"
               >
-                Twitter
+                Instagram
               </a>
             </div>
           </div>
