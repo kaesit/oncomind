@@ -47,7 +47,7 @@ export default function DrugCandidates() {
 
      const loadCandidates = async () => {
           try {
-               const res = await fetch("http://localhost:5001/api/DrugCandidate");
+               const res = await fetch("http://localhost:5000/api/DrugCandidate");
                const data = await res.json();
                // Map backend data to frontend structure if necessary, 
                // assuming backend sends { id, smiles, qedScore, mwScore, moleculeImage, createdAt }
@@ -72,7 +72,7 @@ export default function DrugCandidates() {
           notify("AI is dreaming up a new molecule...", "info", 3000);
 
           try {
-               const res = await fetch("http://localhost:5001/api/DrugCandidate/generate", {
+               const res = await fetch("http://localhost:5000/api/DrugCandidate/generate", {
                     method: "POST"
                });
 

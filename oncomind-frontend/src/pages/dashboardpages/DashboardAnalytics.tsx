@@ -101,7 +101,7 @@ export const DashboardAnalytics: React.FC = () => {
      // Load Data
      useEffect(() => {
           const docId = localStorage.getItem("doctorId") || "";
-          fetch(`http://localhost:5001/api/Dashboard/stats?doctorId=${docId}`)
+          fetch(`http://localhost:5000/api/Dashboard/stats?doctorId=${docId}`)
                .then((res) => res.json())
                .then(setData)
                .catch(console.error);

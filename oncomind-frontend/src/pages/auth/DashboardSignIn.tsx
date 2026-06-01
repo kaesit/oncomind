@@ -85,8 +85,8 @@ const Login = () => {
           e.preventDefault();
 
           const url = isSignup
-               ? "http://localhost:5001/api/Auth/register"
-               : "http://localhost:5001/api/Auth/login";
+               ? "http://localhost:5000/api/Auth/register"
+               : "http://localhost:5000/api/Auth/login";
 
           // Prepare payload dynamically
           const payload = isSignup ? {

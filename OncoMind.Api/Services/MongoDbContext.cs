@@ -17,7 +17,7 @@ namespace OncoMind.Api.Services
                // 2. Fallback for local debugging (outside Docker)
                if (string.IsNullOrEmpty(connectionString))
                {
-                    connectionString = "mongodb://localhost:27017";
+                    connectionString = "mongodb://127.0.0.1:27017";
                }
 
                var mongoUrl = MongoUrl.Create(connectionString);

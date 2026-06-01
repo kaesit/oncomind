@@ -67,7 +67,7 @@ namespace OncoMind.Api.Services
           public async Task<GeneratedMoleculeResult> GenerateMoleculeAsync(string startAtom)
           {
                var payload = new { start_atom = startAtom, min_qed = 0.7 };
-               var response = await _httpClient.PostAsJsonAsync("http://oncomind_ml:8000/generate_candidate", payload);
+               var response = await _httpClient.PostAsJsonAsync("http://localhost:8000/generate_candidate", payload);
 
                response.EnsureSuccessStatusCode();
 

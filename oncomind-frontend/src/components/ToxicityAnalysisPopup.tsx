@@ -440,7 +440,7 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
 
   const loadCandidates = async () => {
     try {
-      const res = await fetch("http://localhost:5001/api/DrugCandidate");
+      const res = await fetch("http://localhost:5000/api/DrugCandidate");
       const data = await res.json();
       const formattedData = data.map((d: any) => ({
         id: d.id,
