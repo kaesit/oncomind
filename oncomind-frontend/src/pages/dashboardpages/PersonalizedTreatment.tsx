@@ -42,7 +42,7 @@ const PersonalizedTreatment: React.FC = () => {
                <a className="linker" onClick={() => setPopupVisible2(true)}>Search</a>
             </div>
             <div className="pt_box">
-               <h2>Test</h2>
+               <h2>Genomic Profiling</h2>
                <a className="linker" href="">Search</a>
             </div>
          </div>
@@ -58,7 +58,7 @@ const PersonalizedTreatment: React.FC = () => {
                <a className="linker" href="">Search</a>
             </div>
             <div className="pt_box">
-               <h2>Lab</h2>
+               <h2>Lab (Latent Space Explorer)</h2>
                <a className="linker" href="">Search</a>
             </div>
          </div>
