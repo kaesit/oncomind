@@ -34,13 +34,13 @@
   margin: 5px;
   font-weight: 700;
   justify-content: center;
-  font-family: "VVDS Fifties Exp SBold";
-  /* Ensure this font is loaded */
+  font-family: 'Cascadia Code', monospace;
   text-transform: uppercase;
   color: var(--text-heading);
   /* Prevent logo from shrinking */
   flex-shrink: 0;
 }
+/*font-family: "VVDS Fifties Exp SBold";*/
 
 .navbar-links {
   display: flex;
@@ -102,24 +102,15 @@
   }
 
   .navbar-links {
-    /* --- This is the mobile menu --- */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Align links to the left */
     gap: 1rem;
-    /* Space out the links vertically */
-
-    /* Full-screen dropdown styling */
     position: absolute;
     top: calc(100% + 0.5rem);
-    /* Position below the navbar */
     left: 0;
     right: 0;
-    /* Match the container's horizontal margin */
     padding: 1.5rem;
-
-    /* Hide/Show animation */
     opacity: 0;
     transform: translateY(-20px);
     pointer-events: none;
