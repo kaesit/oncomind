@@ -87,7 +87,7 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
 
      const loadCandidates = async () => {
           try {
-               const res = await fetch("http://localhost:5001/api/DrugCandidate");
+               const res = await fetch("http://localhost:5000/api/DrugCandidate");
                const data = await res.json();
                const formattedData = data.map((d: any) => ({
                     id: d.id,
@@ -178,46 +178,6 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
                          background: "#030d1a", color: "#b0e8ff", padding: "16px 16px 12px",
                          borderRadius: 6, fontFamily: "monospace"
                     }}>
-                         {/*}
-                         <div style={{ display: "flex", gap: 18, flex: 1, overflow: "hidden" }}>
-
-                              
-
-                              
-                              {step === 2 && (
-                                   <div style={{ width: 280, overflowY: "auto", border: "1px solid rgba(0,200,255,0.14)", borderRadius: 6, padding: "12px 14px", background: "rgba(0,10,28,0.6)" }}>
-                                        <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 12, borderBottom: "1px solid rgba(0,200,255,0.1)", paddingBottom: 6 }}>
-                                             ADMET REPORT{drugName ? ` — ${drugName.toUpperCase()}` : ""}
-                                        </div>
-                                        {(["toxicity", "absorption", "distribution", "metabolism", "excretion"] as const).map(cat => {
-                                             const group = predictions.filter(p => p.category === cat);
-                                             if (!group.length) return null;
-                                             return (
-                                                  <div key={cat} style={{ marginBottom: 12 }}>
-                                                       <div style={{ fontSize: 8, color: "rgba(0,200,255,0.35)", letterSpacing: "0.12em", marginBottom: 5, borderBottom: "1px solid rgba(0,200,255,0.08)", paddingBottom: 3 }}>
-                                                            {cat.toUpperCase()}
-                                                       </div>
-                                                       {group.map(p => (
-                                                            <div key={p.property} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", borderBottom: "1px solid rgba(0,200,255,0.06)", fontSize: 10 }}>
-                                                                 <span style={{ color: "rgba(0,200,255,0.65)" }}>{p.property}</span>
-                                                                 <span style={{
-                                                                      background: p.toxic ? "rgba(255,50,50,0.15)" : "rgba(0,255,136,0.12)",
-                                                                      border: `1px solid ${p.toxic ? "rgba(255,80,80,0.3)" : "rgba(0,255,136,0.25)"}`,
-                                                                      color: p.toxic ? "#ff6666" : "#00ff88", padding: "1px 7px", borderRadius: 3, fontSize: 9, fontWeight: 700,
-                                                                 }}>{p.value < 2 ? p.value.toFixed(2) : p.value.toFixed(1)}</span>
-                                                            </div>
-                                                       ))}
-                                                  </div>
-                                             );
-                                        })}
-                                        <button onClick={() => notify("PDF export triggered.", "success", 2000)} style={{
-                                             marginTop: 8, width: "100%", background: "rgba(0,200,255,0.08)",
-                                             border: "1px solid rgba(0,200,255,0.35)", borderRadius: 4, color: "#00ccff",
-                                             fontFamily: "monospace", fontSize: 10, letterSpacing: "0.08em", padding: "8px 0", cursor: "pointer",
-                                        }}>[ EXPORT PDF ]</button>
-                                   </div>
-                              )}
-                         </div> */}
                          <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
                               <div>
                                    <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT CT IMAGES</div>
