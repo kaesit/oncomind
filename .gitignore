@@ -3,7 +3,7 @@
 bin/
 obj/
 
-
+-
 # Python
 __pycache__/
 *.pyc
@@ -23,7 +23,6 @@ cancer_cell_healthy_unhealthy_fixed
 # Node
 node_modules/
 dist/
-
 
 # Others
 .DS_Store
