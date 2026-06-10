@@ -9,10 +9,10 @@ namespace OncoMind.Api.Models
      public class CreateAnalysisDto
      {
           [Required]
-          public string PatientId { get; set; } = string.Empty; // 👈 CRITICAL
+          public string PatientId { get; set; } = string.Empty;
 
           [Required]
-          public string DoctorId { get; set; } = string.Empty; // 👈 CRITICAL
+          public string DoctorId { get; set; } = string.Empty;
 
           [Required]
           public string AnalysisType { get; set; } = "General Checkup";
