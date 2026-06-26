@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Popup } from "devextreme-react/popup";
 import notify from "devextreme/ui/notify";
+import jsPDf, { jsPDF } from "jspdf";
 
 /* -------------------------------------------------------
    TYPES
@@ -511,6 +512,28 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
     search.trim().length === 0 || ds.smiles.toLowerCase().includes(search.toLowerCase())
   );
 
+
+  function export_pdf() {
+    var doc = new jsPDF();
+
+    doc.text(20, 20, 'This is the default font.');
+
+    doc.setFont("courier");
+    doc.text(20, 30, 'This is courier normal.');
+
+    doc.setFont("times");
+    doc.text(20, 40, 'This is times italic.');
+
+    doc.setFont("helvetica");
+    doc.text(20, 50, 'This is helvetica bold.');
+
+    doc.setFont("courier");
+    doc.text(20, 60, 'This is courier bolditalic.');
+
+    doc.save('Test.pdf');
+
+  }
+
   const activeReg = BODY_REGIONS.find(r => r.id === activeRegion);
   const regionPreds = predictions.filter(p => activeReg?.relatedProperties.includes(p.property));
   const toxicCount = predictions.filter(p => p.toxic).length;
@@ -622,7 +645,7 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
                     </div>
                   );
                 })}
-                <button onClick={() => notify("PDF export triggered.", "success", 2000)} style={{
+                <button onClick={() => export_pdf()} style={{
                   marginTop: 8, width: "100%", background: "rgba(0,200,255,0.08)",
                   border: "1px solid rgba(0,200,255,0.35)", borderRadius: 4, color: "#00ccff",
                   fontFamily: "monospace", fontSize: 10, letterSpacing: "0.08em", padding: "8px 0", cursor: "pointer",
