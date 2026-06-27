@@ -513,7 +513,9 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
 
   function export_pdf() {
     var doc = new jsPDF();
-
+    // FALSE !!! const results = runToxicityAnalysis();
+    
+    console.log(results);
     doc.text(20, 20, 'This is the default font.');
 
     doc.setFont("courier");
