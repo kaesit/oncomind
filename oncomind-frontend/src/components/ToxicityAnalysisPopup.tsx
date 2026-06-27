@@ -37,9 +37,7 @@ const BODY_REGIONS: BodyRegion[] = [
   { id: "intestine", label: "GI Tract", nx: 0.0, ny: -0.18, radius: 0.10, relatedProperties: ["HIA_Hou", "Solubility_AqSolDB", "Caco2_Wang"], description: "GI absorption & solubility" },
 ];
 
-/* -------------------------------------------------------
-   MOCK API
-------------------------------------------------------- */
+
 async function runToxicityAnalysis(smiles: string): Promise<AdmetPrediction[]> {
   // ML Servisinizin çalıştığı portu (genelde 8000'dir) kontrol edin.
   const response = await fetch("http://localhost:8000/analyze_toxicity", {
