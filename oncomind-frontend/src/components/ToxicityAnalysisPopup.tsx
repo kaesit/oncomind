@@ -37,7 +37,7 @@ const BODY_REGIONS: BodyRegion[] = [
   { id: "intestine", label: "GI Tract", nx: 0.0, ny: -0.18, radius: 0.10, relatedProperties: ["HIA_Hou", "Solubility_AqSolDB", "Caco2_Wang"], description: "GI absorption & solubility" },
 ];
 
-
+var toxicity_results = {};
 async function runToxicityAnalysis(smiles: string): Promise<AdmetPrediction[]> {
   // ML Servisinizin çalıştığı portu (genelde 8000'dir) kontrol edin.
   const response = await fetch("http://localhost:8000/analyze_toxicity", {
@@ -52,7 +52,8 @@ async function runToxicityAnalysis(smiles: string): Promise<AdmetPrediction[]> {
     throw new Error("Failed to fetch ADMET data");
   }
 
-  return response.json();
+  toxicity_results = await response.json();
+  return toxicity_results;
 }
 
 function regionStatus(r: BodyRegion, preds: AdmetPrediction[]): "toxic" | "safe" | "neutral" {
@@ -514,23 +515,13 @@ const ToxicityAnalysisPopup: React.FC<ToxicityPopupProps> = ({ visible, onHide }
   function export_pdf() {
     var doc = new jsPDF();
     // FALSE !!! const results = runToxicityAnalysis();
+
+    console.log(toxicity_results);
+    toxicity_results.forEach((result, index) => {
+      doc.text(20, 20 + index * 10, `Property: ${result.property}, Value:${result.value} Toxic: ${result.toxic}`);
+    });
     
-    console.log(results);
-    doc.text(20, 20, 'This is the default font.');
-
-    doc.setFont("courier");
-    doc.text(20, 30, 'This is courier normal.');
-
-    doc.setFont("times");
-    doc.text(20, 40, 'This is times italic.');
-
-    doc.setFont("helvetica");
-    doc.text(20, 50, 'This is helvetica bold.');
-
-    doc.setFont("courier");
-    doc.text(20, 60, 'This is courier bolditalic.');
-
-    doc.save('Test.pdf');
+    doc.save('results.pdf');
 
   }
 
