@@ -5,7 +5,6 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import NotFoundPage from "./pages/NotFoundPage"
@@ -32,7 +31,6 @@ function AppRouter() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
           <Route path="/awareness" element={<AwarenessPage />} />

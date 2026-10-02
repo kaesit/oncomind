@@ -12,14 +12,7 @@ type MlResponse = {
 
 export default function App() {
      const [resp, setResp] = useState<MlResponse | null>(null)
-
-     useEffect(() => {
-          fetch('http://localhost:5000/api/predict?sample=5')
-               .then(r => r.json())
-               .then(j => setResp(j))
-               .catch(e => console.error(e))
-     }, [])
-
+     
      const data = [
           { id: 1, name: 'Sample A', score: resp?.ml?.scores ? resp.ml.scores[0] : 0 },
      ]
