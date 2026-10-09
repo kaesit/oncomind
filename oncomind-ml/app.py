@@ -41,21 +41,21 @@ except ImportError:
 ADMET_PROPERTIES = [
     # TOXICITY (Yüksek değer tehlikelidir)
     {"key": "hERG", "category": "toxicity", "is_toxic_if": lambda v: v > 0.5, "default": 0.12},
-    
+
     # METABOLISM (İnhibitör olması tehlikelidir)
     {"key": "CYP3A4_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.30},
     {"key": "CYP2D6_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.20},
     {"key": "CYP2C9_Inhibitor", "category": "metabolism", "is_toxic_if": lambda v: v > 0.5, "default": 0.25},
-    
+
     # DISTRIBUTION
     {"key": "BBB_Martini", "category": "distribution", "is_toxic_if": lambda v: v > 0.8, "default": 0.45}, # 0.8 üstü aşırı geçirgen
     {"key": "PPBR_AZ", "category": "distribution", "is_toxic_if": lambda v: v > 95.0, "default": 75.0}, # Plazma proteinine %95'ten fazla bağlanması riskli
-    
+
     # ABSORPTION (Düşük değer tehlikelidir)
     {"key": "HIA_Hou", "category": "absorption", "is_toxic_if": lambda v: v < 0.3, "default": 0.85}, # Bağırsak emilimi düşükse kötü
     {"key": "Caco2_Wang", "category": "absorption", "is_toxic_if": lambda v: v < -5.0, "default": -4.2},
     {"key": "Solubility_AqSolDB", "category": "absorption", "is_toxic_if": lambda v: v < -4.5, "default": -3.5},
-    
+
     # EXCRETION
     {"key": "Clearance_Hepatocyte", "category": "excretion", "is_toxic_if": lambda v: v > 50.0, "default": 15.0},
 ]
