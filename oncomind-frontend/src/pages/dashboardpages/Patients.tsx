@@ -1,64 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
-import TextBox from "devextreme-react/text-box";
-import { Button } from "devextreme-react/button";
-import Checkbox from "@mui/material/Checkbox";
-import { styled } from "@mui/material/styles";
-import { Popup } from "devextreme-react/popup";
-import { SelectBox } from "devextreme-react/select-box";
 import { useNavigate } from "react-router-dom"; // For navigation
+import { ArrowUpRight, ClipboardPlus, Filter, MapPin, Plus, UserRound, Users } from "lucide-react";
 import { patientService, PatientDto } from "../../services/patientService";
-import "../../css/DataSets.css";
-import Form, { Item, Label, RequiredRule, RangeRule } from "devextreme-react/form";
-import notify from "devextreme/ui/notify"; // Nice toast notifications
-
-/* ------------------------------------------------------
-   UI STYLING (Kept exactly as you had it)
------------------------------------------------------- */
-const CardContainer = styled("div")({
-     position: "relative",
-     background: "var(--dx-theme-background-color)",
-     border: "1px solid rgba(255,255,255,0.07)",
-     borderRadius: "12px",
-     padding: "14px",
-     display: "flex",
-     flexDirection: "column",
-     gap: "12px",
-     transition: "0.2s",
-     boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-     cursor: "pointer",
-     color: "var(--dx-theme-base-text-color)",
-     "&:hover": {
-          borderColor: "var(--dx-theme-accent-color)",
-          transform: "translateY(-2px)",
-     },
-});
-
-const PreviewImg = styled("img")({
-     width: "100%",
-     height: "150px",
-     objectFit: "cover",
-     borderRadius: "8px",
-});
-
-const getStatusColor = (status: string) => {
-     switch (status?.toUpperCase()) {
-          case "STABLE": return "#4CAF50"; // Green
-          case "NORMAL": return "#2196F3"; // Blue
-          case "HIGH": return "#FF9800"; // Orange
-          case "URGENT": return "#F44336"; // Red
-          default: return "#9E9E9E"; // Grey
-     }
-};
-
-const StatusBadge = styled("span")(({ status }: { status: string }) => ({
-     padding: "4px 10px",
-     borderRadius: "6px",
-     fontSize: "12px",
-     fontWeight: 700,
-     alignSelf: "flex-start",
-     background: `${getStatusColor(status)}22`,
-     color: getStatusColor(status),
-}));
+import { Button, Card, Checkbox, Dialog, Empty, Field, Input, MediaImage, PageHeader, Pill, SearchInput, Select, StatusPill } from "../../dashboard/ui";
+import notify from "../../dashboard/ui/notify";
 
 /* ------------------------------------------------------
    MAIN COMPONENT
@@ -75,12 +20,9 @@ const Patients: React.FC = () => {
 
      // Filter popup controls
      const [filterPopup, setFilterPopup] = useState(false);
-     const [filterGender, setFilterGender] = useState(null);
-     const [filterStatus, setFilterStatus] = useState(null);
-     const [filterAdmitted, setFilterAdmitted] = useState(null);
-     const [startDate, setStartDate] = useState("");
-     const [endDate, setEndDate] = useState("");
-
+     const [filterGender, setFilterGender] = useState<string | null>(null);
+     const [filterStatus, setFilterStatus] = useState<string | null>(null);
+     const [filterAdmitted, setFilterAdmitted] = useState<string | null>(null);
 
      // 2. EFFECT: Fetch data from C# API on load
      useEffect(() => {
@@ -111,10 +53,8 @@ const Patients: React.FC = () => {
                rawData = await patientService.getAll();
           }
 
-          // 3. Map the data (Your existing mapping logic)
+          // 3. Map the data
           const mappedData = rawData.map((p: PatientDto) => {
-               // ... copy your existing mapping logic here ...
-               // (The logic where you fix the gender/status strings)
                let genderDisplay = "Other";
                const g = String(p.gender);
                if (g === "0" || g === "Male") genderDisplay = "Male";
@@ -144,7 +84,6 @@ const Patients: React.FC = () => {
           );
      };
 
-
      const filteredPatients = useMemo(() => {
           return patients.filter((p) => {
                const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
@@ -168,9 +107,21 @@ const Patients: React.FC = () => {
           profilePicture: "",
           admissionLocation: ""
      });
+     const [touched, setTouched] = useState(false);
+     const set = (k: keyof typeof newPatient, v: any) => setNewPatient((p) => ({ ...p, [k]: v }));
+
+     // validation rules carried over from the old form
+     const errors = {
+          firstName: !newPatient.firstName.trim() ? "First Name is required" : null,
+          lastName: !newPatient.lastName.trim() ? "Last Name is required" : null,
+          age: newPatient.age < 0 || newPatient.age > 120 || Number.isNaN(newPatient.age) ? "Age must be valid" : null,
+     };
+     const hasErrors = Object.values(errors).some(Boolean);
 
      // 2. Handle the "Save" Button click
      const handleSavePatient = async () => {
+          setTouched(true);
+          if (hasErrors) return;
           try {
                // Get logged in Doctor ID (from our Login step earlier)
                const currentDoctorId = localStorage.getItem("doctorId");
@@ -188,6 +139,7 @@ const Patients: React.FC = () => {
 
                notify("Patient added successfully!", "success", 2000);
                setAddPopupVisible(false); // Close popup
+               setTouched(false);
                loadData(); // Refresh the list automatically!
           } catch (error) {
                console.error(error);
@@ -195,96 +147,134 @@ const Patients: React.FC = () => {
           }
      };
 
+     const activeFilters = [filterGender, filterStatus, filterAdmitted].filter(Boolean).length;
+
      return (
-          <div className="datasets-wrapper">
-               <div className="datasets-actions">
-                    <Button text="Add New" icon="add" type="default" onClick={() => setAddPopupVisible(true)} />
-                    {/*<Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} /> */}
-                    <TextBox placeholder="Search patient..." value={search} onValueChanged={(e) => setSearch(e.value)} width={260} />
-                    <Button text="Filter" icon="filter" stylingMode="outlined" onClick={() => setFilterPopup(true)} />
-               </div>
+          <div className="om-page">
+               <PageHeader title="Patients" sub={loading ? "Loading…" : `${filteredPatients.length} of ${patients.length} patients`}>
+                    <SearchInput placeholder="Search patient..." value={search} onChange={setSearch} width={260} />
+                    <Button icon={<Filter size={16} />} onClick={() => setFilterPopup(true)}>
+                         Filter{activeFilters ? ` · ${activeFilters}` : ""}
+                    </Button>
+                    <Button variant="primary" icon={<Plus size={16} />} onClick={() => setAddPopupVisible(true)}>
+                         Add New
+                    </Button>
+               </PageHeader>
 
-               <Popup
-                    visible={addPopupVisible}
-                    onHiding={() => setAddPopupVisible(false)}
-                    dragEnabled={false}
-                    hideOnOutsideClick={true}
-                    showCloseButton={true}
-                    showTitle={true}
+               <Dialog
+                    open={addPopupVisible}
+                    onOpenChange={setAddPopupVisible}
                     title="Register New Patient"
-                    width={500}
-                    height={550}
+                    description="The patient is assigned to you automatically."
+                    width={560}
+                    footer={
+                         <>
+                              <Button onClick={() => setAddPopupVisible(false)}>Cancel</Button>
+                              <Button variant="primary" onClick={handleSavePatient}>Save Patient</Button>
+                         </>
+                    }
                >
-                    <div style={{ padding: 20 }}>
-                         <Form formData={newPatient}>
-                              <Item dataField="firstName">
-                                   <RequiredRule message="First Name is required" />
-                                   <Label text="First Name" />
-                              </Item>
-                              <Item dataField="lastName">
-                                   <RequiredRule message="Last Name is required" />
-                                   <Label text="Last Name" />
-                              </Item>
-                              <Item dataField="age" editorType="dxNumberBox">
-                                   <RangeRule min={0} max={120} message="Age must be valid" />
-                                   <Label text="Age" />
-                              </Item>
-                              <Item
-                                   dataField="gender"
-                                   editorType="dxSelectBox"
-                                   editorOptions={{ items: ["Male", "Female"] }}
-                              >
-                                   <Label text="Gender" />
-                              </Item>
-                              <Item
-                                   dataField="emergencyStatus"
-                                   editorType="dxSelectBox"
-                                   editorOptions={{ items: ["Stable", "Normal", "High", "Urgent"] }}
-                              >
-                                   <Label text="Initial Status" />
-                              </Item>
-                              <Item dataField="profilePicture">
-                                   <Label text="Picture" />
-                              </Item>
-                              <Item dataField="admissionLocation">
-                                   <Label text="Room / Bed (Optional)" />
-                              </Item>
-                         </Form>
-
-                         <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end", gap: 10 }}>
-                              <Button text="Cancel" onClick={() => setAddPopupVisible(false)} />
-                              <Button text="Save Patient" type="default" onClick={handleSavePatient} />
-                         </div>
+                    <div className="om-form-grid">
+                         <Field label="First Name" error={touched ? errors.firstName : null} htmlFor="np-first">
+                              <Input id="np-first" value={newPatient.firstName} invalid={touched && !!errors.firstName} onChange={(e) => set("firstName", e.target.value)} />
+                         </Field>
+                         <Field label="Last Name" error={touched ? errors.lastName : null} htmlFor="np-last">
+                              <Input id="np-last" value={newPatient.lastName} invalid={touched && !!errors.lastName} onChange={(e) => set("lastName", e.target.value)} />
+                         </Field>
+                         <Field label="Age" error={touched ? errors.age : null} htmlFor="np-age">
+                              <Input id="np-age" type="number" min={0} max={120} value={newPatient.age} invalid={touched && !!errors.age} onChange={(e) => set("age", e.target.valueAsNumber)} />
+                         </Field>
+                         <Field label="Gender">
+                              <Select items={["Male", "Female"]} value={newPatient.gender} onChange={(v) => set("gender", v)} />
+                         </Field>
+                         <Field label="Initial Status">
+                              <Select items={["Stable", "Normal", "High", "Urgent"]} value={newPatient.emergencyStatus} onChange={(v) => set("emergencyStatus", v)} />
+                         </Field>
+                         <Field label="Room / Bed (Optional)" htmlFor="np-room">
+                              <Input id="np-room" value={newPatient.admissionLocation} onChange={(e) => set("admissionLocation", e.target.value)} />
+                         </Field>
+                         <Field label="Picture" hint="Image URL" full htmlFor="np-pic">
+                              <Input id="np-pic" value={newPatient.profilePicture} placeholder="https://…" onChange={(e) => set("profilePicture", e.target.value)} />
+                         </Field>
                     </div>
-               </Popup>
+               </Dialog>
 
-               <Popup visible={filterPopup} onHiding={() => setFilterPopup(false)} showCloseButton={true} width={380} title="Filter Patients">
-                    <div className="filter-popup-body">
-                         <SelectBox label="Gender" placeholder="All" items={["Male", "Female"]} onValueChanged={(e) => setFilterGender(e.value)} />
-                         <SelectBox label="Status" placeholder="All" items={["Stable", "Normal", "High", "Urgent"]} onValueChanged={(e) => setFilterStatus(e.value)} />
-                         <SelectBox label="Admitted" placeholder="All" items={["Yes", "No"]} onValueChanged={(e) => setFilterAdmitted(e.value)} />
+               <Dialog
+                    open={filterPopup}
+                    onOpenChange={setFilterPopup}
+                    title="Filter Patients"
+                    width={400}
+                    footer={
+                         <>
+                              <Button
+                                   variant="ghost"
+                                   onClick={() => {
+                                        setFilterGender(null);
+                                        setFilterStatus(null);
+                                        setFilterAdmitted(null);
+                                   }}
+                              >
+                                   Reset
+                              </Button>
+                              <Button variant="primary" onClick={() => setFilterPopup(false)}>Done</Button>
+                         </>
+                    }
+               >
+                    <div className="om-stack">
+                         <Field label="Gender">
+                              <Select placeholder="All" clearable items={["Male", "Female"]} value={filterGender} onChange={setFilterGender} />
+                         </Field>
+                         <Field label="Status">
+                              <Select placeholder="All" clearable items={["Stable", "Normal", "High", "Urgent"]} value={filterStatus} onChange={setFilterStatus} />
+                         </Field>
+                         <Field label="Admitted">
+                              <Select placeholder="All" clearable items={["Yes", "No"]} value={filterAdmitted} onChange={setFilterAdmitted} />
+                         </Field>
                     </div>
-               </Popup>
+               </Dialog>
 
-               <div className="datasets-grid">
-                    {loading ? <p style={{ color: 'white' }}>Loading patients...</p> : filteredPatients.map((p) => (
-                         // 4. NAVIGATION: Pass ID to the details page
-                         <div  style={{ textDecoration: "none", color: "white" }}>
-                              <CardContainer>
-                                   <Checkbox checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} sx={{ position: "absolute", top: "10px", left: "10px", zIndex: 5, color: "var(--dx-theme-secondary-color)", "&.Mui-checked": { color: "var(--dx-theme-accent-color)" } }} />
-                                   <PreviewImg src={p.preview} alt={p.name} />
-                                   <h3 style={{ margin: 0 }}>{p.name}</h3>
-                                   <StatusBadge status={p.status}>{p.status}</StatusBadge>
-                                   <p style={{ margin: 0, opacity: 0.85 }}>Age: {p.age} | Gender: {p.gender}</p>
-                                   <p style={{ margin: 0, opacity: 0.85 }}>{p.admitted ? p.room : "Not admitted"}</p>
-                                   <div className="button_div">
-                                        <button className="patientButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Go Page</button>
-                                        <button className="patientTEButton" key={p.id} onClick={() => navigate(`/admin/patients/${p.id}`)}>Register for T.E.</button>
+               {loading ? (
+                    <div className="om-grid">
+                         {Array.from({ length: 6 }, (_, i) => (
+                              <div key={i} className="om-skeleton" style={{ minHeight: 320 }} />
+                         ))}
+                    </div>
+               ) : filteredPatients.length === 0 ? (
+                    <Card>
+                         <Empty icon={<Users size={28} />} title={patients.length ? "No patients match" : "No patients yet"}>
+                              {patients.length ? "Try a different search or reset the filters." : "Register your first patient with Add New."}
+                         </Empty>
+                    </Card>
+               ) : (
+                    <div className="om-grid">
+                         {filteredPatients.map((p) => (
+                              <Card key={p.id} selected={selected.includes(p.id)} style={{ padding: 10 }}>
+                                   <div className="om-media">
+                                        <MediaImage src={p.preview} alt={p.name} />
+                                        <div className="om-media-overlay">
+                                             <Checkbox glass ariaLabel={`Select ${p.name}`} checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} />
+                                             <StatusPill solid status={p.status} />
+                                        </div>
                                    </div>
-                              </CardContainer>
-                         </div>
-                    ))}
-               </div>
+                                   <div className="om-item-body" style={{ padding: "12px 6px 4px" }}>
+                                        <h3 className="om-item-title">{p.name}</h3>
+                                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                                             <Pill><UserRound size={12} /> {p.age} · {p.gender}</Pill>
+                                             <Pill><MapPin size={12} /> {p.admitted ? p.room : "Not admitted"}</Pill>
+                                        </div>
+                                        <div className="om-item-actions">
+                                             <Button size="sm" variant="primary" icon={<ArrowUpRight size={15} />} onClick={() => navigate(`/admin/patients/${p.id}`)}>
+                                                  Go Page
+                                             </Button>
+                                             <Button size="sm" icon={<ClipboardPlus size={15} />} onClick={() => navigate(`/admin/patients/${p.id}`)}>
+                                                  Register for T.E.
+                                             </Button>
+                                        </div>
+                                   </div>
+                              </Card>
+                         ))}
+                    </div>
+               )}
           </div>
      );
 };
