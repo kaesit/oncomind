@@ -1,61 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Form, { Item, Label, ButtonItem, RequiredRule, EmailRule } from "devextreme-react/form";
-import DateBox from 'devextreme-react/date-box';
-import notify from 'devextreme/ui/notify';
-import { styled } from "@mui/material/styles";
-import "../../css/DataSets.css";
+import { ArrowRight } from "lucide-react";
+import { Button, Field, Input, Select } from "../../dashboard/ui";
+import { useOmTheme } from "../../dashboard/ui/theme";
+import notify from "../../dashboard/ui/notify";
+import "../../dashboard/styles/dashboard.css";
 
-// --- STYLES (Kept exactly as you had them) ---
-const dateBoxLabel = { 'aria-label': 'Date' };
-const AuthWrapper = styled("div")({
-     height: "100vh",
-     width: "100vw",
-     display: "flex",
-     justifyContent: "center",
-     alignItems: "center",
-     background: "radial-gradient(circle at top right, #1e1e2f, #0a0a12)",
-     color: "#fff",
-});
-
-const GlassPanel = styled("div")({
-     width: "400px",
-     padding: "40px",
-     borderRadius: "20px",
-     background: "rgba(30, 30, 45, 0.7)",
-     backdropFilter: "blur(15px)",
-     border: "1px solid rgba(255, 255, 255, 0.1)",
-     boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
-});
-
-const Title = styled("h2")({
-     textAlign: "center",
-     marginBottom: "10px",
-     background: "linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)",
-     WebkitBackgroundClip: "text",
-     WebkitTextFillColor: "transparent",
-     fontWeight: 800,
-     letterSpacing: "1px",
-});
-
-const SubTitle = styled("p")({
-     textAlign: "center",
-     color: "#94a3b8",
-     marginBottom: "30px",
-     fontSize: "0.9rem",
-});
-
-const LinkText = styled("span")({
-     color: "#4facfe",
-     cursor: "pointer",
-     fontWeight: 600,
-     "&:hover": { textDecoration: "underline" },
-});
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // --- COMPONENT ---
 const Login = () => {
      const navigate = useNavigate();
+     useOmTheme(); // apply the saved dashboard theme here too
      const [isSignup, setIsSignup] = useState(false);
+     const [touched, setTouched] = useState(false);
 
      // 1. Fixed State Management
      const [formData, setFormData] = useState({
@@ -70,19 +28,25 @@ const Login = () => {
      // Date state (allowed to be undefined initially)
      const [birthDate, setBirthDate] = useState<Date | undefined>(new Date());
 
-     // 2. Handle Input Changes from DevExtreme Form
-     const handleFieldChange = (e: any) => {
-          setFormData({ ...formData, [e.dataField]: e.value });
+     // 2. Handle Input Changes
+     const handleFieldChange = (dataField: keyof typeof formData, value: string) => {
+          setFormData({ ...formData, [dataField]: value });
      };
 
-     // 3. Handle Date Change
-     const onDateChange = useCallback(({ value }: { value?: Date }) => {
-          setBirthDate(value);
-     }, []);
+     // validation rules carried over from the old form
+     const errors = {
+          firstName: isSignup && !formData.firstName.trim() ? "Name is required" : null,
+          lastName: isSignup && !formData.lastName.trim() ? "Name is required" : null,
+          email: !formData.email.trim() ? "Email is required" : !EMAIL_RE.test(formData.email) ? "Invalid email format" : null,
+          password: !formData.password ? "Password is required" : null,
+     };
+     const show = (k: keyof typeof errors) => (touched ? errors[k] : null);
 
      // 4. THE REAL SUBMIT LOGIC
      const handleSubmit = async (e: any) => {
           e.preventDefault();
+          setTouched(true);
+          if (Object.values(errors).some(Boolean)) return;
 
           const url = isSignup
                ? "http://localhost:5001/api/Auth/register"
@@ -122,6 +86,7 @@ const Login = () => {
                if (isSignup) {
                     // If register success, switch to login mode automatically
                     setIsSignup(false);
+                    setTouched(false);
                } else {
                     // If login success, save ID and redirect
                     localStorage.setItem("doctorId", data.doctorId);
@@ -137,103 +102,103 @@ const Login = () => {
           }
      };
 
+     const dateValue = birthDate ? birthDate.toISOString().slice(0, 10) : "";
+
      return (
-          <AuthWrapper>
-               <GlassPanel>
-                    <Title>OncoMind OS</Title>
-                    <SubTitle>
-                         {isSignup ? "Create your doctor profile" : "Secure access for medical personnel"}
-                    </SubTitle>
+          <div className="om-root" style={{ display: "grid", placeItems: "center", gridTemplateColumns: "1fr", padding: 16 }}>
+               <div className="om-auth">
+                    <aside className="om-auth-aura om-aura om-aura--pink">
+                         <div className="om-brand" style={{ color: "#fff", padding: 0 }}>
+                              <span className="om-brand-mark" style={{ background: "rgba(255,255,255,0.3)" }} />
+                              OncoMind
+                         </div>
+                         <div>
+                              <div style={{ fontSize: "clamp(34px, 4vw, 52px)", fontWeight: 400, letterSpacing: "-0.05em", lineHeight: 1 }}>OncoMind OS</div>
+                              <p style={{ margin: "12px 0 0", color: "rgba(255,255,255,0.85)", fontSize: 14, maxWidth: 280 }}>
+                                   Drug discovery, patient analytics and personalized treatment in one workspace.
+                              </p>
+                         </div>
+                    </aside>
 
-                    <form onSubmit={handleSubmit}>
-                         <Form
-                              formData={formData}
-                              labelMode="floating"
-                              onFieldDataChanged={handleFieldChange} // 👈 Keeps state in sync
-                         >
+                    <div className="om-auth-form">
+                         <div>
+                              <h1 className="om-page-title" style={{ fontSize: 32 }}>{isSignup ? "Create account" : "Sign in"}</h1>
+                              <p className="om-page-sub">{isSignup ? "Create your doctor profile" : "Secure access for medical personnel"}</p>
+                         </div>
 
+                         <form onSubmit={handleSubmit} noValidate className="om-stack" style={{ gap: 12 }}>
                               {isSignup && (
-                                   <Item dataField="firstName" editorType="dxTextBox">
-                                        <Label text="First Name" />
-                                        <RequiredRule message="Name is required" />
-                                   </Item>
-                              )}
-                              {isSignup && (
-                                   <Item dataField="lastName" editorType="dxTextBox">
-                                        <Label text="Last Name" />
-                                        <RequiredRule message="Name is required" />
-                                   </Item>
-                              )}
-
-                              <Item dataField="email" editorType="dxTextBox">
-                                   <Label text="Email Address" />
-                                   <RequiredRule message="Email is required" />
-                                   <EmailRule message="Invalid email format" />
-                              </Item>
-
-                              <Item
-                                   dataField="password"
-                                   editorType="dxTextBox"
-                                   editorOptions={{ mode: "password" }}
-                              >
-                                   <Label text="Password" />
-                                   <RequiredRule message="Password is required" />
-                              </Item>
-
-                              {isSignup && (
-                                   <Item
-                                        dataField="specialization"
-                                        editorType="dxSelectBox"
-                                        editorOptions={{ items: ["Oncologist", "Bioinformatics", "Genetics", "Researcher"] }}
-                                   >
-                                        <Label text="Specialization" />
-                                   </Item>
+                                   <div className="om-form-grid">
+                                        <Field label="First Name" error={show("firstName")} htmlFor="su-first">
+                                             <Input id="su-first" value={formData.firstName} invalid={!!show("firstName")} onChange={(e) => handleFieldChange("firstName", e.target.value)} autoComplete="given-name" />
+                                        </Field>
+                                        <Field label="Last Name" error={show("lastName")} htmlFor="su-last">
+                                             <Input id="su-last" value={formData.lastName} invalid={!!show("lastName")} onChange={(e) => handleFieldChange("lastName", e.target.value)} autoComplete="family-name" />
+                                        </Field>
+                                   </div>
                               )}
 
-                              {/* Custom Item for DateBox because it's not a standard Form Item editorType */}
+                              <Field label="Email Address" error={show("email")} htmlFor="su-email">
+                                   <Input id="su-email" type="email" value={formData.email} invalid={!!show("email")} onChange={(e) => handleFieldChange("email", e.target.value)} autoComplete="email" />
+                              </Field>
+
+                              <Field label="Password" error={show("password")} htmlFor="su-pass">
+                                   <Input
+                                        id="su-pass"
+                                        type="password"
+                                        value={formData.password}
+                                        invalid={!!show("password")}
+                                        onChange={(e) => handleFieldChange("password", e.target.value)}
+                                        autoComplete={isSignup ? "new-password" : "current-password"}
+                                   />
+                              </Field>
+
                               {isSignup && (
-                                   <Item>
-                                        <div style={{ marginBottom: 15 }}>
-                                             <DateBox
-                                                  label="Date of Birth"
-                                                  labelMode="floating"
-                                                  value={birthDate}
-                                                  onValueChanged={onDateChange}
-                                                  inputAttr={dateBoxLabel}
-                                                  type="date"
-                                             />
+                                   <>
+                                        <div className="om-form-grid">
+                                             <Field label="Specialization">
+                                                  <Select
+                                                       items={["Oncologist", "Bioinformatics", "Genetics", "Researcher"]}
+                                                       value={formData.specialization}
+                                                       onChange={(v) => handleFieldChange("specialization", v ?? "Oncologist")}
+                                                  />
+                                             </Field>
+                                             <Field label="Date of Birth" htmlFor="su-dob">
+                                                  <Input
+                                                       id="su-dob"
+                                                       type="date"
+                                                       value={dateValue}
+                                                       onChange={(e) => setBirthDate(e.target.value ? new Date(e.target.value) : undefined)}
+                                                  />
+                                             </Field>
                                         </div>
-                                   </Item>
+                                        <Field label="Profile Picture URL" htmlFor="su-pic">
+                                             <Input id="su-pic" value={formData.profilePicture} placeholder="https://…" onChange={(e) => handleFieldChange("profilePicture", e.target.value)} />
+                                        </Field>
+                                   </>
                               )}
 
-                              {isSignup && (
-                                   <Item dataField="profilePicture" editorType="dxTextBox">
-                                        <Label text="Profile Picture URL" />
-                                   </Item>
-                              )}
+                              <Button type="submit" variant="primary" block icon={<ArrowRight size={16} />} style={{ marginTop: 8, height: 46 }}>
+                                   {isSignup ? "Create Account" : "Sign In"}
+                              </Button>
+                         </form>
 
-                              <ButtonItem
-                                   horizontalAlignment="center"
-                                   buttonOptions={{
-                                        text: isSignup ? "Create Account" : "Sign In",
-                                        type: "default",
-                                        useSubmitBehavior: true,
-                                        width: "100%",
-                                        elementAttr: { style: { marginTop: "20px", borderRadius: "10px", height: "45px" } }
+                         <div style={{ textAlign: "center", fontSize: 13, color: "var(--om-muted)" }}>
+                              {isSignup ? "Already have an account? " : "New to OncoMind? "}
+                              <button
+                                   type="button"
+                                   onClick={() => {
+                                        setIsSignup(!isSignup);
+                                        setTouched(false);
                                    }}
-                              />
-                         </Form>
-                    </form>
-
-                    <div style={{ textAlign: "center", marginTop: "20px", fontSize: "0.85rem", color: "#ccc" }}>
-                         {isSignup ? "Already have an account? " : "New to OncoMind? "}
-                         <LinkText onClick={() => setIsSignup(!isSignup)}>
-                              {isSignup ? "Sign In" : "Register"}
-                         </LinkText>
+                                   style={{ all: "unset", cursor: "pointer", color: "var(--om-text)", fontWeight: 600, textDecoration: "underline", textUnderlineOffset: 3 }}
+                              >
+                                   {isSignup ? "Sign In" : "Register"}
+                              </button>
+                         </div>
                     </div>
-
-               </GlassPanel>
-          </AuthWrapper>
+               </div>
+          </div>
      );
 };
 
