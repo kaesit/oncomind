@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from "react";
-import PieChart, {
-     Series as PieSeries,
-     Label as PieLabel,
-     Connector,
-     Legend,
-} from "devextreme-react/pie-chart";
-import Chart, {
-     CommonSeriesSettings,
-     Series as ChartSeries,
-     ValueAxis,
-     Grid,
-     Legend as ChartLegend,
-     Tooltip,
-     Font,
-} from "devextreme-react/chart";
-import DataGrid, { Column, Scrolling } from "devextreme-react/data-grid";
-import SelectBox from "devextreme-react/select-box";
-import Button from "devextreme-react/button";
-import notify from "devextreme/ui/notify";
-import "../../css/DashboardAnalytics.css";
+import { ChevronLeft, ChevronRight, ImageOff, Loader2, RotateCw, Siren, Stethoscope, UserPlus, Users } from "lucide-react";
+import { Button, Card, CardHead, Empty, PageHeader, Pill, Select, StatusPill } from "../../dashboard/ui";
+import notify from "../../dashboard/ui/notify";
+import { DonutChart } from "../../dashboard/charts/DonutChart";
+import { BarChart } from "../../dashboard/charts/BarChart";
 
 // --- INTERFACES ---
 interface DashboardData {
@@ -50,12 +35,32 @@ const trainingStats = [
      { metric: "Accuracy", value: 86 },
 ];
 
+const statusColor = (status: string) => {
+     switch (status) {
+          case "Urgent":
+               return "#f0364f";
+          case "Critical":
+               return "#c4002b";
+          case "High":
+               return "#ff8a1f";
+          case "Normal":
+               return "#3b82f6";
+          case "Stable":
+               return "#16b46c";
+          case "Recovering":
+               return "#14b8a6";
+          default:
+               return "#8e8e96";
+     }
+};
+
 export const DashboardAnalytics: React.FC = () => {
      const [data, setData] = useState<DashboardData>(initialData);
      const [availableModels, setAvailableModels] = useState<string[]>([]);
      const [selectedModel, setSelectedModel] = useState<string>("");
      const [imgIndex, setImgIndex] = useState(0);
      const [refreshKey, setRefreshKey] = useState(Date.now());
+     const [imgState, setImgState] = useState<"loading" | "ok" | "error">("loading");
 
      // Dynamic Views based on selection
      const modelViews = selectedModel
@@ -77,26 +82,6 @@ export const DashboardAnalytics: React.FC = () => {
                },
           ]
           : [];
-     const customizePiePoint = (point: any) => {
-          switch (point.argument) {
-               case "Urgent":
-                    return { color: "#ff5252" }; // Red
-               case "Critical":
-                    return { color: "#ff0000" }; // Darker Red
-               case "High":
-                    return { color: "#ff7979" }; // Light Red
-
-               case "Normal":
-                    return { color: "#4facfe" }; // Blue
-               case "Stable":
-                    return { color: "#2ecc71" }; // Green
-               case "Recovering":
-                    return { color: "#00b894" }; // Teal
-
-               default:
-                    return { color: "#636e72" }; // Grey fallback
-          }
-     };
 
      // Load Data
      useEffect(() => {
@@ -117,216 +102,170 @@ export const DashboardAnalytics: React.FC = () => {
                .catch(() => setAvailableModels(["Default"]));
      }, []);
 
+     const currentSrc = modelViews.length > 0 ? `${modelViews[imgIndex].url}&t=${refreshKey}` : "";
+     useEffect(() => setImgState("loading"), [currentSrc]);
+
      const handleNext = () => setImgIndex((p) => (p + 1) % modelViews.length);
      const handleRefresh = () => {
           setRefreshKey(Date.now());
           notify("Refreshing analysis...", "info", 1000);
      };
 
-     return (
-          <div className="analytics-page dark-mode">
-               {/* 1. HEADER ROW */}
-               <header className="analytics-header">
-                    <div>
-                         <h2 className="page-title">OncoMind AI Dashboard</h2>
-                         <p className="page-subtitle">
-                              Real-time Drug Discovery & Patient Analytics
-                         </p>
-                    </div>
+     const donutData = data.charts.statusDistribution.map((d) => ({ label: d.status, value: d.count, color: statusColor(d.status) }));
+     const { kpis } = data;
 
-                    <div className="model-selector-wrapper">
-                         <span className="label">Active Model:</span>
-                         <SelectBox
+     return (
+          <div className="om-page">
+               {/* 1. HEADER ROW */}
+               <PageHeader title="OncoMind AI Dashboard" sub="Real-time Drug Discovery & Patient Analytics">
+                    <span className="om-label" style={{ color: "var(--om-muted)" }}>Active Model</span>
+                    <div style={{ width: 220 }}>
+                         <Select
                               items={availableModels}
-                              value={selectedModel}
-                              onValueChanged={(e) => {
-                                   setSelectedModel(e.value);
+                              value={selectedModel || null}
+                              onChange={(v) => {
+                                   setSelectedModel(v ?? "");
                                    setRefreshKey(Date.now());
                               }}
-                              width={220}
-                              className="dark-selectbox"
                               placeholder="Select AI Model..."
                          />
                     </div>
-               </header>
+               </PageHeader>
 
-               {/* 2. KPI ROW (Auto-fit) */}
-               <div className="kpi-grid">
-                    <div className="kpi-card glow-blue">
-                         <div className="icon-box">👥</div>
-                         <div className="kpi-content">
-                              <h3>Total Patients</h3>
-                              <p>{data.kpis.totalPatients}</p>
+               {/* 2. KPI ROW */}
+               <div className="om-stat-grid">
+                    <Card aura="blue" className="om-stat">
+                         <div className="om-stat-top">
+                              <span className="om-stat-label">Total Patients</span>
+                              <span className="om-stat-icon"><Users size={16} /></span>
                          </div>
-                    </div>
-                    <div className="kpi-card glow-red">
-                         <div className="icon-box">🚨</div>
-                         <div className="kpi-content">
-                              <h3>Urgent Cases</h3>
-                              <p>{data.kpis.urgentCases}</p>
+                         <div className="om-dot-number">{kpis.totalPatients}</div>
+                    </Card>
+                    <Card aura="pink" className="om-stat">
+                         <div className="om-stat-top">
+                              <span className="om-stat-label">Urgent Cases</span>
+                              <span className="om-stat-icon"><Siren size={16} /></span>
                          </div>
-                    </div>
-                    <div className="kpi-card glow-cyan">
-                         <div className="icon-box">➕</div>
-                         <div className="kpi-content">
-                              <h3>New (24h)</h3>
-                              <p>{data.kpis.newPatients24h}</p>
+                         <div className="om-dot-number">{kpis.urgentCases}</div>
+                         {kpis.totalPatients > 0 && (
+                              <Pill tone="glass">{Math.round((kpis.urgentCases / kpis.totalPatients) * 100)}% of patients</Pill>
+                         )}
+                    </Card>
+                    <Card aura="teal" className="om-stat">
+                         <div className="om-stat-top">
+                              <span className="om-stat-label">New (24h)</span>
+                              <span className="om-stat-icon"><UserPlus size={16} /></span>
                          </div>
-                    </div>
-                    <div className="kpi-card glow-orange">
-                         <div className="icon-box">👨‍⚕️</div>
-                         <div className="kpi-content">
-                              <h3>Active Doctors</h3>
-                              <p>{data.kpis.totalDoctors}</p>
+                         <div className="om-dot-number">{kpis.newPatients24h}</div>
+                    </Card>
+                    <Card aura="orange" className="om-stat">
+                         <div className="om-stat-top">
+                              <span className="om-stat-label">Active Doctors</span>
+                              <span className="om-stat-icon"><Stethoscope size={16} /></span>
                          </div>
-                    </div>
+                         <div className="om-dot-number">{kpis.totalDoctors}</div>
+                    </Card>
                </div>
 
-               {/* 3. MAIN DASHBOARD GRID (2 Columns, responsive) */}
-               <div className="main-grid">
-                    {/* LEFT COLUMN */}
-                    <div className="grid-column">
-                         {/* Chart 1: Status */}
-                         <div className="card chart-card">
-                              <div className="card-header">Patient Status Distribution</div>
-                              <div className="chart-wrapper">
-                                   <PieChart
-                                        type="doughnut"
-                                        dataSource={data.charts.statusDistribution}
-                                        resolveLabelOverlapping="shift"
-                                        customizePoint={customizePiePoint} // 👈 LINKED HERE
-                                   >
-                                        <PieSeries argumentField="status" valueField="count">
-                                             <PieLabel
-                                                  visible={true}
-                                                  customizeText={(e: any) =>
-                                                       `${e.argumentText}: ${e.valueText}`
-                                                  }
-                                             >
-                                                  <Connector visible={true} />
-                                             </PieLabel>
-                                        </PieSeries>
-                                        <Legend visible={false} />
-                                   </PieChart>
-                              </div>
-                         </div>
+               {/* 3. MAIN GRID */}
+               <div className="om-split">
+                    <div className="om-stack">
+                         <Card>
+                              <CardHead title="Patient Status Distribution" sub="Hover a slice or row to focus it" />
+                              <DonutChart data={donutData} centerLabel="Patients" />
+                         </Card>
 
-                         {/* Chart 2: Metrics */}
-                         <div className="card chart-card">
-                              <div className="card-header">Model Training Metrics</div>
-                              <div className="chart-wrapper">
-                                   <Chart rotated={false} dataSource={trainingStats}>
-                                        <CommonSeriesSettings
-                                             type="bar"
-                                             argumentField="metric"
-                                             valueField="value"
-                                             color="#9be9fe"
-                                        />
-                                        <ChartSeries />
-
-                                        {/* Use Logarithmic scale so small values (86) are visible next to big ones (50k) */}
-                                        <ValueAxis type="logarithmic">
-                                             <Grid visible={true} opacity={0.1} color="#555" />
-                                        </ValueAxis>
-
-                                        <ChartLegend visible={false} />
-
-                                        {/* 👇 FIX: Dark Background + White Text */}
-                                        <Tooltip
-                                             enabled={true}
-                                             color="#2d3436" /* Dark Grey Background */
-                                             customizeTooltip={(arg: any) => {
-                                                  return {
-                                                       text: `${arg.argumentText}: ${arg.valueText}`,
-                                                  };
-                                             }}
-                                        >
-                                             {/* Force Text Color to White */}
-                                             <Font color="#ffffff" size={14} weight={600} />
-                                        </Tooltip>
-                                   </Chart>
-                              </div>
-                         </div>
+                         <Card>
+                              <CardHead title="Model Training Metrics" sub="Logarithmic scale">
+                                   <Pill>log₁₀</Pill>
+                              </CardHead>
+                              <BarChart data={trainingStats.map((t) => ({ label: t.metric, value: t.value }))} log />
+                         </Card>
                     </div>
 
-                    {/* RIGHT COLUMN */}
-                    <div className="grid-column">
+                    <div className="om-stack">
                          {/* Live AI Analysis */}
-                         <div className="card image-card">
-                              <div className="card-header-row">
-                                   <span>Live Model Analysis</span>
-                                   <Button
-                                        icon="refresh"
-                                        stylingMode="text"
-                                        onClick={handleRefresh}
-                                   />
-                              </div>
+                         <Card>
+                              <CardHead title="Live Model Analysis" sub={modelViews[imgIndex]?.name ?? "Waiting for model list"}>
+                                   <Button variant="ghost" size="sm" iconOnly icon={<RotateCw size={16} />} onClick={handleRefresh} aria-label="Refresh analysis" />
+                              </CardHead>
 
-                              <div className="image-viewer-dark">
+                              <div className="om-media" style={{ aspectRatio: "4 / 3", background: "#0b0b0e" }}>
                                    {modelViews.length > 0 ? (
                                         <>
-                                             <img
-                                                  src={`${modelViews[imgIndex].url}&t=${refreshKey}`}
-                                                  alt="Analysis"
-                                                  onError={(e) =>
-                                                  (e.currentTarget.src =
-                                                       "https://via.placeholder.com/400x300/000000/FFFFFF?text=Offline")
-                                                  }
-                                             />
-                                             <div className="image-overlay">
-                                                  {modelViews[imgIndex].name}
+                                             {imgState !== "error" && (
+                                                  <img
+                                                       key={currentSrc}
+                                                       src={currentSrc}
+                                                       alt="Analysis"
+                                                       style={{ objectFit: "contain", opacity: imgState === "ok" ? 1 : 0, transition: "opacity 160ms" }}
+                                                       onLoad={() => setImgState("ok")}
+                                                       onError={() => setImgState("error")}
+                                                  />
+                                             )}
+                                             {imgState === "loading" && (
+                                                  <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", color: "#8b8b95" }}>
+                                                       <Loader2 className="om-spin" size={22} />
+                                                  </div>
+                                             )}
+                                             {imgState === "error" && (
+                                                  <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", color: "#8b8b95" }}>
+                                                       <Empty icon={<ImageOff size={26} />} title={<span style={{ color: "#f3f3f5" }}>Offline</span>}>
+                                                            The ML service didn't return this view.
+                                                       </Empty>
+                                                  </div>
+                                             )}
+                                             <div className="om-media-overlay" style={{ justifyContent: "flex-end" }}>
+                                                  <span className="om-pill om-pill--ink" style={{ opacity: 0.85 }}>
+                                                       {imgIndex + 1} / {modelViews.length}
+                                                  </span>
                                              </div>
                                         </>
                                    ) : (
-                                        <div className="placeholder-text">Loading Model...</div>
+                                        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", color: "#8b8b95", fontSize: 14 }}>
+                                             Loading Model...
+                                        </div>
                                    )}
                               </div>
 
-                              <div className="image-controls">
-                                   <Button
-                                        icon="chevronleft"
-                                        onClick={() => handleNext()}
-                                        type="normal"
-                                        stylingMode="outlined"
-                                   />
-                                   <Button
-                                        icon="chevronright"
-                                        onClick={handleNext}
-                                        type="normal"
-                                        stylingMode="outlined"
-                                   />
+                              <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 14 }}>
+                                   {/* both arrows advance, as before */}
+                                   <Button iconOnly icon={<ChevronLeft size={18} />} onClick={() => handleNext()} aria-label="Previous view" disabled={!modelViews.length} />
+                                   <Button iconOnly icon={<ChevronRight size={18} />} onClick={handleNext} aria-label="Next view" disabled={!modelViews.length} />
                               </div>
-                         </div>
+                         </Card>
 
                          {/* Recent List */}
-                         <div className="card list-card">
-                              <div className="card-header">Recent Admissions</div>
-                              <DataGrid
-                                   dataSource={data.recentActivity}
-                                   showBorders={false}
-                                   height="100%"
-                                   rowAlternationEnabled={true}
-                                   columnAutoWidth={true}
-                              >
-                                   <Scrolling mode="virtual" />
-                                   <Column dataField="time" width={80} alignment="center" />
-                                   <Column dataField="name" />
-                                   <Column
-                                        dataField="status"
-                                        width={100}
-                                        cellRender={(e) => (
-                                             <span
-                                                  className={`status-badge ${e.value === "Urgent" ? "urgent" : "normal"
-                                                       }`}
-                                             >
-                                                  {e.value}
-                                             </span>
-                                        )}
-                                   />
-                              </DataGrid>
-                         </div>
+                         <Card flush>
+                              <div style={{ padding: "18px 18px 4px" }}>
+                                   <CardHead title="Recent Admissions" />
+                              </div>
+                              <div className="om-table-wrap" style={{ "--max-h": "340px" } as React.CSSProperties}>
+                                   <table className="om-table">
+                                        <thead>
+                                             <tr>
+                                                  <th className="center" style={{ width: 80 }}>Time</th>
+                                                  <th>Name</th>
+                                                  <th style={{ width: 110 }}>Status</th>
+                                             </tr>
+                                        </thead>
+                                        <tbody>
+                                             {data.recentActivity.map((r, i) => (
+                                                  <tr key={r.id ?? i}>
+                                                       <td className="center om-mono" style={{ color: "var(--om-muted)", fontSize: 12 }}>{r.time}</td>
+                                                       <td style={{ fontWeight: 550 }}>{r.name}</td>
+                                                       <td>
+                                                            <StatusPill status={r.status === "Urgent" ? "Urgent" : "Stable"}>{r.status}</StatusPill>
+                                                       </td>
+                                                  </tr>
+                                             ))}
+                                        </tbody>
+                                   </table>
+                                   {data.recentActivity.length === 0 && <Empty title="No recent admissions" />}
+                              </div>
+                         </Card>
                     </div>
-               </div >
-          </div >
+               </div>
+          </div>
      );
 };
