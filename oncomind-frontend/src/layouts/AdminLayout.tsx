@@ -148,7 +148,7 @@ export default function AdminLayout() {
 
   return (
     <>
-      <div className="dx-viewport admin-root">
+      <div className="admin-root">
         <Drawer
           opened={opened}
           openedStateMode="shrink"
@@ -204,14 +204,6 @@ export default function AdminLayout() {
                   onClick: () => setOpened(!opened),
                   elementAttr: { class: "menu-button-white" } // Helper class if needed
                 }}
-              />
-
-              <ToolbarItem
-                template={() => (
-                  <div className="top-title" style={{ color: "white", fontWeight: "bold", fontSize: "1.2rem" }}>
-                    Admin • OncoMind
-                  </div>
-                )}
               />
 
               <ToolbarItem
