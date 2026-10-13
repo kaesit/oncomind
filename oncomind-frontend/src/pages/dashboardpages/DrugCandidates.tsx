@@ -1,20 +1,7 @@
-"use client";
-
-import React, { useState, useEffect } from "react"; // Added useEffect
-import { Button } from "devextreme-react/button";
-import { TextBox } from "devextreme-react/text-box";
-import { SelectBox } from "devextreme-react/select-box";
-import { Popup } from "devextreme-react/popup";
-import CheckBox from "devextreme-react/check-box";
-import TextArea from "devextreme-react/text-area";
-import FileUploader from 'devextreme-react/file-uploader';
-import notify from 'devextreme/ui/notify'; // Added for notifications
-import Form, { Item, Label, RequiredRule, RangeRule } from "devextreme-react/form";
-
-import "../../css/DataSets.css";
-
-// 👇 FIX: REMOVED BROKEN IMAGE IMPORTS
-// We will use a placeholder for now, or just let the database provide images.
+import React, { useState, useEffect } from "react";
+import { Filter, FlaskConical, Plus, ShieldAlert, Sparkles, Trash2 } from "lucide-react";
+import { Button, Card, Checkbox, Dialog, Empty, Field, Input, PageHeader, Pill, SearchInput } from "../../dashboard/ui";
+import notify from "../../dashboard/ui/notify";
 
 export default function DrugCandidates() {
      // Start with empty array, data comes from API
@@ -155,100 +142,101 @@ export default function DrugCandidates() {
           return matchSearch && matchType && matchSize;
      });
 
-     const fileUploaderLabel = { 'aria-label': 'Select Model' };
+     const setField = (k: keyof typeof newCandidates, v: any) => setNewCandidates((c) => ({ ...c, [k]: v }));
+     // the old form's range rules, shown inline
+     const qedError = newCandidates.qed < 0.5 || newCandidates.qed > 1 ? "QED must be valid" : null;
+     const mwError = newCandidates.mw < 0 || newCandidates.mw > 500 ? "MW must be valid" : null;
 
      return (
-          <div className="datasets-wrapper">
-               <h1 className="page-title">Drug Candidates</h1>
+          <div className="om-page">
+               <PageHeader title="Drug Candidates" sub={`${datasets.length} molecules generated · ${selected.length} selected`}>
+                    <SearchInput placeholder="Search molecule..." value={search} onChange={setSearch} width={220} />
+                    {/* NOTE: filterPopup has no dialog wired yet (unchanged from before) */}
+                    <Button icon={<Filter size={16} />} onClick={() => setFilterPopup(true)}>
+                         Filters
+                    </Button>
+               </PageHeader>
 
-               <div className="datasets-actions dx-card">
-                    {/* 👇 AI GENERATE BUTTON */}
-                    <Button
-                         text={loading ? "Generating..." : "Generate AI Candidate"}
-                         icon={loading ? "spinup" : "box"}
-                         type="default"
-                         onClick={handleGenerateAI}
-                         disabled={loading}
-                    />
-
-                    <Button text="Add Manually" icon="add" stylingMode="outlined" onClick={handleAdd} />
-
-                    <Button text="Delete" icon="trash" type="danger" disabled={selected.length === 0} onClick={handleDelete} />
-
-                    <div style={{ flex: 1 }} />
-
-                    <TextBox placeholder="Search molecule..." value={search} onValueChanged={(e) => setSearch(e.value)} mode="search" width={220} />
-                    <Button text="Filters" icon="filter" stylingMode="contained" onClick={() => setFilterPopup(true)} />
+               <div className="om-toolbar">
+                    {/* AI GENERATE BUTTON */}
+                    <Button variant="primary" icon={<Sparkles size={16} />} loading={loading} onClick={handleGenerateAI}>
+                         {loading ? "Generating..." : "Generate AI Candidate"}
+                    </Button>
+                    <Button icon={<Plus size={16} />} onClick={handleAdd}>
+                         Add Manually
+                    </Button>
+                    <Button variant="danger" icon={<Trash2 size={16} />} disabled={selected.length === 0} onClick={handleDelete}>
+                         Delete
+                    </Button>
                </div>
-
-               {/* ... (Keep your Popups same as before) ... */}
 
                {/* ADD NEW POPUP */}
-               <Popup
-                    visible={isPopupVisible}
-                    onHiding={() => setPopupVisible(false)}
-                    dragEnabled={false}
-                    showTitle={true}
+               <Dialog
+                    open={isPopupVisible}
+                    onOpenChange={setPopupVisible}
                     title="Add New Medical Analysis"
+                    description="Manually Add"
                     width={500}
-                    height={400}
-                    showCloseButton={true}
+                    footer={
+                         <>
+                              <Button onClick={() => setPopupVisible(false)}>Cancel</Button>
+                              <Button variant="primary" onClick={handleAdd}>Save Candidate</Button>
+                         </>
+                    }
                >
-                    <h3>Manually Add</h3>
-                    <div style={{ padding: 20 }}>
-                         <Form formData={newCandidates}>
-                              <Item dataField="firstName">
-                                   <RequiredRule message="Smiles is required" />
-                                   <Label text="Smiles" />
-                              </Item>
-                              <Item dataField="lastName">
-                                   <RequiredRule message="QED is required and must be valid" />
-                                   <RangeRule min={0.5} max={1} message="QED ust be valid" />
-                                   <Label text="QED" />
-                              </Item>
-                              <Item dataField="age" editorType="dxNumberBox">
-                                   <RequiredRule message="QED is required" />
-                                   <RangeRule min={0} max={500} message="MW must be valid" />
-                                   <Label text="Age" />
-                              </Item>
-                              <Item dataField="admissionLocation">
-                                   <Label text="Date of generation" />
-                              </Item>
-                         </Form>
-
-                         <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end", gap: 10 }}>
-                              <Button text="Cancel" onClick={() => setPopupVisible(false)} />
-                              <Button text="Save Candidate" type="default" onClick={handleAdd} />
-                         </div>
+                    <div className="om-form-grid">
+                         <Field label="Smiles" full htmlFor="dc-smiles">
+                              <Input id="dc-smiles" className="om-mono" value={newCandidates.smiles} onChange={(e) => setField("smiles", e.target.value)} />
+                         </Field>
+                         <Field label="QED" error={qedError} htmlFor="dc-qed">
+                              <Input id="dc-qed" type="number" step="0.01" min={0.5} max={1} value={newCandidates.qed} invalid={!!qedError} onChange={(e) => setField("qed", e.target.valueAsNumber)} />
+                         </Field>
+                         <Field label="MW" error={mwError} htmlFor="dc-mw">
+                              <Input id="dc-mw" type="number" min={0} max={500} value={newCandidates.mw} invalid={!!mwError} onChange={(e) => setField("mw", e.target.valueAsNumber)} />
+                         </Field>
+                         <Field label="Date of generation" full htmlFor="dc-date">
+                              <Input id="dc-date" type="date" value={newCandidates.date_of_generation} onChange={(e) => setField("date_of_generation", e.target.value)} />
+                         </Field>
                     </div>
-               </Popup>
+               </Dialog>
 
-               <div className="datasets-grid">
-                    {filtered.map((ds) => (
-                         <div className="dataset-card dx-card" key={ds.id}>
-                              <div className="dataset-card-header">
-                                   <CheckBox
-                                        value={selected.includes(ds.id)}
-                                        onValueChanged={() => toggleSelection(ds.id)}
-                                   />
-                                   <h3 className="dataset-name">{ds.name}</h3>
-                              </div>
-
-                              {/* Preview Image */}
-                              <img src={ds.preview} className="dataset-preview" alt="molecule" />
-
-                              <div className="dataset-details">
-                                   <div><b>Smiles:</b> {ds.smiles ? ds.smiles.substring(0, 15) + "..." : "N/A"}</div>
-                                   <div><b>QED:</b> {ds.QED}</div>
-                                   <div><b>MW:</b> {ds.MW}</div>
-                                   <div><b>Date:</b> {ds.downloaded}</div>
-                              </div>
-                              <div className="button_div">
-                                   <button className="patientButton" onClick={() => setPopupVisible(true)}>Toxicity</button>
-                              </div>
-                         </div>
-                    ))}
-               </div>
+               {filtered.length === 0 ? (
+                    <Card>
+                         <Empty icon={<FlaskConical size={28} />} title="No candidates yet">
+                              Generate one with the AI or add it manually.
+                         </Empty>
+                    </Card>
+               ) : (
+                    <div className="om-grid">
+                         {filtered.map((ds) => (
+                              <Card key={ds.id} selected={selected.includes(ds.id)} style={{ padding: 10 }}>
+                                   <div className="om-media om-media--contain" style={{ aspectRatio: "4 / 3" }}>
+                                        {ds.preview ? <img src={ds.preview} alt="molecule" loading="lazy" /> : <Empty icon={<FlaskConical size={24} />} title="No preview" />}
+                                        <div className="om-media-overlay">
+                                             <Checkbox ariaLabel="Select candidate" checked={selected.includes(ds.id)} onChange={() => toggleSelection(ds.id)} />
+                                             <Pill tone="lime">QED {typeof ds.QED === "number" ? ds.QED.toFixed(2) : ds.QED}</Pill>
+                                        </div>
+                                   </div>
+                                   <div className="om-item-body" style={{ padding: "12px 4px 4px" }}>
+                                        <h3 className="om-item-title">{ds.name}</h3>
+                                        <div className="om-mono" style={{ fontSize: 12, color: "var(--om-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={ds.smiles}>
+                                             {ds.smiles ? ds.smiles.substring(0, 15) + "..." : "N/A"}
+                                        </div>
+                                        <dl className="om-kv">
+                                             <div><dt>QED</dt><dd>{ds.QED}</dd></div>
+                                             <div><dt>MW</dt><dd>{ds.MW}</dd></div>
+                                             <div style={{ gridColumn: "1 / -1" }}><dt>Date</dt><dd>{ds.downloaded}</dd></div>
+                                        </dl>
+                                        <div className="om-item-actions">
+                                             <Button size="sm" icon={<ShieldAlert size={15} />} onClick={() => setPopupVisible(true)}>
+                                                  Toxicity
+                                             </Button>
+                                        </div>
+                                   </div>
+                              </Card>
+                         ))}
+                    </div>
+               )}
           </div>
      );
 }

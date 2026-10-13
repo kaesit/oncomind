@@ -1,21 +1,16 @@
-"use client";
 import React, { useState } from "react";
-import { Button } from "devextreme-react/button";
-import { TextBox } from "devextreme-react/text-box";
-import { SelectBox } from "devextreme-react/select-box";
-import { Popup } from "devextreme-react/popup";
-import CheckBox from "devextreme-react/check-box";
-import "../../css/Models.css";
+import { Boxes, Filter, Play, Plus, Trash2 } from "lucide-react";
+import { Button, Card, Checkbox, Dialog, Empty, Field, MediaImage, PageHeader, Pill, SearchInput, Select } from "../../dashboard/ui";
 
 const initialDatasets = [
      {
           id: 1,
           name: "Heathy - Unhealthy",
-          epoch:100,
+          epoch: 100,
           batch: 8,
           mosaic: 0.0,
-          flipud:0.0,
-          fliplr:0.5,
+          flipud: 0.0,
+          fliplr: 0.5,
           size: "14MB",
           type: "PyTorch",
           trained: "2025-11-20",
@@ -24,11 +19,11 @@ const initialDatasets = [
      {
           id: 2,
           name: "Smile Notation Generator",
-          epoch:60,
+          epoch: 60,
           batch: 128,
           mosaic: 0.0,
-          flipud:0.0,
-          fliplr:0.5,
+          flipud: 0.0,
+          fliplr: 0.5,
           size: "14MB",
           type: "GNN",
           trained: "2025-12-01",
@@ -42,8 +37,8 @@ export default function Models() {
      const [search, setSearch] = useState("");
 
      const [filterPopup, setFilterPopup] = useState(false);
-     const [filterType, setFilterType] = useState(null);
-     const [filterSize, setFilterSize] = useState(null);
+     const [filterType, setFilterType] = useState<string | null>(null);
+     const [filterSize, setFilterSize] = useState<string | null>(null);
 
      // -------------------------
      // Checkbox selection logic
@@ -88,105 +83,74 @@ export default function Models() {
      });
 
      return (
-          <div className="models-wrapper">
-               {/* TITLE */}
-               <h1 className="page-title">Models</h1>
+          <div className="om-page">
+               <PageHeader title="Models" sub={`${datasets.length} models · ${selected.length} selected`}>
+                    <SearchInput placeholder="Search dataset..." value={search} onChange={setSearch} width={220} />
+                    <Button icon={<Filter size={16} />} onClick={() => setFilterPopup(true)}>
+                         Filters
+                    </Button>
+               </PageHeader>
 
                {/* TOP ACTION BAR */}
-               <div className="models-actions dx-card">
-                    <Button
-                         text="Add New"
-                         icon="add"
-                         type="default"
-                         onClick={handleAdd}
-                    />
-
-                    <Button
-                         text="Delete"
-                         icon="trash"
-                         type="danger"
-                         disabled={selected.length === 0}
-                         onClick={handleDelete}
-                    />
-
-                    <Button
-                         text="Train"
-                         icon="runner"
-                         type="success"
-                         disabled={selected.length === 0}
-                         onClick={handleTrain}
-                    />
-
-                    {/* Spacer */}
-                    <div style={{ flex: 1 }} />
-
-                    <TextBox
-                         placeholder="Search dataset..."
-                         value={search}
-                         onValueChanged={(e) => setSearch(e.value)}
-                         mode="search"
-                         width={220}
-                    />
-
-                    <Button
-                         text="Filters"
-                         icon="filter"
-                         stylingMode="contained"
-                         onClick={() => setFilterPopup(true)}
-                    />
+               <div className="om-toolbar">
+                    <Button variant="primary" icon={<Plus size={16} />} onClick={handleAdd}>
+                         Add New
+                    </Button>
+                    <Button variant="lime" icon={<Play size={16} />} disabled={selected.length === 0} onClick={handleTrain}>
+                         Train
+                    </Button>
+                    <Button variant="danger" icon={<Trash2 size={16} />} disabled={selected.length === 0} onClick={handleDelete}>
+                         Delete
+                    </Button>
                </div>
 
                {/* FILTER POPUP */}
-               <Popup
-                    visible={filterPopup}
-                    dragEnabled={false}
-                    hideOnOutsideClick={true}
-                    onHiding={() => setFilterPopup(false)}
-                    showCloseButton={true}
-                    width={360}
-                    height="auto"
+               <Dialog
+                    open={filterPopup}
+                    onOpenChange={setFilterPopup}
                     title="Filter Models"
+                    width={380}
+                    footer={<Button variant="primary" onClick={() => setFilterPopup(false)}>Done</Button>}
                >
-                    <div className="filter-popup-body">
-                         <SelectBox
-                              label="Image Type"
-                              placeholder="Select Type"
-                              items={["PNG", "JPG", "TIFF"]}
-                              onValueChanged={(e) => setFilterType(e.value)}
-                         />
-
-                         <SelectBox
-                              label="Dataset Size"
-                              placeholder="Select Size"
-                              items={["<100MB", "100-500MB", ">500MB", "1GB+"]}
-                              onValueChanged={(e) => setFilterSize(e.value)}
-                         />
+                    <div className="om-stack">
+                         <Field label="Image Type">
+                              <Select placeholder="Select Type" clearable items={["PNG", "JPG", "TIFF"]} value={filterType} onChange={setFilterType} />
+                         </Field>
+                         <Field label="Dataset Size">
+                              <Select placeholder="Select Size" clearable items={["<100MB", "100-500MB", ">500MB", "1GB+"]} value={filterSize} onChange={setFilterSize} />
+                         </Field>
                     </div>
-               </Popup>
+               </Dialog>
 
-               {/* DATASET GRID */}
-               <div className="models-grid">
-                    {filtered.map((ds) => (
-                         <div className="model-card dx-card" key={ds.id}>
-                              <div className="model-card-header">
-                                   <CheckBox
-                                        value={selected.includes(ds.id)}
-                                        onValueChanged={() => toggleSelection(ds.id)}
-                                   />
-                                   <h3 className="model-name">{ds.name}</h3>
-                              </div>
-
-                              <img src={ds.preview} className="model-preview" />
-
-                              <div className="model-details">
-                                   <div><b>Name:</b> {ds.name}</div>
-                                   <div><b>Size:</b> {ds.size}</div>
-                                   <div><b>Type:</b> {ds.type}</div>
-                                   <div><b>Trained:</b> {ds.trained}</div>
-                              </div>
-                         </div>
-                    ))}
-               </div>
+               {/* MODEL GRID */}
+               {filtered.length === 0 ? (
+                    <Card>
+                         <Empty icon={<Boxes size={28} />} title="No models match" />
+                    </Card>
+               ) : (
+                    <div className="om-grid">
+                         {filtered.map((ds) => (
+                              <Card key={ds.id} selected={selected.includes(ds.id)} style={{ padding: 10 }}>
+                                   <div className="om-media">
+                                        <MediaImage src={ds.preview} alt={ds.name} />
+                                        <div className="om-media-overlay">
+                                             <Checkbox glass ariaLabel={`Select ${ds.name}`} checked={selected.includes(ds.id)} onChange={() => toggleSelection(ds.id)} />
+                                             <Pill tone="glass">{ds.type}</Pill>
+                                        </div>
+                                   </div>
+                                   <div className="om-item-body" style={{ padding: "12px 4px 4px" }}>
+                                        <h3 className="om-item-title">{ds.name}</h3>
+                                        <dl className="om-kv">
+                                             <div><dt>Name</dt><dd>{ds.name}</dd></div>
+                                             <div><dt>Size</dt><dd>{ds.size}</dd></div>
+                                             <div><dt>Type</dt><dd>{ds.type}</dd></div>
+                                             <div><dt>Trained</dt><dd>{ds.trained}</dd></div>
+                                        </dl>
+                                   </div>
+                              </Card>
+                         ))}
+                    </div>
+               )}
           </div>
      );
 }
