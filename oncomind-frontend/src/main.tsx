@@ -1,8 +1,8 @@
-import "devextreme/dist/css/dx.light.css";
 import "./styles/theme.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
@@ -27,6 +27,7 @@ import PersonalizedTreatment from "./pages/dashboardpages/PersonalizedTreatment"
 function AppRouter() {
   return (
     <BrowserRouter>
+      <Toaster position="bottom-right" richColors closeButton toastOptions={{ className: "om-toast" }} />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Landing />} />

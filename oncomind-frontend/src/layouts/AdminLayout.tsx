@@ -1,37 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import Drawer from "devextreme-react/drawer";
-import TreeView from "devextreme-react/tree-view";
-import { Toolbar, Item as ToolbarItem } from "devextreme-react/toolbar";
-import DropDownButton from "devextreme-react/drop-down-button";
-import Button from "devextreme-react/button";
-import "../styles/adminlayout.css";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  BarChart3,
+  Boxes,
+  ChevronRight,
+  Database,
+  FlaskConical,
+  Folder,
+  HeartPulse,
+  LayoutGrid,
+  LogOut,
+  Menu,
+  Moon,
+  RotateCw,
+  Settings,
+  Sun,
+  Users,
+} from "lucide-react";
+import { Button } from "../dashboard/ui";
+import { useOmTheme } from "../dashboard/ui/theme";
+import "../dashboard/styles/dashboard.css";
 
 // --- TYPES & DATA ---
-type NavItem = { id: string; text: string; icon?: string; path?: string; items?: NavItem[] };
+type NavItem = { id: string; text: string; icon: React.ReactNode; path?: string; items?: NavItem[] };
 
 const navItems: NavItem[] = [
-  { id: "home", text: "Overview", icon: "home", path: "/admin" },
+  { id: "home", text: "Overview", icon: <LayoutGrid size={18} />, path: "/admin" },
   {
     id: "data",
     text: "Data",
-    icon: "folder",
+    icon: <Folder size={18} />,
     items: [
-      { id: "datasets", text: "Datasets", icon: "doc", path: "/admin/datasets" },
-      { id: "models", text: "Models", icon: "chart", path: "/admin/models" },
+      { id: "datasets", text: "Datasets", icon: <Database size={17} />, path: "/admin/datasets" },
+      { id: "models", text: "Models", icon: <Boxes size={17} />, path: "/admin/models" },
     ],
   },
-  {id: "personalized_treatment", text: "Personalized Treatment", icon: "like", path: "/admin/personalized_treatment"},
-  { id: "patients", text: "Patients", icon: "user", path: "/admin/patients" },
-  { id: "analytics", text: "Analytics", icon: "event", path: "/admin/analytics" },
-  { id: "drug_candidates", text: "Drug Candidates", icon: "formula", path: "/admin/drug_candidates" },
-  { id: "settings", text: "Settings", icon: "preferences", path: "/admin/settings" },
+  { id: "personalized_treatment", text: "Personalized Treatment", icon: <HeartPulse size={18} />, path: "/admin/personalized_treatment" },
+  { id: "patients", text: "Patients", icon: <Users size={18} />, path: "/admin/patients" },
+  { id: "analytics", text: "Analytics", icon: <BarChart3 size={18} />, path: "/admin/analytics" },
+  { id: "drug_candidates", text: "Drug Candidates", icon: <FlaskConical size={18} />, path: "/admin/drug_candidates" },
+  { id: "settings", text: "Settings", icon: <Settings size={18} />, path: "/admin/settings" },
 ];
+
+const flatNav = navItems.flatMap((n) => (n.items ? n.items : [n]));
+const titleFor = (pathname: string) => {
+  if (/^\/admin\/patients\/.+/.test(pathname)) return "Patient profile";
+  return flatNav.find((n) => n.path === pathname)?.text ?? "Overview";
+};
 
 export default function AdminLayout() {
   const navigate = useNavigate();
-  const [opened, setOpened] = useState<boolean>(true);
-  const [drawerMode, setDrawerMode] = useState<"shrink" | "over">("shrink");
+  const location = useLocation();
+  const { theme, toggle } = useOmTheme();
+
+  const [collapsed, setCollapsed] = useState(false); // desktop
+  const [mobileOpen, setMobileOpen] = useState(false); // < 900px
+  const [dataOpen, setDataOpen] = useState(true);
 
   const [doctorName, setDoctorName] = useState("Doctor");
   const [specialization, setSpecialization] = useState("Specialization");
@@ -42,16 +66,15 @@ export default function AdminLayout() {
     const doctorId = localStorage.getItem("doctorId");
     const name = localStorage.getItem("doctorName");
     const specialization_branch = localStorage.getItem("doctorSpecialization");
-    const image = localStorage.getItem("doctorImage")
+    const image = localStorage.getItem("doctorImage");
     setSpecialization(specialization_branch || "Doctor");
     setDoctorImage(image || "");
-
 
     if (!doctorId) {
       navigate("/login");
     } else if (name) {
       setDoctorName(name);
-      const parts = name.split(' ');
+      const parts = name.split(" ");
       if (parts.length >= 2) {
         setInitials(`${parts[0][0]}${parts[1][0]}`.toUpperCase());
       } else {
@@ -60,26 +83,8 @@ export default function AdminLayout() {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth < 900) {
-        setOpened(false);
-        setDrawerMode("over");
-      } else {
-        setOpened(true);
-        setDrawerMode("shrink");
-      }
-    };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  function onNavItemClick(e: any) {
-    const path = e.itemData.path;
-    if (path) navigate(path);
-    if (drawerMode === "over") setOpened(false);
-  }
+  // close the mobile drawer whenever the route changes
+  useEffect(() => setMobileOpen(false), [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("doctorId");
@@ -88,150 +93,93 @@ export default function AdminLayout() {
     navigate("/login");
   };
 
-  const userMenuItems = [
-    { text: "Profile", onClick: () => navigate("/admin/profile") },
-    { text: "Settings", onClick: () => navigate("/admin/settings") },
-    { text: "Sign out", onClick: handleLogout },
-  ];
+  const toggleMenu = () => {
+    if (window.innerWidth < 900) setMobileOpen((o) => !o);
+    else setCollapsed((c) => !c);
+  };
 
-  // This is the component used inside the 'template' prop
-  const UserProfileHeader = () => (
-    <div
-      id="profile-target"
-      style={{
-        display: "flex",
-        width: "200px",
-        alignItems: "center",  // Align items vertically in the center
-        gap: "12px",           // Space between Avatar and Text
-        paddingRight: "10px",
-        cursor: "pointer"
-      }}
-    >
-      {/* 1. Avatar Section (First) */}
-      <div style={{
-        width: "38px",
-        height: "38px",
-        borderRadius: "20%", // Rounded square look
-        background: "linear-gradient(135deg, #2564eb25 0%, #a955f775 100%)",
-        color: "white",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: "bold",
-        fontSize: "14px",
-        border: "2px solid rgba(255,255,255,0.2)",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.3)"
-      }}>
-        {doctorImage ? (
-          <img style={{ objectFit: "cover", width: "100%", height: "100%" }} src={doctorImage} alt="Dr" />
-        ) : (
-          // Fallback to Initials if no image
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {initials}
-          </div>
-        )}
-
-      </div>
-
-      {/* 2. Text Section (Second) */}
-      <div style={{ textAlign: "left", display: "flex", flexDirection: "column" }}>
-        <span style={{ fontSize: "14px", fontWeight: "600", color: "#ffffff", lineHeight: "1.2" }}>
-          Dr. {doctorName}
-        </span>
-        <span style={{ fontSize: "11px", color: "#a0a0a0", lineHeight: "1" }}>
-          {specialization}
-        </span>
-      </div>
-    </div >
-  );
+  const imageOk = doctorImage && doctorImage !== "undefined" && doctorImage !== "null";
 
   return (
-    <>
-      <div className="admin-root">
-        <Drawer
-          opened={opened}
-          openedStateMode="shrink"
-          position="left"
-          revealMode="slide"
-          shading={false}
-          component={() => (
-            <div className="nav-shell" role="navigation">
-              <div className="nav-brand">
-                <UserProfileHeader />
-              </div>
+    <div className="om-root" data-collapsed={collapsed} data-mobile-open={mobileOpen}>
+      <div className="om-scrim" onClick={() => setMobileOpen(false)} />
 
-              <TreeView
-                items={navItems}
-                width="100%"
-                selectionMode="single"
-                showCheckBoxesMode="none"
-                keyExpr="id"
-                displayExpr="text"
-                onItemClick={onNavItemClick}
-                itemRender={(data) => (
-                  <div className="nav-item">
-                    {data.icon ? <i className={`dx-icon dx-icon-${data.icon}`} /> : null}
-                    <span>{data.text}</span>
+      <aside className="om-sidebar" role="navigation" aria-label="Dashboard">
+        <div className="om-brand">
+          <span className="om-brand-mark" />
+          OncoMind
+        </div>
+
+        <div className="om-profile">
+          <div className="om-avatar">{imageOk ? <img src={doctorImage} alt="Dr" /> : initials}</div>
+          <div style={{ minWidth: 0 }}>
+            <div className="om-profile-name">Dr. {doctorName}</div>
+            <div className="om-profile-role">{specialization}</div>
+          </div>
+        </div>
+
+        <nav className="om-nav">
+          <div className="om-nav-label">Workspace</div>
+          {navItems.map((item) =>
+            item.items ? (
+              <div key={item.id}>
+                <button className="om-nav-item" onClick={() => setDataOpen((o) => !o)} aria-expanded={dataOpen}>
+                  {item.icon}
+                  <span>{item.text}</span>
+                  <ChevronRight size={15} className="om-nav-chevron" data-open={dataOpen} />
+                </button>
+                {dataOpen && (
+                  <div className="om-nav-children">
+                    {item.items.map((child) => (
+                      <NavLink key={child.id} to={child.path!} className="om-nav-item">
+                        {child.icon}
+                        <span>{child.text}</span>
+                      </NavLink>
+                    ))}
                   </div>
                 )}
-              />
-
-              <div style={{ padding: "20px" }}>
-                <Button
-                  text="Logout"
-                  type="danger"
-                  stylingMode="outlined"
-                  icon="runner"
-                  width="100%"
-                  onClick={handleLogout}
-                />
               </div>
-
-              <div style={{ flex: 1 }} />
-              <div className="nav-footer small">v0.1 • Presentation demo</div>
-            </div>
+            ) : (
+              <NavLink key={item.id} to={item.path!} end={item.path === "/admin"} className="om-nav-item">
+                {item.icon}
+                <span>{item.text}</span>
+              </NavLink>
+            )
           )}
-        >
-          <header className="admin-topbar">
-            <Toolbar>
-              <ToolbarItem
-                location="before"
-                widget="dxButton"
-                options={{
-                  icon: "menu",
-                  stylingMode: "text",
-                  onClick: () => setOpened(!opened),
-                  elementAttr: { class: "menu-button-white" } // Helper class if needed
-                }}
-              />
+        </nav>
 
-              <ToolbarItem
-                location="after"
-                template={() => (
-                  <div className="top-actions" style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                    {/* Refresh Button - Forced White Icon */}
-                    <Button
-                      icon="refresh"
-                      stylingMode="text"
-                      onClick={() => window.location.reload()}
-                      elementAttr={{ style: { color: "white" } }}
-                    />
+        <div className="om-sidebar-foot">
+          <Button variant="danger" block icon={<LogOut size={16} />} onClick={handleLogout}>
+            Logout
+          </Button>
+          <div className="om-version">v0.1 • Presentation demo</div>
+        </div>
+      </aside>
 
-                    {/* 👇 2. UPDATE THIS DROPDOWN (Safe Template Syntax) */}
-
-                  </div>
-                )}
-              />
-            </Toolbar>
+      <div className="om-main">
+        <div className="om-stage">
+          <header className="om-topbar">
+            <Button variant="ghost" iconOnly icon={<Menu size={18} />} onClick={toggleMenu} aria-label="Toggle navigation" />
+            <span className="om-topbar-title">
+              OncoMind / <b>{titleFor(location.pathname)}</b>
+            </span>
+            <span className="om-topbar-spacer" />
+            <div className="om-segment" role="group" aria-label="Theme">
+              <button aria-pressed={theme === "light"} onClick={() => theme !== "light" && toggle()} aria-label="Light theme">
+                <Sun size={14} />
+              </button>
+              <button aria-pressed={theme === "dark"} onClick={() => theme !== "dark" && toggle()} aria-label="Dark theme">
+                <Moon size={14} />
+              </button>
+            </div>
+            <Button variant="ghost" iconOnly icon={<RotateCw size={17} />} onClick={() => window.location.reload()} aria-label="Refresh" />
           </header>
 
-
-          <main className="admin-content">
+          <main className="om-content">
             <Outlet />
           </main>
-        </Drawer>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
