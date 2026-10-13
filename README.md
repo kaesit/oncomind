@@ -4,7 +4,8 @@
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![React](https://img.shields.io/badge/React-18.x-61DAFB)
-![DevExtreme](https://img.shields.io/badge/DevExtreme-UI-FF2D20)
+![visx](https://img.shields.io/badge/visx-charts-FF1231)
+![Radix UI](https://img.shields.io/badge/Radix%20UI-primitives-161618)
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-009688)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-ML-FF6F00)
 ![CPU](https://img.shields.io/badge/CPU-x64-0078D4)
@@ -121,33 +122,61 @@ python early_diagnosis_test_from_image.py --model MODEL_PATH\<model_name>.pt --v
 
 ## Pages
 
+The dashboard is built with visx (charts), Radix UI primitives and TanStack Table on top of a custom design system, with light and dark themes.
 
 ### Sign In Page
+Secure access for medical personnel.
 ![sign in page](Images/signin_page.png)
 
 ### Sign Up Page
+Doctor profile registration with specialization and date of birth.
 ![sign up page](Images/signup_page.png)
 
-### Home
-
-![home page](Images/home_page.png)
+### Overview
+All patients at a glance: total, occupied rooms and urgent cases, plus a patient registry with per-column filters, sorting and an estimated AI diagnosis.
+![overview page](Images/home_page.png)
 
 ### Menu
-![menu page](Images/menu.png)
+![menu](Images/menu.png)
 
-### Model Page
-![ page](Images/model_page.png)
+### Datasets Page
+Imaging datasets used for training, with selection, train and delete actions.
+![datasets page](Images/dataset_page.png)
 
-### Patient Page
-![home page](Images/patients_page.png)
+### Models Page
+Trained models with their type, size and training date.
+![models page](Images/model_page.png)
+
+### Personalized Treatment Page
+Entry point for drug, CT image and genomic profiling tools, plus experimental features.
+![personalized treatment page](Images/personalized_treatment.png)
+
+### Toxicity Analysis
+ADMET prediction mapped onto the body: pick a drug candidate or paste a SMILES string, and every organ region lights up red when the drug is predicted to be toxic for it or green when it is clear.
+![toxicity analysis](Images/toxicity_analysis.png)
+
+Test run with a generated drug candidate, the heart is flagged by the hERG (cardiac toxicity) prediction:
+![toxicity analysis test run](Images/toxicity_analysis_test_run.png)
+
+### Patients Page
+Patients assigned to the signed-in doctor, with search, filters and patient registration.
+![patients page](Images/patients_page.png)
 
 ### Patient Info Page
+Patient profile with status, room, examination count and examination history.
 ![patient info page](Images/patient_info_page.png)
-![patient info page 2](Images/patient_info_page2.png)
 
 ### Analytics Page
+Patient status distribution, model training metrics, live model analysis from the ML service and recent admissions.
 ![analytics page](Images/analytics_page.png)
-![analytics page 2](Images/analytics_page2.png)
+
+### Drug Candidates Page
+AI generated drug candidate molecules with their QED and MW scores.
+![drug candidates page](Images/drug_discovery_page.png)
+
+### Settings Page
+System, user, emergency and API preferences.
+![settings page](Images/settings_page.png)
 
 
 ---
