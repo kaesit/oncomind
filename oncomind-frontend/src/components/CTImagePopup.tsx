@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Popup } from "devextreme-react/popup";
-import notify from "devextreme/ui/notify";
+import { Database, ScanLine, Wrench } from "lucide-react";
+import notify from "../dashboard/ui/notify";
+import { Button, Dialog, Empty, SearchInput } from "../dashboard/ui";
 
 /* -------------------------------------------------------
    TYPES
@@ -158,202 +159,80 @@ const CTImagePopup: React.FC<CTImagePopup> = ({ visible, onHide }) => {
           search.trim().length === 0 || ds.smiles.toLowerCase().includes(search.toLowerCase())
      );
 
-     const activeReg = BODY_REGIONS.find(r => r.id === activeRegion);
-     const regionPreds = predictions.filter(p => activeReg?.relatedProperties.includes(p.property));
-     const toxicCount = predictions.filter(p => p.toxic).length;
-
-     const inputStyle: React.CSSProperties = {
-          width: "100%", background: "rgba(0,150,255,0.06)",
-          border: "1px solid rgba(0,200,255,0.25)", borderRadius: 4,
-          color: "#b0e8ff", padding: "7px 10px", fontSize: 12,
-          fontFamily: "monospace", outline: "none", boxSizing: "border-box", cursor: "pointer"
-     };
-
      return (
           <>
-               {/* 1. ANA ANALİZ EKRANI POPUP'I */}
-               <Popup visible={visible} onHiding={handleClose} dragEnabled={false} showTitle title="Toxicity Analysis" width={1500} height={800} showCloseButton>
-                    <div style={{
-                         display: "flex", flexDirection: "column", height: "100%",
-                         background: "#030d1a", color: "#b0e8ff", padding: "16px 16px 12px",
-                         borderRadius: 6, fontFamily: "monospace"
-                    }}>
-                         <div style={{ width: 290, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
-                              <div>
-                                   <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT CT IMAGES</div>
-                                   <button onClick={() => setPopupVisible(true)} style={inputStyle}>[ BROWSE DATABASE ]</button>
-                              </div>
-                              <button onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} style={{
-                                   background: "rgba(0,200,255,0.10)", border: "1px solid rgba(0,200,255,0.45)",
-                                   borderRadius: 4, color: analyzing ? "rgba(0,200,255,0.35)" : "#00ccff",
-                                   fontFamily: "monospace", fontSize: 11, letterSpacing: "0.1em",
-                                   padding: "10px 0", cursor: analyzing ? "not-allowed" : "pointer", transition: "all .2s",
-                              }}>DRAW BOUNDING BOXES</button>
-                              <div>
-                                   <div style={{ fontSize: 9, color: "rgba(0,200,255,0.45)", letterSpacing: "0.1em", marginBottom: 5 }}>SELECT OR ADD YOUR TOOL</div>
-                                   <button onClick={() => setPopupVisible(true)} style={inputStyle}>[ BROWSE DATABASE ]</button>
-                              </div>
-                              <button onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} style={{
-                                   background: "rgba(0,200,255,0.10)", border: "1px solid rgba(0,200,255,0.45)",
-                                   borderRadius: 4, color: analyzing ? "rgba(0,200,255,0.35)" : "#00ccff",
-                                   fontFamily: "monospace", fontSize: 11, letterSpacing: "0.1em",
-                                   padding: "10px 0", cursor: analyzing ? "not-allowed" : "pointer", transition: "all .2s",
-                              }}>DRAW BOUNDING BOXES</button>
-
-                         </div>
-                         <div style={{ position: "absolute", display: "flex", justifyContent: "flex-end", marginTop: 0, bottom: "50px", right: "50px" }}>
-                              <button onClick={handleClose} style={{
-                                   background: "transparent", border: "1px solid rgba(0,200,255,0.22)", borderRadius: 4,
-                                   color: "rgba(0,200,255,0.45)", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.08em",
-                                   padding: "6px 18px", cursor: "pointer",
-                              }}>[ CLOSE ]</button>
-                         </div>
-                    </div>
-               </Popup>
-
-               {/* 2. VERİ SETİ ARAMA POPUP'I (Kardeş Komponent Olarak Eklendi) */}
-               <Popup
-                    visible={isPopupVisible}
-                    onHiding={() => setPopupVisible(false)}
-                    dragEnabled={true}
-                    showTitle={true}
-                    title="[ BROWSE DRUG CANDIDATES ]"
-                    width={850}
-                    height={650}
-                    showCloseButton={true}
+               {/* 1. ANA ANALİZ EKRANI */}
+               <Dialog
+                    open={visible}
+                    onOpenChange={(o) => !o && handleClose()}
+                    title="CT Image Analysis"
+                    description="Work in progress — bounding boxes and tools are not wired up yet"
+                    width={1500}
+                    bodyStyle={{ height: "min(640px, calc(100vh - 120px))" }}
+                    footer={<Button onClick={handleClose}>Close</Button>}
                >
-                    <div style={{
-                         display: "flex", flexDirection: "column", height: "100%", gap: "16px",
-                         background: "#030d1a", color: "#b0e8ff", padding: "10px 10px 20px 10px",
-                         fontFamily: "monospace"
-                    }}>
-
-                         {/* ARAMA ÇUBUĞU */}
-                         <input
-                              type="text"
-                              placeholder="[ SEARCH BY SMILES ] ..."
-                              value={search}
-                              onChange={(e) => setSearch(e.target.value)}
-                              style={{
-                                   padding: "14px 18px",
-                                   borderRadius: "6px",
-                                   border: "1px solid rgba(0,200,255,0.3)",
-                                   outline: "none",
-                                   background: "rgba(0,150,255,0.06)",
-                                   color: "#00ffaa",
-                                   fontFamily: "monospace",
-                                   fontSize: "14px",
-                                   letterSpacing: "0.08em",
-                                   boxShadow: "inset 0 0 12px rgba(0,0,0,0.5)"
-                              }}
-                         />
-
-                         {/* İLAÇ LİSTESİ */}
-                         <div style={{
-                              flex: 1,
-                              minHeight: 0,
-                              overflowY: "auto",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "16px",
-                              marginTop: "10px",
-                              paddingRight: "8px",
-                              // SCROLLBAR TASARIMI (Chrome, Safari ve Edge için)
-                              scrollbarWidth: "thin",          // Firefox
-                              scrollbarColor: "rgba(0,200,255,0.3) transparent"
-                         }}>
-                              <style>{`
-            div::-webkit-scrollbar {
-            width: 6px;
-            }
-        div::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        div::-webkit-scrollbar-thumb {
-            background: rgba(0, 200, 255, 0.2);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 200, 255, 0.1);
-        }
-        div::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 255, 170, 0.4);
-        }
-    `}</style>
-                              {filtered.map((ds) => (
-                                   <div
-                                        key={ds.id}
-                                        onClick={() => handleSelectCandidate(ds.smiles)}
-                                        style={{
-                                             display: "flex", gap: "24px", padding: "16px 20px", cursor: "pointer",
-                                             border: "1px solid rgba(0,200,255,0.15)", borderRadius: "8px", alignItems: "center",
-                                             backgroundColor: "rgba(0,150,255,0.04)", transition: "all 0.3s ease"
-                                        }}
-                                        onMouseEnter={(e) => {
-                                             e.currentTarget.style.backgroundColor = "rgba(0,200,255,0.12)";
-                                             e.currentTarget.style.border = "1px solid rgba(0,200,255,0.5)";
-                                             e.currentTarget.style.boxShadow = "0 0 20px rgba(0,200,255,0.15)";
-                                        }}
-                                        onMouseLeave={(e) => {
-                                             e.currentTarget.style.backgroundColor = "rgba(0,150,255,0.04)";
-                                             e.currentTarget.style.border = "1px solid rgba(0,200,255,0.15)";
-                                             e.currentTarget.style.boxShadow = "none";
-                                        }}
-                                   >
-                                        {/* MOLEKÜL GÖRSELİ */}
-                                        <div style={{
-                                             background: "rgba(255,255,255,0.03)",
-                                             border: "1px solid rgba(0,200,255,0.2)",
-                                             borderRadius: "6px",
-                                             padding: "6px",
-                                             display: "flex", alignItems: "center", justifyContent: "center"
-                                        }}>
-                                             <img src={ds.preview} alt="molecule" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
-                                        </div>
-
-                                        {/* MOLEKÜL DETAYLARI */}
-                                        <div style={{ display: "flex", flexDirection: "column", fontSize: "14px", flex: 1 }}>
-
-                                             {/* SMILES DİZİSİ */}
-                                             <div style={{ marginBottom: "12px", fontSize: "15px", lineHeight: "1.4" }}>
-                                                  <b style={{ color: "rgba(0,200,255,0.5)", letterSpacing: "0.1em" }}>SMILES:</b>
-                                                  <span style={{ color: "#00ffaa", marginLeft: "10px", wordBreak: "break-all" }}>
-                                                       {ds.smiles ? ds.smiles.substring(0, 50) + (ds.smiles.length > 50 ? "..." : "") : "N/A"}
-                                                  </span>
-                                             </div>
-
-                                             {/* ROZETLER (BADGES) */}
-                                             <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "12px" }}>
-                                                  <div style={{ background: "rgba(0,255,136,0.08)", border: "1px solid rgba(0,255,136,0.25)", padding: "6px 12px", borderRadius: "4px" }}>
-                                                       <b style={{ color: "rgba(0,255,136,0.6)", fontSize: "12px", letterSpacing: "0.1em" }}>QED:</b>
-                                                       <span style={{ color: "#00ff88", fontWeight: "bold", marginLeft: "6px", fontSize: "15px" }}>
-                                                            {ds.QED?.toFixed(2) || ds.QED}
-                                                       </span>
-                                                  </div>
-                                                  <div style={{ background: "rgba(0,200,255,0.08)", border: "1px solid rgba(0,200,255,0.25)", padding: "6px 12px", borderRadius: "4px" }}>
-                                                       <b style={{ color: "rgba(0,200,255,0.6)", fontSize: "12px", letterSpacing: "0.1em" }}>MW:</b>
-                                                       <span style={{ color: "#00ccff", fontWeight: "bold", marginLeft: "6px", fontSize: "15px" }}>
-                                                            {ds.MW?.toFixed(2) || ds.MW}
-                                                       </span>
-                                                  </div>
-                                             </div>
-
-                                             {/* TARİH */}
-                                             <div style={{ fontSize: "11px", color: "rgba(0,200,255,0.35)", letterSpacing: "0.1em", marginTop: "auto" }}>
-                                                  <b>[ GENERATED ON: {ds.downloaded} ]</b>
-                                             </div>
-
-                                        </div>
-                                   </div>
-                              ))}
-
-                              {/* BOŞ DURUM MESAJI */}
-                              {filtered.length === 0 && (
-                                   <div style={{ textAlign: "center", marginTop: "60px", color: "rgba(0,200,255,0.3)", fontSize: "16px", letterSpacing: "0.1em" }}>
-                                        [ NO CANDIDATES FOUND MATCHING CRITERIA ]
-                                   </div>
-                              )}
+                    <div className="om-tox-grid" style={{ gridTemplateColumns: "290px minmax(0, 1fr)", height: "100%" }}>
+                         <div className="om-stack" style={{ gap: 12 }}>
+                              <div className="om-field">
+                                   <span className="om-label">Select CT images</span>
+                                   <Button icon={<Database size={16} />} onClick={() => setPopupVisible(true)} block>
+                                        Browse database
+                                   </Button>
+                              </div>
+                              <Button variant="primary" icon={<ScanLine size={16} />} onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} block>
+                                   Draw bounding boxes
+                              </Button>
+                              <div className="om-field" style={{ marginTop: 8 }}>
+                                   <span className="om-label">Select or add your tool</span>
+                                   <Button icon={<Wrench size={16} />} onClick={() => setPopupVisible(true)} block>
+                                        Browse database
+                                   </Button>
+                              </div>
+                              <Button variant="primary" icon={<ScanLine size={16} />} onClick={handleAnalyze} disabled={analyzing || !smiles.trim()} block>
+                                   Draw bounding boxes
+                              </Button>
+                         </div>
+                         <div className="om-tox-report" style={{ display: "grid", placeItems: "center" }}>
+                              <Empty icon={<ScanLine size={28} />} title="No CT image selected">
+                                   Choose an image from the database to start.
+                              </Empty>
                          </div>
                     </div>
-               </Popup>
+               </Dialog>
+
+               {/* 2. VERİ SETİ ARAMA */}
+               <Dialog
+                    open={isPopupVisible}
+                    onOpenChange={setPopupVisible}
+                    title="Browse drug candidates"
+                    width={850}
+                    bodyStyle={{ display: "flex", flexDirection: "column", gap: 14, height: "min(560px, calc(100vh - 140px))" }}
+               >
+                    <SearchInput placeholder="Search by SMILES..." value={search} onChange={setSearch} />
+
+                    <div className="om-stack" style={{ overflowY: "auto", gap: 8, minHeight: 0, flex: 1 }}>
+                         {filtered.map((ds) => (
+                              <button key={ds.id} className="om-candidate" onClick={() => handleSelectCandidate(ds.smiles)}>
+                                   <div className="om-media om-media--contain" style={{ width: 96, height: 96, aspectRatio: "1", flex: "none" }}>
+                                        {ds.preview && <img src={ds.preview} alt="molecule" loading="lazy" />}
+                                   </div>
+                                   <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 0, flex: 1 }}>
+                                        <span className="om-mono" style={{ fontSize: 13, wordBreak: "break-all", color: "var(--om-text)" }}>
+                                             {ds.smiles ? ds.smiles.substring(0, 50) + (ds.smiles.length > 50 ? "..." : "") : "N/A"}
+                                        </span>
+                                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                                             <span className="om-pill om-pill--lime">QED {ds.QED?.toFixed(2) || ds.QED}</span>
+                                             <span className="om-pill">MW {ds.MW?.toFixed(2) || ds.MW}</span>
+                                             <span className="om-pill">Generated on {ds.downloaded}</span>
+                                        </div>
+                                   </div>
+                              </button>
+                         ))}
+
+                         {/* BOŞ DURUM MESAJI */}
+                         {filtered.length === 0 && <Empty title="No candidates found matching criteria" />}
+                    </div>
+               </Dialog>
           </>
      );
 };
