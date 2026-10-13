@@ -184,11 +184,6 @@ pre {
   overflow: auto;
 }
 
-/* ensure DataGrid cell text visible */
-.dx-datagrid .dx-data-row td {
-  color: var(--text);
-}
-
 /* responsive safety — keep existing layout behaviors */
 @media (max-width: 900px) {
   .demo-grid { grid-template-columns: 1fr; }

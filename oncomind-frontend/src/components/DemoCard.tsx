@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import DataGrid, { Column } from "devextreme-react/data-grid";
 
 type PredictResp = {
   sample?: number;
@@ -88,10 +87,22 @@ export default function DemoCard() {
               </div>
 
               <div>
-                <DataGrid dataSource={gridData} keyExpr="id" showBorders>
-                  <Column dataField="name" caption="Sample" />
-                  <Column dataField="score" caption="Predicted Score" />
-                </DataGrid>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>Sample</th>
+                      <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>Predicted Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gridData.map((row: any) => (
+                      <tr key={row.id}>
+                        <td style={{ padding: 8, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>{row.name}</td>
+                        <td style={{ padding: 8, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>{row.score}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </>
           ) : (
