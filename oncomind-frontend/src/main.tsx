@@ -1,33 +1,37 @@
-import "./styles/theme.css";
-import React from "react";
+import "./dashboard/styles/dashboard.css";
+import React, { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
-import AdminLayout from "./layouts/AdminLayout";
 import NotFoundPage from "./pages/NotFoundPage"
 import About from "./pages/About";
 import Research from "./pages/Research";
-import AdminDashboard from "./pages/AdminDashboard";
-import DashboardSettings from "./pages/dashboardpages/DashboardSettings";
-import DataSets from "./pages/dashboardpages/DataSets";
-import Patients from "./pages/dashboardpages/Patients";
 import AwarenessPage from "./pages/Awareness";
-import Models from "./pages/dashboardpages/Models";
 import Contact from "./pages/Contact";
-import PatientProfile from "./pages/dashboardpages/PatientInfo";
-import DrugCandidates from "./pages/dashboardpages/DrugCandidates";
 import Signin from "./pages/Signin";
-import { DashboardAnalytics } from "./pages/dashboardpages/DashboardAnalytics";
-import DashboardSignIn from "./pages/auth/DashboardSignIn";
-import PersonalizedTreatment from "./pages/dashboardpages/PersonalizedTreatment";
+
+// Dashboard is code-split: visitors of the public site never download its
+// charts, data table or PDF export.
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const DashboardSettings = lazy(() => import("./pages/dashboardpages/DashboardSettings"));
+const DataSets = lazy(() => import("./pages/dashboardpages/DataSets"));
+const Patients = lazy(() => import("./pages/dashboardpages/Patients"));
+const Models = lazy(() => import("./pages/dashboardpages/Models"));
+const PatientProfile = lazy(() => import("./pages/dashboardpages/PatientInfo"));
+const DrugCandidates = lazy(() => import("./pages/dashboardpages/DrugCandidates"));
+const DashboardAnalytics = lazy(() => import("./pages/dashboardpages/DashboardAnalytics").then((m) => ({ default: m.DashboardAnalytics })));
+const DashboardSignIn = lazy(() => import("./pages/auth/DashboardSignIn"));
+const PersonalizedTreatment = lazy(() => import("./pages/dashboardpages/PersonalizedTreatment"));
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Toaster position="bottom-right" richColors closeButton toastOptions={{ className: "om-toast" }} />
+      <Suspense fallback={null}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Landing />} />
@@ -57,6 +61,7 @@ function AppRouter() {
         <Route path="/login" element={<DashboardSignIn />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
