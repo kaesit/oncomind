@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button, Field, Input } from "../dashboard/ui";
 import { Orb, Standalone } from "./parts";
+import { IMG, photo } from "./images";
 
 type FieldDef = { label: string; type?: string; autoComplete?: string };
 
@@ -18,7 +19,14 @@ export function SimpleAuth({ title, fields, submit }: { title: string; fields: F
                <div className="site-dots" />
 
                <div className="om-auth site-above">
-                    <aside className="om-auth-aura om-aura om-aura--violet">
+                    <aside
+                         className="om-auth-aura"
+                         style={{
+                              color: "#fff",
+                              overflow: "hidden",
+                              background: `linear-gradient(0deg, rgba(20,8,4,0.85) 0%, rgba(20,8,4,0.1) 60%), linear-gradient(110deg, rgba(255,45,135,0.45), transparent 70%), url(${photo(IMG.dandelionSun, 1400)}) center / cover`,
+                         }}
+                    >
                          <Link to="/" className="site-brand" style={{ color: "#fff" }}>
                               <span className="om-brand-mark" style={{ background: "rgba(255,255,255,0.3)" }} />
                               OncoMind
@@ -30,7 +38,13 @@ export function SimpleAuth({ title, fields, submit }: { title: string; fields: F
                     </aside>
 
                     <div className="om-auth-form">
-                         <h1 className="om-page-title" style={{ fontSize: 34 }}>{title}</h1>
+                         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                              <h1 className="om-page-title" style={{ fontSize: 34 }}>{title}</h1>
+                              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                                   <span className="om-pill">Not connected</span>
+                                   <span className="site-muted" style={{ fontSize: 13 }}>There are no public accounts — this form doesn't do anything yet.</span>
+                              </div>
+                         </div>
                          <form className="om-stack" style={{ gap: 12 }} onSubmit={(e) => e.preventDefault()}>
                               {fields.map((f) => {
                                    const id = `sa-${f.label.toLowerCase().replace(/\s+/g, "-")}`;

@@ -3,6 +3,7 @@ import { AnatomyView } from "../dashboard/anatomy/AnatomyView";
 import { useOmTheme } from "../dashboard/ui/theme";
 import "../dashboard/styles/dashboard.css";
 import "./site.css";
+import { photo, photoSrcSet } from "./images";
 
 /* ------------------------------------------------------- standalone */
 /** Wrapper for public pages that live outside MainLayout (sign in/up, 404). */
@@ -126,5 +127,70 @@ export function ScannerShowcase() {
                <AnatomyView regions={SHOWCASE_REGIONS} predictions={[]} scanStep={step} activeRegion={null} onRegionClick={() => {}} />
                <span className="om-pill om-pill--ink site-device-tag">Live preview · ADMET body scanner</span>
           </div>
+     );
+}
+
+/* -------------------------------------------------------- photo hero */
+type Tint = "violet" | "sunrise" | "magenta" | "teal";
+
+/**
+ * Full-bleed photographic hero: high-res image, colour-graded with a vibrant
+ * wash plus a dark ramp for legible white type. Sits under the floating nav.
+ */
+export function PhotoHero({
+     image,
+     tint = "violet",
+     eyebrow,
+     title,
+     lead,
+     children,
+     aside,
+     position = "center",
+     tall,
+}: {
+     image: string;
+     tint?: Tint;
+     eyebrow: React.ReactNode;
+     title: React.ReactNode;
+     lead?: React.ReactNode;
+     children?: React.ReactNode;
+     aside?: React.ReactNode;
+     position?: string;
+     tall?: boolean;
+}) {
+     return (
+          <section className={`site-photo-hero site-photo-hero--${tint}`} data-tall={tall || undefined}>
+               <img
+                    className="site-photo-hero-img"
+                    src={photo(image, 2400)}
+                    srcSet={photoSrcSet(image)}
+                    sizes="100vw"
+                    alt=""
+                    fetchPriority="high"
+                    style={{ objectPosition: position }}
+               />
+               <div className="site-photo-hero-wash" aria-hidden />
+               <div className="site-wrap site-photo-hero-inner" data-split={aside ? true : undefined}>
+                    <div className="site-hero-copy">
+                         <span className="site-eyebrow site-eyebrow--light">{eyebrow}</span>
+                         <h1 className="site-display">{title}</h1>
+                         {lead && <p className="site-lead">{lead}</p>}
+                         {children}
+                    </div>
+                    {aside}
+               </div>
+          </section>
+     );
+}
+
+/** Honest status label for a module: what works today vs. what's planned. */
+export type ModuleStatus = "working" | "in-development" | "planned";
+export function StatusTag({ status }: { status: ModuleStatus }) {
+     const label = status === "working" ? "Working" : status === "in-development" ? "In development" : "Planned";
+     return (
+          <span className="site-status" data-status={status}>
+               <i />
+               {label}
+          </span>
      );
 }

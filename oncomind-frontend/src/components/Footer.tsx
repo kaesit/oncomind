@@ -16,8 +16,8 @@ const Footer: React.FC = () => {
               OncoMind
             </span>
             <p className="site-body">
-              Building innovative solutions with science and passion, advancing
-              precision oncology through AI-powered genomic analysis.
+              An experimental, open-source research project exploring how AI could
+              support oncology research. Not a medical device, not medical advice.
             </p>
           </div>
 
@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Social Media */}
+          {/* Contact */}
           <div>
             <h4>Contact</h4>
             <ul className="site-footer-links">
@@ -42,13 +42,8 @@ const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn">
-                  LinkedIn <ArrowUpRight size={13} />
-                </a>
-              </li>
-              <li>
-                <a href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
-                  Instagram <ArrowUpRight size={13} />
+                <a href="https://github.com/kaesit/oncomind/issues/new" target="_blank" rel="noopener noreferrer">
+                  Open an issue <ArrowUpRight size={13} />
                 </a>
               </li>
             </ul>
@@ -60,7 +55,7 @@ const Footer: React.FC = () => {
         {/* Copyright */}
         <div className="site-footer-bottom">
           <span>© {currentYear} Esad Abdullah Kösedağ & OncoMind. All rights reserved.</span>
-          <span>Research use only — not a medical device.</span>
+          <span>Photography via Unsplash · Research use only</span>
         </div>
       </div>
     </footer>

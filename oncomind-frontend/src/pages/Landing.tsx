@@ -1,48 +1,50 @@
 // src/pages/Landing.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowUpRight, Code2, Dna, FlaskConical, HardDrive, HeartHandshake, RefreshCcw, ScanSearch, Sparkles } from "lucide-react";
-import { Pill } from "../dashboard/ui";
-import { Marquee, Orb, ScannerShowcase, SectionHead, useReveal } from "../site/parts";
+import { ArrowDown, ArrowUpRight, Atom, Dna, FlaskConical, Github, HeartHandshake, LineChart, ScanLine, ShieldCheck, Users } from "lucide-react";
+import { Marquee, ModuleStatus, PhotoHero, ScannerShowcase, SectionHead, StatusTag, useReveal } from "../site/parts";
+import { IMG, photo } from "../site/images";
 
-const focusAreas = [
+const REPO = "https://github.com/kaesit/oncomind";
+
+/* What the project actually does today — keep this list honest. */
+const pillars = [
   {
-    title: "Genetic Research",
-    tag: "Academic",
-    aura: "violet",
-    icon: <Dna size={20} />,
-    img: "https://media.istockphoto.com/id/1477214805/photo/cancer-detection.jpg?s=612x612&w=0&k=20&c=ylUbxrTIpDAISXL6-rUcW23yXUXn4oY0C8rYVoON62k=",
-    text: "Our lab is focused on identifying genetic markers for early-stage carcinoma.",
+    title: "Molecule generation",
+    icon: <Atom size={20} />,
+    status: "working" as ModuleStatus,
+    img: IMG.fluidSwirl,
+    text: "Recurrent neural networks trained on kinase-target molecules (such as ABL1) propose new candidate structures. Only drug-like ones (QED ≥ 0.6) are kept.",
   },
   {
-    title: "Patient Awareness",
-    tag: "Priority",
-    aura: "pink",
-    icon: <HeartHandshake size={20} />,
-    img: "https://t4.ftcdn.net/jpg/06/33/37/89/360_F_633378965_iRc8bqmOoxkrAlYKvNcBqUhqGXNBmfTB.jpg",
-    text: "Download our guides and resources for patient families.",
-  },
-  {
-    title: "Personalized Medicine",
-    tag: "Future",
-    aura: "orange",
+    title: "Toxicity screening",
     icon: <FlaskConical size={20} />,
-    img: "https://www.news-medical.net/images/Article_Images/ImageForArticle_26037_17449621261067936.jpg",
-    text: "We are producing and formulating personalized mRNA vaccines and drugs for cancer patients.",
+    status: "working" as ModuleStatus,
+    img: IMG.cellsFluorescent,
+    text: "Every candidate can be screened with the open-source ADMET-AI model, and the predictions are mapped onto the body so risks are visible at a glance.",
+  },
+  {
+    title: "Patient awareness",
+    icon: <HeartHandshake size={20} />,
+    status: "working" as ModuleStatus,
+    img: IMG.dandelionsSunset,
+    text: "Plain-language notes on early detection, prevention and mental resilience — with sources, and never a substitute for a doctor.",
   },
 ];
 
-const features = [
-  { icon: <HardDrive size={20} />, title: "Local-first", text: "Everything runs on your laptop — ideal for demos and privacy-sensitive presentations" },
-  { icon: <ScanSearch size={20} />, title: "Explainable", text: "Outputs include provenance and simple scores, easy to include in slides" },
-  { icon: <RefreshCcw size={20} />, title: "Reproducible", text: "Synthetic dataset and training script shipped for reproducible demos" },
-  { icon: <Code2 size={20} />, title: "Dev friendly", text: "Docker, VS Code tasks, and simple wiring for fast prototyping" },
+const modules: { title: string; icon: React.ReactNode; status: ModuleStatus; text: string }[] = [
+  { title: "Drug candidate generation", icon: <Atom size={18} />, status: "working", text: "Generate and store candidate molecules with their QED and molecular weight." },
+  { title: "ADMET toxicity body map", icon: <FlaskConical size={18} />, status: "working", text: "Predictions from ADMET-AI, mapped to organs: red for a predicted hit, green when clear." },
+  { title: "Model introspection", icon: <LineChart size={18} />, status: "working", text: "Inference benchmarks, neuron activation maps and LSTM weight heatmaps for each model." },
+  { title: "Patient records", icon: <Users size={18} />, status: "working", text: "Doctors keep patient records and analysis history in the dashboard (demo data only)." },
+  { title: "CT image detection", icon: <ScanLine size={18} />, status: "in-development", text: "Segmentation models on public imaging datasets. Not finished, and not a diagnostic tool." },
+  { title: "Genomic profiling", icon: <Dna size={18} />, status: "planned", text: "On the roadmap. Nothing here yet — we'll say so until there is." },
 ];
 
 const steps = [
-  { title: "Ingest Data", text: "Load a genomic sample or use our built-in synthetic examples to get started instantly" },
-  { title: "Predict", text: "Frontend sends data to C# API, which routes to Python model and returns predictions" },
-  { title: "Export Results", text: "Download slide-ready JSON or copy formatted results directly for your presentation" },
+  { title: "Generate", text: "An AI model proposes new drug-like molecules for a cancer-related target." },
+  { title: "Screen", text: "ADMET-AI predicts how each molecule might behave in the body, organ by organ." },
+  { title: "Review", text: "People stay in charge: candidates and results are reviewed in the dashboard, never acted on automatically." },
 ];
 
 export default function Landing() {
@@ -51,65 +53,55 @@ export default function Landing() {
   return (
     <div ref={ref}>
       {/* HERO */}
-      <section className="site-hero">
-        <Orb tone="violet" size={620} style={{ top: -180, left: -160 }} />
-        <Orb tone="pink" size={520} style={{ top: 120, right: -160, animationDelay: "-6s" }} />
-        <Orb tone="orange" size={360} style={{ bottom: -120, left: "38%", animationDelay: "-11s" }} />
-        <div className="site-dots" />
-
-        <div className="site-wrap site-above site-hero-grid">
-          <div className="site-hero-copy">
-            <span className="site-eyebrow">AI-driven cancer analysis</span>
-            <h1 className="site-display">
-              From genomic signatures to <span className="site-serif site-gradient-text">actionable insights</span>
-            </h1>
-            <p className="site-lead">
-              OncoMind provides a reproducible, privacy-first demo pipeline that predicts
-              drug-response patterns from cancer genomic signatures — built for clean,
-              presentation-ready results.
-            </p>
-
-            <div className="site-ctas">
-              <Link to="/home#demo" className="om-btn om-btn--primary" style={{ textDecoration: "none" }}>
-                Try live demo <ArrowUpRight size={17} />
-              </Link>
-              <a href="#how" className="om-btn" style={{ textDecoration: "none" }}>
-                How it works <ArrowDown size={16} />
-              </a>
-            </div>
-
-            <div className="site-proof-row">
-              <div className="site-proof"><b>Local-first</b><span>Runs on your machine</span></div>
-              <div className="site-proof"><b>Reproducible</b><span>Synthetic datasets</span></div>
-              <div className="site-proof"><b>Extensible</b><span>Swap models easily</span></div>
-            </div>
-          </div>
-
-          <ScannerShowcase />
+      <PhotoHero
+        image={IMG.lightWave}
+        tint="violet"
+        tall
+        eyebrow="Experimental · research use only"
+        title={
+          <>
+            Searching for tomorrow's cancer drugs, <span className="site-serif site-gradient-text">one molecule at a time</span>
+          </>
+        }
+        lead="OncoMind is an open, experimental research project. AI models propose new drug-like molecules, an ADMET model predicts how each one might affect the body, and people review everything. Nothing here is clinical advice."
+        aside={<ScannerShowcase />}
+      >
+        <div className="site-ctas">
+          <Link to="/login" className="om-btn om-btn--primary" style={{ textDecoration: "none" }}>
+            Open the dashboard <ArrowUpRight size={17} />
+          </Link>
+          <a href="#how" className="om-btn" style={{ textDecoration: "none" }}>
+            How it works <ArrowDown size={16} />
+          </a>
         </div>
-      </section>
+        <div className="site-proof-row">
+          <a className="site-glass-chip" href={REPO} target="_blank" rel="noreferrer"><Github size={14} /> Open source</a>
+          <span className="site-glass-chip">Runs locally with Docker</span>
+          <span className="site-glass-chip"><ShieldCheck size={14} /> Research use only</span>
+        </div>
+      </PhotoHero>
 
       {/* MOTTO */}
       <Marquee items={["Semper Procedere", "常に前進", "Her zaman ileriye", "Always one step ahead"]} />
 
-      {/* FOCUS AREAS */}
+      {/* PILLARS */}
       <section className="site-section">
         <div className="site-wrap">
-          <SectionHead eyebrow="Focus" title={<>Three fronts, <span className="site-serif">one mission</span></>}>
-            Research, awareness and personalized medicine — the three directions OncoMind is built around.
+          <SectionHead eyebrow="What it does" title={<>Small steps, <span className="site-serif site-gradient-text">real progress</span></>}>
+            Three things OncoMind does today. Everything else is labelled honestly below.
           </SectionHead>
 
           <div className="site-bento">
-            {focusAreas.map((f, i) => (
-              <article key={f.title} className={`site-tile site-tile--aura om-aura--${f.aura} site-reveal`} style={{ minHeight: 340, transitionDelay: `${i * 80}ms` }}>
-                <img className="site-tile-img" src={f.img} alt="" loading="lazy" onError={(e) => (e.currentTarget.style.display = "none")} />
+            {pillars.map((p, i) => (
+              <article key={p.title} className="site-photo-tile site-reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+                <img src={photo(p.img, 1200)} alt="" loading="lazy" />
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <span className="site-icon">{f.icon}</span>
-                  <Pill tone="glass">{f.tag}</Pill>
+                  <span className="site-icon">{p.icon}</span>
+                  <StatusTag status={p.status} />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  <h3 className="site-h2" style={{ fontSize: "clamp(28px, 2.6vw, 38px)" }}>{f.title}</h3>
-                  <p className="site-body">{f.text}</p>
+                  <h3 className="site-h2" style={{ fontSize: "clamp(28px, 2.6vw, 38px)" }}>{p.title}</h3>
+                  <p className="site-body">{p.text}</p>
                 </div>
               </article>
             ))}
@@ -117,35 +109,23 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PRODUCT / FEATURES */}
+      {/* STATUS BOARD */}
       <section id="product" className="site-section" style={{ paddingTop: 0 }}>
         <div className="site-wrap">
-          <SectionHead eyebrow="Product" title={<>What it <span className="site-serif">does</span></>} />
-
-          <div className="site-bento">
-            <article className="site-tile site-tile--aura om-aura--violet site-half site-reveal">
-              <span className="site-icon"><Sparkles size={20} /></span>
-              <ul className="site-list site-list--light">
-                <li><span className="site-list-num">01</span>Processes genomic signatures, runs a trained model, and returns interpretable predictions suitable for slide-ready export and discussion</li>
-                <li><span className="site-list-num">02</span>Helps doctors refine treatment processes with data-driven insights and confidence scores</li>
-                <li><span className="site-list-num">03</span>Provides analytics that help researchers decrease project timelines and accelerate discovery</li>
-              </ul>
-            </article>
-
-            <div className="site-half site-quad">
-              {features.map((f, i) => (
-                <article key={f.title} className="site-tile site-reveal" style={{ minHeight: 0, transitionDelay: `${i * 60}ms` }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <span className="site-icon">{f.icon}</span>
-                    <span className="site-tile-num" style={{ fontSize: 34 }}>{String(i + 1).padStart(2, "0")}</span>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <h3 className="site-h3">{f.title}</h3>
-                    <p className="site-body">{f.text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
+          <SectionHead eyebrow="Status" title={<>Where every module <span className="site-serif">really</span> stands</>}>
+            Working means you can use it in the dashboard today. In development means it exists but isn't ready. Planned means it doesn't exist yet.
+          </SectionHead>
+          <div className="site-modules">
+            {modules.map((m, i) => (
+              <article key={m.title} className="site-module site-reveal" data-status={m.status} style={{ transitionDelay: `${i * 50}ms` }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+                  <span className="site-icon" style={{ width: 40, height: 40, borderRadius: 13 }}>{m.icon}</span>
+                  <StatusTag status={m.status} />
+                </div>
+                <h3 className="site-h3">{m.title}</h3>
+                <p className="site-body">{m.text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -166,38 +146,34 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* TESTIMONIAL / PROOF */}
+      {/* HONEST BY DESIGN */}
       <section className="site-section" style={{ paddingTop: 0 }}>
-        <div className="site-wrap site-split site-reveal" style={{ alignItems: "start" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <span className="site-eyebrow">Proof</span>
-            <h2 className="site-h2">Trusted for <span className="site-serif">demos</span></h2>
-            <p className="site-lead">
-              A lightweight tool designed to present model behavior clearly and ethically,
-              without compromising patient privacy or data security.
+        <div className="site-wrap">
+          <div className="site-honest site-reveal">
+            <span className="site-eyebrow">Honest by design</span>
+            <p className="site-quote" style={{ maxWidth: 900 }}>
+              We'd rather show you a work in progress than a polished promise.
             </p>
+            <ul className="site-check-list">
+              <li><b>Real status, always</b>Every feature is labelled working, in development or planned.</li>
+              <li><b>No clinical claims</b>OncoMind is a research project, not a medical device or a source of medical advice.</li>
+              <li><b>Read the code</b>Everything is open source, so you can check how any result is produced.</li>
+            </ul>
           </div>
-          <figure style={{ margin: 0 }}>
-            <blockquote className="site-quote">
-              “Great for live demos — zero surprises for judges. The reproducibility and
-              clear explanations made our presentation stand out.”
-            </blockquote>
-            <figcaption className="site-quote-by">— Research Team Lead</figcaption>
-          </figure>
         </div>
       </section>
 
       {/* CTA */}
       <section className="site-section" style={{ paddingTop: 0 }}>
         <div className="site-wrap">
-          <div className="site-cta site-reveal">
+          <div className="site-cta site-reveal" style={{ background: "linear-gradient(120deg, #5b2eff 0%, #ff2d87 60%, #ff9b2f 100%)" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              <h2 className="site-h2">Ready to streamline your research <span className="site-serif">presentation?</span></h2>
-              <p className="site-lead">Quick demo, slide-ready output, no patient data required</p>
+              <h2 className="site-h2">Follow the build, <span className="site-serif">step by step</span></h2>
+              <p className="site-lead">OncoMind is developed in the open. Star the repository to follow along, or open an issue with ideas.</p>
             </div>
-            <Link to="/home#demo" className="om-btn om-btn--glass" style={{ textDecoration: "none", padding: "0 24px", "--h": "48px" } as React.CSSProperties}>
-              Run a Demo <ArrowUpRight size={17} />
-            </Link>
+            <a href={REPO} target="_blank" rel="noreferrer" className="om-btn" style={{ textDecoration: "none", padding: "0 24px", "--h": "48px", background: "#fff", color: "#111113", boxShadow: "none" } as React.CSSProperties}>
+              <Github size={17} /> View on GitHub
+            </a>
           </div>
         </div>
       </section>
