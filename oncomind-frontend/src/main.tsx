@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Research from "./pages/Research";
 import AwarenessPage from "./pages/Awareness";
 import Contact from "./pages/Contact";
+import Future from "./pages/Future";
 import Signin from "./pages/Signin";
 
 // Dashboard is code-split: visitors of the public site never download its
@@ -38,6 +39,7 @@ function AppRouter() {
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/research" element={<Research />} />
+          <Route path="/future" element={<Future />} />
           <Route path="/awareness" element={<AwarenessPage />} />
           <Route path="/contact" element={<Contact />} />
 

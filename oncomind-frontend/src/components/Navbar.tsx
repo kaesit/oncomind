@@ -8,6 +8,7 @@ import type { OmTheme } from "../dashboard/ui/theme";
 
 const links = [
   { to: "/research", text: "Research" },
+  { to: "/future", text: "Future" },
   { to: "/awareness", text: "Awareness" },
   { to: "/about", text: "About Us" },
   { to: "/contact", text: "Contact" },

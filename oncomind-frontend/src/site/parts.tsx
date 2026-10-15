@@ -131,6 +131,10 @@ export function ScannerShowcase() {
 }
 
 /* -------------------------------------------------------- photo hero */
+/** React 18 only forwards the lowercase DOM attribute for fetch priority. */
+const HIGH_PRIORITY = { fetchpriority: "high" } as unknown as React.ImgHTMLAttributes<HTMLImageElement>;
+
+
 type Tint = "violet" | "sunrise" | "magenta" | "teal";
 
 /**
@@ -166,7 +170,7 @@ export function PhotoHero({
                     srcSet={photoSrcSet(image)}
                     sizes="100vw"
                     alt=""
-                    fetchPriority="high"
+                    {...HIGH_PRIORITY}
                     style={{ objectPosition: position }}
                />
                <div className="site-photo-hero-wash" aria-hidden />

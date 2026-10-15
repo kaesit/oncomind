@@ -1122,3 +1122,405 @@
 .site-photo-hero-inner[data-split] .site-display {
   font-size: clamp(40px, 5vw, 76px);
 }
+
+/* =====================================================================
+   /future — the cinematic page. Deliberately darker and louder than the
+   rest of the site: it keeps its own colours in both themes so it reads
+   like a film rather than a document. Motion is opacity/transform only.
+   ===================================================================== */
+
+.site-fut {
+  --fut-ink: #f6f5ff;
+  /* solid film black, fading into the page background above the footer */
+  background: linear-gradient(180deg, #050508 calc(100% - 160px), rgba(5, 5, 8, 0) 100%);
+  color: var(--fut-ink);
+  position: relative;
+}
+.site-fut ::selection {
+  background: #ff2d87;
+  color: #fff;
+}
+.site-fut .site-lead,
+.site-fut .site-body {
+  color: rgba(246, 245, 255, 0.76);
+}
+.site-fut .site-h2,
+.site-fut .site-h3 {
+  color: var(--fut-ink);
+}
+
+/* ------------------------------------------------------------- hero */
+.site-fut-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0 0 clamp(24px, 4vw, 48px);
+}
+.site-fut-media {
+  position: absolute;
+  inset: -8% 0 0;
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  z-index: -2;
+  /* parallax is driven by a CSS var the page updates on scroll */
+  transform: translate3d(0, var(--fut-shift, 0px), 0) scale(1.04);
+}
+.site-fut-grade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(90% 70% at 18% 84%, rgba(109, 40, 217, 0.55), transparent 62%),
+    radial-gradient(70% 60% at 86% 14%, rgba(255, 45, 135, 0.42), transparent 66%),
+    linear-gradient(0deg, rgba(5, 5, 8, 0.96) 4%, rgba(5, 5, 8, 0.5) 42%, rgba(5, 5, 8, 0.28) 100%);
+}
+.site-fut-hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.4vw, 28px);
+  padding-top: 24vh;
+}
+.site-fut-display {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(54px, 11vw, 158px);
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  max-width: 15ch;
+  text-wrap: balance;
+}
+.site-fut-display em {
+  font-family: var(--om-serif);
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.site-fut-lead {
+  margin: 0;
+  max-width: 62ch;
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.5;
+  color: rgba(246, 245, 255, 0.82);
+}
+.site-fut-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-family: var(--om-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 255, 0.66);
+}
+.site-fut-strip b {
+  color: var(--fut-ink);
+  font-weight: 600;
+}
+.site-fut-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 255, 0.7);
+}
+.site-fut-cue svg {
+  animation: fut-cue 2.2s var(--om-ease) infinite;
+}
+@keyframes fut-cue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* --------------------------------------------------------- chapters */
+.site-fut-stage {
+  position: relative;
+}
+.site-fut-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+.site-fut-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 650ms var(--om-ease);
+}
+.site-fut-layer[data-on="true"] {
+  opacity: 1;
+}
+.site-fut-chapters {
+  position: relative;
+  z-index: 1;
+}
+.site-fut-chapter {
+  min-height: 94svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 7vw, 90px) 0;
+}
+.site-fut-panel {
+  width: min(640px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: var(--om-r-xl);
+  background: rgba(8, 8, 12, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.site-fut-chapter:nth-child(even) .site-fut-panel {
+  margin-left: auto;
+}
+.site-fut-panel .site-dot-num {
+  font-size: 44px;
+  background: linear-gradient(135deg, #a78bfa, #ff2d87);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.site-fut-panel h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+.site-fut-panel h2 em {
+  font-family: var(--om-serif);
+  font-style: italic;
+}
+.site-fut-points {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.site-fut-points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(246, 245, 255, 0.78);
+}
+.site-fut-points li::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa, #ff2d87);
+}
+
+/* The sticky backdrop runs one viewport past the last chapter, so whatever
+   follows the stage paints its own floor — otherwise bright microscopy
+   shows through the headings. */
+.site-fut-stage ~ .site-section {
+  background: #050508;
+}
+.site-fut-stage + .site-section {
+  background: linear-gradient(180deg, rgba(5, 5, 8, 0.86) 0%, #050508 320px);
+}
+
+/* ---------------------------------------------------------- targets */
+.site-fut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.site-fut-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(22px, 2.4vw, 30px);
+  border-radius: var(--om-r-xl);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 220ms var(--om-ease), border-color 220ms var(--om-ease);
+}
+.site-fut-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.site-fut-card h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.site-fut-card p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(246, 245, 255, 0.74);
+}
+.site-fut-card .site-icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+.site-fut-metric {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--om-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 255, 0.6);
+}
+
+/* ---------------------------------------------------------- horizon */
+.site-fut-track {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.site-fut-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 22px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  transition: background 200ms var(--om-ease);
+}
+.site-fut-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.site-fut-row > span:first-child {
+  font-family: var(--om-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 245, 255, 0.55);
+}
+.site-fut-row h4 {
+  margin: 0 0 4px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.site-fut-row p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(246, 245, 255, 0.72);
+}
+.site-fut .site-status {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+.site-fut .site-status[data-status="working"] { color: #7dffb7; }
+.site-fut .site-status[data-status="in-development"] { color: #ffc46b; }
+.site-fut .site-status[data-status="planned"] { color: rgba(255, 255, 255, 0.75); }
+
+/* ------------------------------------------------------------- note */
+.site-fut-note {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 86svh;
+  display: flex;
+  align-items: center;
+}
+.site-fut-note img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.site-fut-note-grade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(80% 70% at 20% 70%, rgba(255, 110, 40, 0.3), transparent 66%),
+    linear-gradient(0deg, rgba(5, 5, 8, 0.94), rgba(5, 5, 8, 0.52) 60%, rgba(5, 5, 8, 0.7));
+}
+.site-fut-quote {
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--om-serif);
+  font-style: italic;
+  font-size: clamp(34px, 5.6vw, 82px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.site-fut-note p {
+  max-width: 60ch;
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.6;
+  color: rgba(246, 245, 255, 0.82);
+}
+.site-fut-sign {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: rgba(246, 245, 255, 0.72);
+}
+.site-fut-sign i {
+  width: 34px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* --------------------------------------------------------- closing */
+.site-fut-end {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.site-fut-end .site-ctas {
+  justify-content: center;
+}
+.site-fut .om-btn:not(.om-btn--primary) {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+.site-fut .om-btn:not(.om-btn--primary):hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+@media (max-width: 960px) {
+  .site-fut-grid { grid-template-columns: minmax(0, 1fr); }
+  .site-fut-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .site-fut-chapter:nth-child(even) .site-fut-panel { margin-left: 0; }
+  .site-fut-hero-inner { padding-top: 32vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-fut-media { transform: none; }
+  .site-fut-cue svg { animation: none; }
+  .site-fut-layer { transition: none; }
+}
