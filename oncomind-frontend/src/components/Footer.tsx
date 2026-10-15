@@ -1,81 +1,69 @@
 import React from "react";
-import "../css/Footer.css";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <center>
-      <footer className="footer-container">
-        <div className="footer-content">
+    <footer className="site-footer">
+      <div className="site-wrap">
+        <div className="site-footer-grid">
           {/* Brand Section */}
-          <div className="footer-section">
-            <h4 className="footer-title">OncoMind</h4>
-            <p className="footer-text">
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 420 }}>
+            <span className="site-brand" style={{ marginRight: 0 }}>
+              <span className="om-brand-mark" />
+              OncoMind
+            </span>
+            <p className="site-body">
               Building innovative solutions with science and passion, advancing
               precision oncology through AI-powered genomic analysis.
             </p>
           </div>
 
           {/* Quick Links */}
-          <div className="footer-section">
-            <h4 className="footer-title">Quick Links</h4>
-            <ul className="footer-links">
-              <li>
-                <a href="/about">About Us</a>
-              </li>
-              <li>
-                <a href="/research">Research</a>
-              </li>
-              <li>
-                <a href="/projects">Projects</a>
-              </li>
-              <li>
-                <a href="/contact">Contact</a>
-              </li>
+          <div>
+            <h4>Quick Links</h4>
+            <ul className="site-footer-links">
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/research">Research</Link></li>
+              <li><Link to="/awareness">Awareness</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
 
           {/* Social Media */}
-          <div className="footer-section">
-            <h4 className="footer-title">Contact</h4>
-            <div className="footer-socials">
-              <a
-                href="https://github.com/kaesit/oncomind"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our GitHub repository"
-              >
-                GitHub
-              </a>
-              <a
-                href="https://linkedin.com/in/your-profile"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Connect on LinkedIn"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://instagram.com/your-handle"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow on Instagram"
-              >
-                Instagram
-              </a>
-            </div>
+          <div>
+            <h4>Contact</h4>
+            <ul className="site-footer-links">
+              <li>
+                <a href="https://github.com/kaesit/oncomind" target="_blank" rel="noopener noreferrer" aria-label="Visit our GitHub repository">
+                  GitHub <ArrowUpRight size={13} />
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn">
+                  LinkedIn <ArrowUpRight size={13} />
+                </a>
+              </li>
+              <li>
+                <a href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
+                  Instagram <ArrowUpRight size={13} />
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
+        <div className="site-wordmark" aria-hidden>OncoMind</div>
+
         {/* Copyright */}
-        <div className="footer-bottom">
-          <p>
-            © {currentYear} Esad Abdullah Kösedağ & OncoMind. All rights reserved.
-          </p>
+        <div className="site-footer-bottom">
+          <span>© {currentYear} Esad Abdullah Kösedağ & OncoMind. All rights reserved.</span>
+          <span>Research use only — not a medical device.</span>
         </div>
-      </footer>
-    </center>
+      </div>
+    </footer>
   );
 };
 

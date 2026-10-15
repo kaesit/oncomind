@@ -1,72 +1,77 @@
 // src/pages/Contact.tsx
 import React from "react";
-import "../css/Contact.css";
-import "../css/index.css";
-// import Footer from "../components/Footer"; // Uncomment if you want the footer here too
+import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Button, Field, Input, Textarea } from "../dashboard/ui";
+import notify from "../dashboard/ui/notify";
+import { Orb, useReveal } from "../site/parts";
+
+const details = [
+     { icon: <Mail size={18} />, text: "oncomind@info.com" },
+     { icon: <Phone size={18} />, text: "+1 111 111 11 11" },
+     { icon: <MapPin size={18} />, text: "Elazığ, Türkiye" },
+];
 
 export default function Contact() {
-     return (
-          <div className="contact_container">
-               <h1 className="contact-page-title">Get in Touch</h1>
+     const ref = useReveal();
 
-               <div className="contact-content-wrapper">
-                    <div className="contact-card">
+     // The form has no backend yet: don't reload the page or pretend it was sent.
+     const handleSubmit = (e: React.FormEvent) => {
+          e.preventDefault();
+          notify("The contact form isn't connected yet — please email us at oncomind@info.com.", "info", 5000);
+     };
+
+     return (
+          <div ref={ref}>
+               <section className="site-hero">
+                    <Orb tone="violet" size={560} style={{ top: -200, left: -160 }} />
+                    <Orb tone="teal" size={420} style={{ bottom: -140, right: -100, animationDelay: "-9s" }} />
+                    <div className="site-dots" />
+
+                    <div className="site-wrap site-above site-split" style={{ alignItems: "start" }}>
                          {/* Left Column: Information */}
-                         <div className="contact-info-col">
-                              <h2 className="contact-section-subtitle">Collaborate</h2>
-                              <p className="contact-text">
+                         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                              <span className="site-eyebrow">Collaborate</span>
+                              <h1 className="site-display">
+                                   Get in <span className="site-serif site-gradient-text">Touch</span>
+                              </h1>
+                              <p className="site-lead">
                                    We are always looking for partners in clinical research,
                                    bioinformatics, and healthcare technology.
                                    Whether you are a researcher, clinician, or developer,
                                    let's build the future of medicine together.
                               </p>
-
-                              <div className="contact-details-list">
-                                   <div className="contact-detail-item">
-                                        <span>📧</span>
-                                        <span>oncomind@info.com</span>
-                                   </div>
-                                   <div className="contact-detail-item">
-                                        <span>📱</span>
-                                        <span>+1 111 111 11 11</span>
-                                   </div>
-                                   <div className="contact-detail-item">
-                                        <span>📍</span>
-                                        <span>Elazığ, Türkiye</span>
-                                   </div>
-                              </div>
+                              <ul className="site-list" style={{ maxWidth: 420 }}>
+                                   {details.map((d) => (
+                                        <li key={d.text} style={{ color: "var(--om-text)" }}>
+                                             <span className="site-icon" style={{ width: 38, height: 38, borderRadius: 12 }}>{d.icon}</span>
+                                             {d.text}
+                                        </li>
+                                   ))}
+                              </ul>
                          </div>
 
                          {/* Right Column: The Form */}
-                         <div className="contact-form-col">
-                              <form className="contact-form-col">
-                                   <div className="form-group">
-                                        <label className="form-label">NAME</label>
-                                        <input className="form-input" type="text" placeholder="Name" />
-                                   </div>
-
-                                   <div className="form-group">
-                                        <label className="form-label">EMAIL</label>
-                                        <input className="form-input" type="email" placeholder="your@emailprovider.com" />
-                                   </div>
-
-                                   <div className="form-group">
-                                        <label className="form-label">SUBJECT</label>
-                                        <input className="form-input" type="text" placeholder="Research Collaboration" />
-                                   </div>
-
-                                   <div className="form-group">
-                                        <label className="form-label">MESSAGE</label>
-                                        <textarea className="form-textarea" placeholder="Tell us about your project..."></textarea>
-                                   </div>
-
-                                   <button type="submit" className="submit-btn">
-                                        Send Message
-                                   </button>
-                              </form>
-                         </div>
+                         <form className="site-tile site-reveal" onSubmit={handleSubmit} style={{ gap: 16, justifyContent: "flex-start", padding: "clamp(20px, 3vw, 32px)" }}>
+                              <div className="om-form-grid">
+                                   <Field label="Name" htmlFor="c-name">
+                                        <Input id="c-name" type="text" placeholder="Name" autoComplete="name" />
+                                   </Field>
+                                   <Field label="Email" htmlFor="c-email">
+                                        <Input id="c-email" type="email" placeholder="your@emailprovider.com" autoComplete="email" />
+                                   </Field>
+                                   <Field label="Subject" full htmlFor="c-subject">
+                                        <Input id="c-subject" type="text" placeholder="Research Collaboration" />
+                                   </Field>
+                                   <Field label="Message" full htmlFor="c-message">
+                                        <Textarea id="c-message" rows={6} placeholder="Tell us about your project..." />
+                                   </Field>
+                              </div>
+                              <Button type="submit" variant="primary" block icon={<Send size={16} />} style={{ height: 48 }}>
+                                   Send Message
+                              </Button>
+                         </form>
                     </div>
-               </div>
+               </section>
           </div>
      );
 }

@@ -96,6 +96,11 @@
 }
 
 /* ---------------------------------------------------------------- base */
+body {
+  margin: 0;
+  background: var(--om-bg);
+}
+
 .om-root,
 .om-portal {
   font-family: var(--om-font);

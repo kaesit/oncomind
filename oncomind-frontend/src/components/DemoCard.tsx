@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Play, TriangleAlert } from "lucide-react";
+import { Button, Empty, Field, Input } from "../dashboard/ui";
 
 type PredictResp = {
   sample?: number;
@@ -51,64 +53,58 @@ export default function DemoCard() {
     : [];
 
   return (
-    <div className="card">
-      <h3>Live demo</h3>
-      <p className="small">
+    <div className="site-tile site-reveal" style={{ minHeight: 0, justifyContent: "flex-start" }}>
+      <span className="site-eyebrow">Live demo</span>
+      <h2 className="site-h2" style={{ fontSize: 36 }}>Run a <span className="site-serif">prediction</span></h2>
+      <p className="site-body">
         Run a quick sample prediction. This calls the local API (C# → Python).
       </p>
 
-      <div style={{ marginTop: 12, display: "flex", gap: 8, alignItems: "center" }}>
-        <label style={{ fontSize: 14 }}>Sample index:</label>
-        <input
-          type="number"
-          value={sample}
-          onChange={(e) => setSample(Number(e.target.value))}
-          style={{ width: 90, padding: 8, borderRadius: 8, border: "1px solid #e6eef0" }}
-        />
-        <button className="btn btn-primary" onClick={onClickRun} disabled={loading}>
+      <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
+        <Field label="Sample index" htmlFor="demo-sample">
+          <Input id="demo-sample" type="number" value={sample} onChange={(e) => setSample(Number(e.target.value))} style={{ width: 120 }} />
+        </Field>
+        <Button variant="primary" icon={<Play size={16} />} loading={loading} onClick={onClickRun}>
           {loading ? "Running..." : "Run demo"}
-        </button>
+        </Button>
       </div>
 
       {error && (
-        <div style={{ marginTop: 12, color: "crimson" }}>
-          <strong>Error:</strong> {error}
+        <div className="om-pill om-pill--tone" style={{ "--tone": "var(--om-urgent)", height: "auto", padding: "10px 14px", borderRadius: 14, whiteSpace: "normal", alignItems: "flex-start" } as React.CSSProperties}>
+          <TriangleAlert size={15} style={{ flex: "none", marginTop: 1 }} />
+          <span><strong>Error:</strong> {error}</span>
         </div>
       )}
 
-      <div style={{ marginTop: 18 }}>
-        <h4 style={{ margin: "0 0 8px 0" }}>Result</h4>
-        <div style={{ minHeight: 84 }}>
-          {resp ? (
-            <>
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 13 }}><strong>Raw response</strong></div>
-                <pre style={{ background: "#f3f7f8", padding: 8, borderRadius: 6 }}>{JSON.stringify(resp, null, 2)}</pre>
-              </div>
-
-              <div>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-                  <thead>
-                    <tr>
-                      <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>Sample</th>
-                      <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid rgba(255,255,255,0.12)" }}>Predicted Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {gridData.map((row: any) => (
-                      <tr key={row.id}>
-                        <td style={{ padding: 8, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>{row.name}</td>
-                        <td style={{ padding: 8, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>{row.score}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="small">No result yet — run the demo.</div>
-          )}
-        </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <span className="om-label">Result</span>
+        {resp ? (
+          <>
+            <pre className="om-mono" style={{ margin: 0, padding: 14, borderRadius: 14, background: "var(--om-surface-2)", fontSize: 12, overflow: "auto", color: "var(--om-text)" }}>
+              {JSON.stringify(resp, null, 2)}
+            </pre>
+            <table className="om-table">
+              <thead>
+                <tr>
+                  <th>Sample</th>
+                  <th>Predicted Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gridData.map((row: any) => (
+                  <tr key={row.id}>
+                    <td>{row.name}</td>
+                    <td style={{ fontVariantNumeric: "tabular-nums" }}>{row.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <div style={{ borderRadius: 16, background: "var(--om-surface-2)" }}>
+            <Empty title="No result yet">Run the demo to see a prediction.</Empty>
+          </div>
+        )}
       </div>
     </div>
   );

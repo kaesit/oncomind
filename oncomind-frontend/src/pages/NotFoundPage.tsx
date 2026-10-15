@@ -1,71 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-// We can remove React.CSSProperties, which was causing the issue.
-// TypeScript will infer the types correctly.
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    width: "100%",
-    backgroundColor: "#0a0a0a",
-    color: "#f5ecec",
-    fontFamily: '"Cascadia Code", monospace',
-  },
-  title: {
-    fontSize: "6rem",
-    fontWeight: 700,
-    color: "#60a5fa", // Your primary color
-    margin: 0,
-  },
-  message: {
-    fontSize: "1.5rem",
-    color: "#f5ecec",
-    marginBottom: "30px",
-  },
-  link: {
-    fontSize: "1rem",
-    color: "#f5ecec",
-    backgroundColor: "#17171c",
-    padding: "10px 20px",
-    borderRadius: "15px",
-    textDecoration: "none",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    transition: "all 0.3s ease",
-  },
-  // We removed 'linkHover' from here, as we'll use a CSS class.
-};
+import { ArrowLeft } from "lucide-react";
+import { Orb, Standalone } from "../site/parts";
 
 const NotFoundPage: React.FC = () => {
   return (
-    // We add a <style> tag to handle the hover, which is cleaner
-    // and requires a React.Fragment (the <>) wrapper.
-    <>
-      <style>
-        {`
-          .notFoundLink:hover {
-            color: #60a5fa !important; /* Your hover color */
-            border-color: #60a5fa !important; /* Your hover border */
-          }
-        `}
-      </style>
+    <Standalone>
+      <Orb tone="pink" size={560} style={{ top: "10%", left: "8%" }} />
+      <Orb tone="violet" size={520} style={{ bottom: "6%", right: "6%", animationDelay: "-8s" }} />
+      <div className="site-dots" />
 
-      <div style={styles.container as React.CSSProperties}>
-        <h1 style={styles.title}>// 404</h1>
-        <p style={styles.message}>[Page Not Found]</p>
-        <Link
-          to="/"
-          style={styles.link as React.CSSProperties}
-          className="notFoundLink" // We give it a class
-          // No more onMouseEnter or onMouseLeave!
-        >
-          &lt; Go Home /&gt;
+      <div className="site-above" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 22, textAlign: "center" }}>
+        <span className="site-eyebrow">Error 404</span>
+        <div className="site-dot-num site-gradient-text" style={{ fontSize: "clamp(120px, 26vw, 300px)" }}>404</div>
+        <h1 className="site-h2">
+          This page took a <span className="site-serif">different path</span>
+        </h1>
+        <p className="site-lead" style={{ margin: 0 }}>Page Not Found</p>
+        <Link to="/" className="om-btn om-btn--primary" style={{ textDecoration: "none", "--h": "46px", padding: "0 22px" } as React.CSSProperties}>
+          <ArrowLeft size={16} /> Go Home
         </Link>
       </div>
-    </>
+    </Standalone>
   );
 };
 
