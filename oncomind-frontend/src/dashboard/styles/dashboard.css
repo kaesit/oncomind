@@ -1687,3 +1687,73 @@
 }
 .om-anat-pill[data-tone="safe"] .om-anat-pill-status { color: #5ff0a2; }
 .om-anat-pill[data-tone="safe"] .om-anat-pill-status i { background: #2bea85; }
+
+/* ------------------------------------------------ feature tiles */
+.om-tile-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+/* "coming soon" must not look like an available tile: flat, dashed, muted, no CTA */
+.om-tile-soon {
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: var(--om-r-lg);
+  border: 1.5px dashed var(--om-border-strong);
+  background: transparent;
+  color: var(--om-muted);
+  cursor: default;
+}
+.om-tile-soon .om-tile-title {
+  color: var(--om-text-2);
+}
+.om-tile-soon-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--om-surface-3);
+  color: var(--om-faint);
+}
+.om-tile-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--om-muted);
+}
+
+/* ------------------------------------------------- metric tiles */
+.om-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.om-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--om-r-md);
+  background: var(--om-surface-2);
+  min-width: 0;
+}
+.om-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--om-surface-3);
+  overflow: hidden;
+}
+.om-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7b5cff, #4fb3ff);
+}

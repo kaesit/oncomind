@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ImageOff, Loader2, RotateCw, Siren, Stethoscope, UserPlus, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff, Loader2, Repeat, RotateCw, Siren, Stethoscope, Target, UserPlus, Users } from "lucide-react";
 import { Button, Card, CardHead, Empty, PageHeader, Pill, Select, StatusPill } from "../../dashboard/ui";
 import notify from "../../dashboard/ui/notify";
 import { DonutChart } from "../../dashboard/charts/DonutChart";
@@ -34,6 +34,8 @@ const trainingStats = [
      { metric: "Canonized Molecule", value: 32437 },
      { metric: "Accuracy", value: 86 },
 ];
+
+const fmt = new Intl.NumberFormat("en-US");
 
 const statusColor = (status: string) => {
      switch (status) {
@@ -111,6 +113,13 @@ export const DashboardAnalytics: React.FC = () => {
           notify("Refreshing analysis...", "info", 1000);
      };
 
+     // training metrics, looked up from the same trainingStats array
+     const stat = (m: string) => trainingStats.find((t) => t.metric === m)?.value ?? 0;
+     const accuracy = stat("Accuracy");
+     const epochs = stat("Epochs");
+     const rawMolecules = stat("Raw Molecule");
+     const canonMolecules = stat("Canonized Molecule");
+
      const donutData = data.charts.statusDistribution.map((d) => ({ label: d.status, value: d.count, color: statusColor(d.status) }));
      const { kpis } = data;
 
@@ -176,10 +185,48 @@ export const DashboardAnalytics: React.FC = () => {
                          </Card>
 
                          <Card>
-                              <CardHead title="Model Training Metrics" sub="Logarithmic scale">
-                                   <Pill>log₁₀</Pill>
-                              </CardHead>
-                              <BarChart data={trainingStats.map((t) => ({ label: t.metric, value: t.value }))} log />
+                              <CardHead title="Model Training Metrics" sub="Training run summary" />
+
+                              {/* different units → separate displays, never one shared axis */}
+                              <div className="om-metric-grid">
+                                   <div className="om-metric">
+                                        <span className="om-stat-label"><Target size={14} /> Accuracy</span>
+                                        <div className="om-dot-number om-dot-number--sm">{accuracy}%</div>
+                                        <div
+                                             className="om-meter"
+                                             role="meter"
+                                             aria-label="Model accuracy"
+                                             aria-valuemin={0}
+                                             aria-valuemax={100}
+                                             aria-valuenow={accuracy}
+                                        >
+                                             <span style={{ width: `${Math.min(100, Math.max(0, accuracy))}%` }} />
+                                        </div>
+                                        <span className="om-hint">out of 100%</span>
+                                   </div>
+                                   <div className="om-metric">
+                                        <span className="om-stat-label"><Repeat size={14} /> Epochs</span>
+                                        <div className="om-dot-number om-dot-number--sm">{fmt.format(epochs)}</div>
+                                        <span className="om-hint">full passes over the training set</span>
+                                   </div>
+                              </div>
+
+                              <div className="om-card-head" style={{ margin: "18px 0 4px" }}>
+                                   <div>
+                                        <h4 className="om-card-title" style={{ fontSize: 14 }}>Training molecules</h4>
+                                        <p className="om-card-sub">Same unit, linear scale</p>
+                                   </div>
+                                   {rawMolecules > 0 && (
+                                        <Pill>{Math.round((canonMolecules / rawMolecules) * 100)}% kept after canonization</Pill>
+                                   )}
+                              </div>
+                              <BarChart
+                                   height={200}
+                                   data={[
+                                        { label: "Raw", value: rawMolecules },
+                                        { label: "Canonized", value: canonMolecules },
+                                   ]}
+                              />
                          </Card>
                     </div>
 
@@ -255,7 +302,7 @@ export const DashboardAnalytics: React.FC = () => {
                                                        <td className="center om-mono" style={{ color: "var(--om-muted)", fontSize: 12 }}>{r.time}</td>
                                                        <td style={{ fontWeight: 550 }}>{r.name}</td>
                                                        <td>
-                                                            <StatusPill status={r.status === "Urgent" ? "Urgent" : "Stable"}>{r.status}</StatusPill>
+                                                            <StatusPill status={r.status} />
                                                        </td>
                                                   </tr>
                                              ))}

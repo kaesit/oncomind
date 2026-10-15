@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, CalendarDays, FileText, HeartPulse, MapPin, Plus, Save, UserRound, Stethoscope } from "lucide-react";
+import { ArrowLeft, CalendarDays, FileText, MapPin, Plus, Save, UserRound, Stethoscope } from "lucide-react";
 import { patientService } from "../../services/patientService";
-import { Button, Card, Dialog, Empty, Field, MediaImage, Pill, Select, StatusPill, Textarea, statusTone } from "../../dashboard/ui";
+import { Button, Card, Dialog, Empty, Field, MediaImage, Pill, Select, StatusIcon, StatusPill, Textarea, statusTone } from "../../dashboard/ui";
 import notify from "../../dashboard/ui/notify";
 
 /* ------------------------------------------------------
@@ -151,7 +151,7 @@ const PatientProfile: React.FC = () => {
                               <h1 style={{ margin: 0, fontSize: "clamp(34px, 5vw, 60px)", fontWeight: 500, letterSpacing: "-0.05em", lineHeight: 1 }}>{p.name}</h1>
                               <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
                                    <span className="om-pill" style={{ background: statusTone(p.status), color: "#fff", boxShadow: "none" }}>
-                                        <HeartPulse size={13} /> {p.status}
+                                        <StatusIcon status={p.status} /> {p.status}
                                    </span>
                                    <Pill tone="glass"><MapPin size={13} /> {p.room}</Pill>
                                    <Pill tone="glass">{p.age} - {p.gender}</Pill>

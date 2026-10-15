@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Bar } from "@visx/shape";
 import { Group } from "@visx/group";
-import { scaleBand, scaleLog, scaleLinear } from "@visx/scale";
+import { scaleBand, scaleLinear } from "@visx/scale";
 import { GridRows } from "@visx/grid";
 import { AxisBottom } from "@visx/axis";
 import { ParentSize } from "@visx/responsive";
@@ -11,10 +11,10 @@ export type BarDatum = { label: string; value: number };
 const fmt = new Intl.NumberFormat("en-US");
 
 /**
- * Vertical bars with value labels. `log` keeps small values (e.g. 86) visible
- * next to large ones (e.g. 57,619) — same intent as the old logarithmic ValueAxis.
+ * Vertical bars with value labels on a linear scale from zero.
+ * Only plot values that share a unit — bar heights must be comparable.
  */
-export function BarChart({ data, height = 260, log = false }: { data: BarDatum[]; height?: number; log?: boolean }) {
+export function BarChart({ data, height = 260 }: { data: BarDatum[]; height?: number }) {
      const [hover, setHover] = useState<string | null>(null);
      const margin = { top: 28, right: 8, bottom: 34, left: 8 };
 
@@ -28,9 +28,7 @@ export function BarChart({ data, height = 260, log = false }: { data: BarDatum[]
 
                          const max = Math.max(1, ...data.map((d) => d.value));
                          const x = scaleBand<string>({ domain: data.map((d) => d.label), range: [0, innerW], padding: 0.32 });
-                         const y = log
-                              ? scaleLog<number>({ domain: [1, max * 1.6], range: [innerH, 0], clamp: true })
-                              : scaleLinear<number>({ domain: [0, max * 1.1], range: [innerH, 0], nice: true });
+                         const y = scaleLinear<number>({ domain: [0, max * 1.1], range: [innerH, 0], nice: true });
 
                          return (
                               <svg width={width} height={height} role="img" aria-label="Bar chart">
@@ -43,9 +41,10 @@ export function BarChart({ data, height = 260, log = false }: { data: BarDatum[]
                                    <Group left={margin.left} top={margin.top}>
                                         <GridRows scale={y} width={innerW} numTicks={4} stroke="var(--om-border)" strokeDasharray="2 4" />
                                         {data.map((d) => {
-                                             const bw = x.bandwidth();
-                                             const bx = x(d.label) ?? 0;
-                                             const by = y(Math.max(log ? 1 : 0, d.value)) ?? innerH;
+                                             // cap bar width so a 2-bar chart doesn't turn into slabs
+                                             const bw = Math.min(x.bandwidth(), 96);
+                                             const bx = (x(d.label) ?? 0) + (x.bandwidth() - bw) / 2;
+                                             const by = y(Math.max(0, d.value)) ?? innerH;
                                              const bh = Math.max(2, innerH - by);
                                              const dim = hover && hover !== d.label;
                                              return (

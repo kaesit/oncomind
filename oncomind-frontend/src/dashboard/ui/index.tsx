@@ -4,7 +4,7 @@ import * as RSelect from "@radix-ui/react-select";
 import * as RSwitch from "@radix-ui/react-switch";
 import * as RCheckbox from "@radix-ui/react-checkbox";
 import * as RRadio from "@radix-ui/react-radio-group";
-import { Check, ChevronDown, Loader2, Search, X } from "lucide-react";
+import { Check, ChevronDown, CircleCheck, CircleHelp, Info, Loader2, OctagonAlert, Search, TriangleAlert, X } from "lucide-react";
 
 const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(" ");
 
@@ -340,12 +340,44 @@ const STATUS_TONE: Record<string, string> = {
 };
 export const statusTone = (s?: string) => STATUS_TONE[String(s ?? "").toUpperCase()] ?? "var(--om-neutral)";
 
-/** `solid` = filled pill for use on top of photos, where a tinted one gets lost. */
+/**
+ * Every status gets a distinct *shape*, not just a colour, so it still reads
+ * for colour-blind users: octagon = urgent, triangle = high, circle-i = normal,
+ * circle-check = stable.
+ */
+const STATUS_ICON: Record<string, typeof Info> = {
+     URGENT: OctagonAlert,
+     CRITICAL: OctagonAlert,
+     MALIGNANT: OctagonAlert,
+     HIGH: TriangleAlert,
+     NORMAL: Info,
+     STABLE: CircleCheck,
+     RECOVERING: CircleCheck,
+     LOW: CircleCheck,
+     BENIGN: CircleCheck,
+};
+
+export function StatusIcon({ status, size = 13 }: { status?: string; size?: number }) {
+     const Icon = STATUS_ICON[String(status ?? "").toUpperCase()] ?? CircleHelp;
+     return <Icon size={size} strokeWidth={2.4} aria-hidden style={{ flex: "none" }} />;
+}
+
+/** Status with colour + icon + text. `solid` = filled pill for use on top of photos, where a tinted one gets lost. */
 export function StatusPill({ status, solid, children }: { status?: string; solid?: boolean; children?: React.ReactNode }) {
      return (
           <span className={cx("om-pill", solid ? "om-pill--solid" : "om-pill--tone")} style={{ "--tone": statusTone(status) } as React.CSSProperties}>
-               <span className="om-pill-dot" />
+               <StatusIcon status={status} />
                {children ?? status}
+          </span>
+     );
+}
+
+/** Inline (pill-less) status for dense tables: icon + coloured text. */
+export function StatusText({ status }: { status?: string }) {
+     return (
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: statusTone(status), fontWeight: 600 }}>
+               <StatusIcon status={status} size={14} />
+               {status}
           </span>
      );
 }

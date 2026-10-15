@@ -12,7 +12,7 @@ import {
   FilterFn,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, BedDouble, RotateCw, Siren, Users, SearchX } from "lucide-react";
-import { Button, Card, Checkbox, Empty, Input, PageHeader, Pill, Select, StatusPill, Ticks, statusTone } from "../dashboard/ui";
+import { Button, Card, Checkbox, Empty, Input, PageHeader, Pill, Select, StatusPill, StatusText, Ticks } from "../dashboard/ui";
 
 type Row = {
   id: string;
@@ -148,10 +148,7 @@ export default function AdminDashboard() {
         header: "Status",
         filterFn: equals,
         meta: { align: "center", options: "status" },
-        cell: (c) => {
-          const v = c.getValue<string>();
-          return <span style={{ color: statusTone(v), fontWeight: 600 }}>{v}</span>;
-        },
+        cell: (c) => <StatusText status={c.getValue<string>()} />,
       },
     ],
     []
