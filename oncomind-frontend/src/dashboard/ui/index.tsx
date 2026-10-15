@@ -4,7 +4,7 @@ import * as RSelect from "@radix-ui/react-select";
 import * as RSwitch from "@radix-ui/react-switch";
 import * as RCheckbox from "@radix-ui/react-checkbox";
 import * as RRadio from "@radix-ui/react-radio-group";
-import { Check, ChevronDown, CircleCheck, CircleHelp, Info, Loader2, OctagonAlert, Search, TriangleAlert, X } from "lucide-react";
+import { Activity, Check, ChevronDown, CircleCheck, CircleHelp, Loader2, OctagonAlert, Search, TriangleAlert, X } from "lucide-react";
 
 const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(" ");
 
@@ -342,15 +342,16 @@ export const statusTone = (s?: string) => STATUS_TONE[String(s ?? "").toUpperCas
 
 /**
  * Every status gets a distinct *shape*, not just a colour, so it still reads
- * for colour-blind users: octagon = urgent, triangle = high, circle-i = normal,
+ * for colour-blind users: octagon = urgent, triangle = high, pulse line = normal
+ * (deliberately no enclosing shape, so it can't be mistaken for urgent),
  * circle-check = stable.
  */
-const STATUS_ICON: Record<string, typeof Info> = {
+const STATUS_ICON: Record<string, typeof Activity> = {
      URGENT: OctagonAlert,
      CRITICAL: OctagonAlert,
      MALIGNANT: OctagonAlert,
      HIGH: TriangleAlert,
-     NORMAL: Info,
+     NORMAL: Activity,
      STABLE: CircleCheck,
      RECOVERING: CircleCheck,
      LOW: CircleCheck,
