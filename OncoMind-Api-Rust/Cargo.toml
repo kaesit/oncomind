@@ -4,3 +4,15 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+# Asenkron çalışma motoru
+tokio = { version = "1.41.0", features = ["full"] }
+
+# Resmi MongoDB Sürücüsü
+mongodb = "3.9.1"
+
+# JSON ve BSON dönüşümleri için (Süslü parantezleri kaldırdık)
+serde = { version = "1.0.214", features = ["derive"] }
+bson = "2.15.0"
+
+# Hata yönetimi için
+thiserror = "2.0.0"

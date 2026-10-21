@@ -1,0 +1,10 @@
+
+# Rust derleme klasörü (Kesinlikle git'e gitmemeli)
+target/
+
+# Windows üzerinde derlenen executable ve debug dosyaları
+*.exe
+*.pdb
+
+# Cargo'nun yedek veya geçici dosyaları
+**/*.rs.bk

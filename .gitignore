@@ -1,30 +1,48 @@
-# Visual Studio
+# === IDE & Editors ===
 .vscode/
-bin/
-obj/
+.idea/
+.claude/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
 
--
-# Python
+# === Python / Machine Learning ===
 __pycache__/
-*.pyc
-.env
-.dockerignore
+*.py[cod]
+*$py.class
 .venv/
-old_app.py
-yolov10n.pt
-my_model.onnx
-simple-exploration-notebook-personalized-medicine.ipynb
+env/
+venv/
+ENV/
 .pytest_cache/
-Cancer detection.v3i.yolov11
-Cancer detection.v3i.yolov11.zip
-cancer_cell_healthy_unhealthy
-cancer_cell_healthy_unhealthy2
-cancer_cell_healthy_unhealthy_fixed
-# Node
+.ipynb_checkpoints/
+old_app.py
+
+# ML Models & Data
+*.pt
+*.onnx
+*.ipynb
+*.zip
+Cancer detection.v3i.yolov11/
+cancer_cell_healthy_unhealthy/
+cancer_cell_healthy_unhealthy2/
+cancer_cell_healthy_unhealthy_fixed/
+
+# === Node.js ===
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 dist/
 
-# Others
+# === Environment & Security ===
+.env
+.env.*
+.dockerignore
+
+# === Others ===
 .DS_Store
-.vscode
+Thumbs.db
 planning/
