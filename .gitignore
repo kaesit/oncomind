@@ -46,3 +46,8 @@ dist/
 .DS_Store
 Thumbs.db
 planning/
+# Projedeki diğer bin ve obj klasörlerini tamamen gizle
+OncoMind.Api/bin/
+OncoMind.Api/obj/
+oncomind-ml/-
+oncomind-ml/assets/obj/
