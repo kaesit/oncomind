@@ -16,3 +16,5 @@ bson = "2.15.0"
 
 # Hata yönetimi için
 thiserror = "2.0.0"
+
+dotenvy = "0.15"

@@ -6,5 +6,6 @@ target/
 *.exe
 *.pdb
 
+.env
 # Cargo'nun yedek veya geçici dosyaları
 **/*.rs.bk
